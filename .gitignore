@@ -23,3 +23,9 @@ mono_crash.*.json
 *.exe
 # Uncomment if your project does not version PCK files as runtime dependencies.
 # *.pck
+
+# Android: Gradle build template (installed by tools/build-android.sh) and build output
+/android/
+/build/
+*.keystore
+*.jks

@@ -52,6 +52,15 @@ GODOT=/path/to/godot tools/shot.sh tools/shot/runs/foundation.json out/ --movie
 Plays a scripted run (`tools/shot/runs/*.json`) under a virtual display, saves a PNG at each
 named moment and, with `--movie`, an mp4 of the run. Needs `xvfb-run` and `ffmpeg`.
 
+## Android
+
+```sh
+GODOT=/path/to/godot tools/build-android.sh       # debug APK in build/android/
+DISPLAY=:99 tools/android-run.sh                  # run it in an emulator, save proof
+```
+
+Needs the export templates, the Android SDK and a JDK 17. See [docs/android.md](docs/android.md).
+
 ## Tune
 
 Every movement and battery number lives in `data/rulesets/standard/`, one file per group, each
@@ -68,8 +77,9 @@ game refuses a ruleset with a missing or out-of-range value and names it.
 | `src/maps/`, `maps/` | Map node types and the maps ([format](docs/map-format.md)) |
 | `data/rulesets/` | Rulesets |
 | `tests/` | Headless tests |
-| `tools/` | Test, screenshot and map scripts |
-| `docs/` | [Architecture](docs/architecture.md), [map format](docs/map-format.md) |
+| `tools/` | Test, screenshot, map and Android build scripts |
+| `platform/android/` | Launcher icon (placeholder) |
+| `docs/` | [Architecture](docs/architecture.md), [map format](docs/map-format.md), [Android](docs/android.md) |
 
 ## License
 
