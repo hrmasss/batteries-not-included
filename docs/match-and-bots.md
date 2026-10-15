@@ -52,12 +52,16 @@ around it. Specs: workspace `docs/specs/01_world.md` ("A match", "Modes", "Spawn
 | Fire (T-97) | First wait, first burst, then waits and bursts at random. Fires only with the aim inside its cone and the target in range |
 | Frags and melee | Frags at middle range, aimed to land short and roll on, never with a teammate near the target. Melee up close |
 | Moving | Fights at a distance that suits the held gun, sliding side to side. Takes pickups it can see when they help. Falls back to a place out of sight when hurt. Chases where it last saw an enemy, else wanders the map's points |
-| Getting there | Straight when the way is clear, else along a grid path. Walks on floors, jumps walls, flies where it must, slows down near the goal |
+| Getting there | Straight when the toy's whole body, feet to head, sweeps there without touching terrain, else along a grid path. Walks on floors, jumps walls, flies where it must, slows down near the goal |
 | Battery | Below its low mark it stops flying until the battery is back to its resume mark |
 | Stuck | Moved less than 15 u in 3 s (the classic's test) while going somewhere: a new place to go, and a push up and sideways |
 
 Skill levels are rows in `bots.cfg`: easy is the classic's drone exactly; normal and hard see
 farther, react sooner, turn faster and wait less between bursts. A new level is a new section.
+
+Bots play the art bedroom by default and the blockout in tests; `tests/bots/test_bots_on_bedroom.gd`
+runs every bots check again on the bedroom. Art maps are not on the grid: the grid finds a
+standing spot on any surface, wherever it falls in a cell, so thin shelf tops count as floor.
 
 ## Lessons
 
@@ -66,11 +70,15 @@ names one thing to do and the control to use; it moves on only when the match sh
 did it (US-35.2). The screen points an arrow at that control on the touch layout. Any lesson can
 be skipped or replayed; the first launch offers them, never forces them.
 
+A lesson starts on the map's spawn point with the most open floor and headroom (the bed top on
+the bedroom). The gun it sets down lies on the player's own floor with a straight walk to it;
+its targets stand where the player can see them.
+
 ## Tools
 
 ```sh
-godot --headless --path . -s tools/sim/bot_match.gd -- 11 390 ffa normal 3   # a full bot match, scores and movement
-tools/app_shot.sh tools/shot/plans/clip-ffa.json out/ --movie                 # the app from menu to rematch, recorded
+godot --headless --path . -s tools/sim/bot_match.gd -- 11 390 ffa normal 3 bedroom   # a full bot match, scores and movement (map: bedroom, blockout or a res:// path)
+tools/app_shot.sh tools/shot/plans/first-playable.json out/ --movie                   # 2 min match on the bedroom, menu to rematch, recorded
 EMULATOR_LOCK=lock xvfb-run -a tools/android-bootcamp.sh bni-debug.apk out/  # the same in the Android emulator
 ```
 

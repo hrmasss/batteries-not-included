@@ -54,6 +54,13 @@ Android build is where to read it. Each toy's outline is a `CanvasGroup`: one of
 per toy, 12 in a full match. Bedroom sheet memory is about 27 MB plus mipmaps (RGBA8); VRAM
 compression at load would cut it to a quarter.
 
+## Under the bed and the desk
+
+The kit draws the bed's foot post and the desk's right leg down to the floor, and its collision
+did the same, which sealed the spaces under them with spawn points and a pickup inside.
+`tools/make_bedroom.gd` lifts those two polygons 53 u off the floor (`FLOOR_GAPS`, the bed
+rail's height, over a standing toy's 39.5 u), so toys walk in and out in front of the drawn leg.
+
 ## Tools
 
 ```sh
