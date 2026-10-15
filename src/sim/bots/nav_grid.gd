@@ -14,6 +14,8 @@ const MARGIN := 4.0
 const LOOK_AHEAD := 8
 ## How far to look around a blocked cell for a free one, in cells. Solver detail.
 const SNAP_RADIUS := 3
+## Shorter than this, a line has no length. Solver detail.
+const EPSILON := 1e-6
 
 var cell: float
 var origin: Vector2
@@ -155,7 +157,7 @@ func random_floor(rng: RandomNumberGenerator) -> Vector2:
 ## True when a toy-wide line from `a` to `b` touches no terrain.
 func clear(a: Vector2, b: Vector2) -> bool:
 	var d := b - a
-	if d.length_squared() < 1e-6:
+	if d.length_squared() < EPSILON:
 		return true
 	var side := Vector2(-d.y, d.x).normalized() * _half_width
 	return _ray(a, b).is_empty() and _ray(a + side, b + side).is_empty() and _ray(a - side, b - side).is_empty()

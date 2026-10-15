@@ -6,11 +6,13 @@ extends RefCounted
 
 enum Mode { FFA, TDM }
 
+## A match needs two sides: two players, or two teams. A rule of the game, not tuning.
+const SIDES := 2
 const DEFAULT_MAP := "res://maps/bedroom_blockout/bedroom_blockout.tscn"
 
 var mode: Mode = Mode.FFA
 ## Teams in team deathmatch (T-78).
-var teams: int = 2
+var teams: int = SIDES
 var map_path: String = DEFAULT_MAP
 ## Bots in bootcamp, 1 to players_max − 1 (US-36.1).
 var bots: int = 1

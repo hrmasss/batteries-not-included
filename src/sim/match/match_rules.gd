@@ -46,12 +46,12 @@ func check(now: float) -> bool:
 		return false
 	var reason := End.NONE
 	if config.is_teams():
-		if scores.teams().size() < 2:
+		if scores.teams().size() < MatchConfig.SIDES:
 			reason = End.LAST_TEAM
 		elif config.kill_limit_on and _top_team_score() >= config.kill_limit:
 			reason = End.KILL_LIMIT
 	else:
-		if scores.order.size() < 2:
+		if scores.order.size() < MatchConfig.SIDES:
 			reason = End.LAST_PLAYER
 		elif config.kill_limit_on and scores.ranked()[0].kills >= config.kill_limit:
 			reason = End.KILL_LIMIT
@@ -91,7 +91,7 @@ func _result(reason: End, now: float) -> Result:
 		if r.tie:
 			r.winner_team = 0
 	else:
-		if r.rows.size() >= 2 and r.rows[0].kills == r.rows[1].kills:
+		if r.rows.size() >= MatchConfig.SIDES and r.rows[0].kills == r.rows[1].kills:
 			r.tie = true
 		elif not r.rows.is_empty():
 			r.winner_id = r.rows[0].id

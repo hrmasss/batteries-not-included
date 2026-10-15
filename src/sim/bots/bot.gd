@@ -259,7 +259,7 @@ func _wander() -> void:
 	for p: PickupPoint in sim.map.pickup_points():
 		spots.append(p.global_position)
 	var at: Vector2
-	if spots.is_empty() or rng.randf() < 0.5:
+	if spots.is_empty() or rng.randf() < HALF:
 		at = nav.random_floor(rng)
 	else:
 		at = spots[rng.randi_range(0, spots.size() - 1)]
@@ -459,7 +459,7 @@ func _walk(i: InputIntent, to: Vector2) -> void:
 		return
 	var side := signf(to.x)
 	i.move_held = true
-	i.move = Vector2(side, STICK_LAND_DOWN)
+	i.move = Vector2(side, STICK_LAND_DOWN).normalized()
 	# A wall at the feet: jump it (the jetpack takes over if it is tall).
 	if not nav.clear(t.position, t.position + Vector2(side * skill.reach, 0.0)) and not resting:
 		i.move = Vector2(side * STICK_JUMP.x, STICK_JUMP.y)
