@@ -11,6 +11,7 @@ The specs live in the workspace (`docs/specs/`); this page maps their parts onto
 | `src/maps/` | Ruleset and content | Map node types: `GameMap`, `Terrain`, `SpawnPoint`, `PickupPoint`, `TeamBase` |
 | `maps/` | Ruleset and content | The maps themselves, one folder each |
 | `src/view/` | Game app | `GameView` (runs the clock, feeds intents, draws), `ToyView`, `CombatView`, `GameCamera`, `DebugOverlay`, input sources |
+| `src/art/` | Game app | `ArtAtlas` and `ArtLibrary` (SVG sheets and the art lab's json), `ToyRig` and `ToyAnimator` (the posed soldier), `FxField` (effects), `KitProp` and `KitTiles` (map art), `TeamLook`. See [art-in-game.md](art-in-game.md) |
 | `tests/` | | GUT tests: `unit/`, `sim/` (criteria with check "Sim"), `combat/` (the same, for fighting), `view/` |
 | `tools/` | | `test.sh`, `shot.sh`, `make_blockout.gd` |
 

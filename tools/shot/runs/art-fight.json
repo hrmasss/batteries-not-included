@@ -122,6 +122,10 @@
       "name": "04-fight"
     },
     {
+      "t": 2.3,
+      "name": "04b-fight"
+    },
+    {
       "when": "pop",
       "who": "other",
       "delay": 0.08,

@@ -284,3 +284,16 @@ func test_the_game_plays_the_bedroom_by_default() -> void:
 	await wait_physics_frames(1)
 	assert_eq(view.sim.map.name, &"Bedroom")
 	assert_eq(view.map_scene.resource_path, "res://maps/bedroom/bedroom.tscn")
+
+
+func test_every_svg_ships_as_kept_source() -> void:
+	# The game rasters its own sheets; an SVG imported as a texture would cost a second copy.
+	var dirs := ["res://assets"]
+	while not dirs.is_empty():
+		var d: String = dirs.pop_back()
+		for sub in DirAccess.get_directories_at(d):
+			dirs.append(d.path_join(sub))
+		for f in DirAccess.get_files_at(d):
+			if f.get_extension() == "svg":
+				var imp := FileAccess.get_file_as_string(d.path_join(f) + ".import")
+				assert_true(imp.contains("importer=\"keep\""), "%s is imported as keep" % d.path_join(f))
