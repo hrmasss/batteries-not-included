@@ -187,19 +187,19 @@ def weapons_sheet(out):
 # ---------------------------------------------------------------- kit
 
 def kit_sheet(out, collision=False):
-    W, H = 2400, 1500
+    W, H = 2400, 1560
     k = frame.kit
     sub = ("Solid shapes red, platforms cyan. Polygons in kit.json." if collision else
            "Playable props: saturated, shaded, inked like the toys. Backdrop: pale, soft, no ink. Scale x0.18.")
     parts = [title(60, 90, "Bedroom kit" + (": collision" if collision else ""), sub)]
     parts.append(c.raw(f'<rect x="40" y="160" width="{W - 80}" height="{H - 200}" rx="18" fill="#d9e4ea"/>'))
     s = 0.18
-    layout = [("bed", 80, 260), ("bookshelf", 900, 200), ("desk", 1260, 330), ("toy_chest", 80, 760),
-              ("wall_shelf", 460, 760), ("ceiling_fan", 830, 820), ("book_stack", 520, 1130),
-              ("block_star", 700, 1150), ("block_moon", 750, 1150), ("block_heart", 725, 1112),
-              ("floor", 80, 1340), ("skirting", 400, 1350), ("window", 1600, 800), ("poster", 2050, 840),
-              ("wall_tile", 2050, 260)]
-    labels = {"block_star": None, "block_moon": None, "block_heart": "blocks"}
+    layout = [("bed", 80, 250), ("bookshelf", 820, 190), ("desk", 1260, 190), ("wall_tile", 1950, 250),
+              ("toy_chest", 80, 860), ("wall_shelf", 470, 880), ("ceiling_fan", 760, 900), ("window", 1420, 840),
+              ("poster", 1960, 880), ("book_stack", 120, 1330), ("block_star", 330, 1352),
+              ("block_moon", 380, 1352), ("block_heart", 355, 1314), ("floor", 520, 1370), ("skirting", 840, 1380)]
+    labels = {"block_star": None, "block_moon": None, "block_heart": None}
+    parts.append(tag(380, 1440, "blocks", 22, "#3a4652"))
     for name, x, y in layout:
         e = k(name)
         path = os.path.join(frame.KIT, e["file"])
@@ -214,8 +214,8 @@ def kit_sheet(out, collision=False):
         if lab:
             parts.append(tag(x + e["size"][0] * s / 2, y + e["size"][1] * s + 30, lab, 22, "#3a4652"))
     # a toy for scale
-    parts.append(c.toy("stand", root=(1020, 1420), team="blue", scale=s, outline=TEAM["blue"]))
-    parts.append(tag(1020, 1460, "toy, same scale", 20, "#3a4652"))
+    parts.append(c.toy("stand", root=(1160, 1440), team="blue", scale=s, outline=TEAM["blue"]))
+    parts.append(tag(1160, 1480, "toy, same scale", 20, "#3a4652"))
     c.render_add(parts, [], W, H, out, bg=BG)
 
 
