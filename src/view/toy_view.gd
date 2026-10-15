@@ -300,10 +300,10 @@ func _pop() -> void:
 		var s := field.spawn(ArtLibrary.fx_piece("pop_snap"), g * j, randf() * TAU, 0.7 + randf() * 0.3, 0.28)
 		s.grow = 2.0
 		s.fade = 0.6
-	var burst := field.spawn(ArtLibrary.fx_piece("pop_burst"), centre + Vector2(0, -30), randf_range(-0.2, 0.2), 0.75, 0.75)
+	var burst := field.spawn(ArtLibrary.fx_piece("pop_burst"), centre + Vector2(0, -34), randf_range(-0.2, 0.2), 1.1, 0.8)
 	burst.grow = 0.7
 	burst.fade = 0.35
-	var word := field.spawn(ArtLibrary.fx_piece("pop_text"), centre + Vector2(0, -30), randf_range(-0.18, 0.08), 0.7, 0.85)
+	var word := field.spawn(ArtLibrary.fx_piece("pop_text"), centre + Vector2(0, -34), randf_range(-0.18, 0.08), 1.05, 0.9)
 	word.grow = 0.5
 	word.fade = 0.3
 	word.vel = Vector2(0, -16)
