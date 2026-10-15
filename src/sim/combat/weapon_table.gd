@@ -33,6 +33,7 @@ const FIELDS: Array[Dictionary] = [
 	{"key": "reload", "type": FLOAT, "min": 0.0, "max": 60.0, "unit": "s"},
 	{"key": "range", "type": FLOAT, "min": 0.0, "max": 100000.0, "unit": "u"},
 	{"key": "bullet_speed", "type": FLOAT, "min": 0.0, "max": 1000000.0, "unit": "u/s"},
+	{"key": "look_ahead", "type": FLOAT, "min": 0.0, "max": 2.0, "unit": "factor"},
 	{"key": "weight", "type": FLOAT, "min": 0.01, "max": 10.0, "unit": "factor"},
 	{"key": "melee_damage", "type": FLOAT, "min": 0.0, "max": 10000.0, "unit": "HP"},
 	{"key": "melee_reach", "type": FLOAT, "min": 0.0, "max": 1000.0, "unit": "u"},

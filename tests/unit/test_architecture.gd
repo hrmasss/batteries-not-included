@@ -3,7 +3,7 @@ extends GutTest
 ## nothing, the view decides no rules, and the movement rules hold no tuning numbers.
 
 const SIM_DIRS := ["res://src/sim", "res://src/rules", "res://src/maps"]
-const VIEW_DIRS := ["res://src/view", "res://src/app"]
+const VIEW_DIRS := ["res://src/view", "res://src/app", "res://src/controls", "res://src/camera", "res://src/hud", "res://src/team"]
 
 
 func _scripts(dirs: Array) -> Dictionary:
