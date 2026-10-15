@@ -624,13 +624,14 @@ func _mate_near(at: Vector2) -> bool:
 	return false
 
 
-## The low throw that lands a frag on `at`, as a world-space unit vector, or zero for none.
+## The low throw that lands a frag short of `at` so it rolls on to it, as a world-space unit
+## vector, or zero for none.
 func _throw_solution(at: Vector2) -> Vector2:
 	var rules := sim.rules
 	var v := rules.throw_speed
 	var g := rules.frag_gravity * sim.map.item_gravity
 	var me := fighter.toy.position
-	var dx := absf(at.x - me.x)
+	var dx := absf(at.x - me.x) * skill.grenade_land_share
 	var up := me.y - at.y
 	if g <= 0.0 or dx <= 0.0:
 		return (at - me).normalized()

@@ -34,6 +34,7 @@ const FIELDS: Array[Dictionary] = [
 	{"key": "melee_range", "tid": "", "min": 0.0, "max": 500.0, "unit": "u"},
 	{"key": "grenade_min", "tid": "", "min": 0.0, "max": 5000.0, "unit": "u"},
 	{"key": "grenade_max", "tid": "", "min": 0.0, "max": 5000.0, "unit": "u"},
+	{"key": "grenade_land_share", "tid": "", "min": 0.0, "max": 1.0, "unit": "share"},
 	{"key": "grenade_mate_gap", "tid": "", "min": 0.0, "max": 5000.0, "unit": "u"},
 	{"key": "throw_aim_time", "tid": "", "min": 0.0, "max": 10.0, "unit": "s"},
 	{"key": "frag_value", "tid": "", "min": 0.0, "max": 1.0, "unit": "worth"},

@@ -9,6 +9,8 @@ var config: MatchConfig
 var maps: Array[Dictionary] = []
 ## A bot plays the player's toy (recordings and soak runs; never on by default).
 var autoplay: bool = false
+## Where the app's settings live; tests point it elsewhere.
+var settings_path: String = AppSettings.PATH
 
 var _screen: Node = null
 ## Menu screens are Controls; they sit on this layer so they fill the screen.
@@ -20,7 +22,7 @@ func _ready() -> void:
 	_layer = CanvasLayer.new()
 	_layer.name = "Menus"
 	add_child(_layer)
-	settings = AppSettings.load_or_default()
+	settings = AppSettings.load_or_default(settings_path)
 	var loaded := RulesetLoader.load_standard()
 	if not loaded.ok():
 		push_error("ruleset refused: %s" % "; ".join(loaded.errors))

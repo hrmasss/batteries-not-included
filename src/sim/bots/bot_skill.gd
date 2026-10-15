@@ -30,6 +30,7 @@ var melee_range: float
 var grenade_min: float
 var grenade_max: float
 var grenade_mate_gap: float
+var grenade_land_share: float
 var throw_aim_time: float
 var frag_value: float
 var cover_tries: float

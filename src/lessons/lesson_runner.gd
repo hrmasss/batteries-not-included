@@ -25,7 +25,7 @@ const FLY_MORE := 3.0
 const AIM_TIME := 1.0
 const TARGET_DISTANCE := 220.0
 const ITEM_DISTANCE := 110.0
-const GRENADE_TARGET_DISTANCE := 200.0
+const GRENADE_TARGET_DISTANCE := 320.0
 const GUN := &"smg"
 
 signal advanced(step: int)
@@ -144,8 +144,9 @@ func _beside(distance: float) -> Vector2:
 	return hit.position if not hit.is_empty() else at - Vector2(0, sim.rules.body_bottom)
 
 
+## A still target beside the player, once; a popped one respawns by the match's own rules.
 func _target_at(distance: float) -> void:
-	if target != null and target.alive:
+	if target != null:
 		return
 	target = spawn_target.call(me.team + 1, _beside(distance))
 
@@ -189,7 +190,7 @@ func _steps(lesson: StringName) -> Array[Step]:
 					_target_at(GRENADE_TARGET_DISTANCE)
 					_restock()
 					return _saw(&"throw", _mine)))
-			s.append(Step.new("Frags bounce, then blast. Catch the target in one!", "Aim, then G", GRENADE,
+			s.append(Step.new("Frags bounce and roll, then blast. Catch the target in one!", "Aim, then G", GRENADE,
 				func() -> bool:
 					_target_at(GRENADE_TARGET_DISTANCE)
 					_restock()

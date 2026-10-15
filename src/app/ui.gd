@@ -101,7 +101,7 @@ static func label(text: String, size: int = FONT, color: Color = TEXT, align: Ho
 static func button(text: String, on_press: Callable, main: bool = false, width: float = 200.0) -> Button:
 	var b := Button.new()
 	b.text = text
-	b.name = text.validate_node_name().replace(" ", "")
+	b.name = text.validate_node_name().to_pascal_case()
 	b.custom_minimum_size = Vector2(width, BUTTON_HEIGHT)
 	b.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 	b.focus_mode = Control.FOCUS_ALL
