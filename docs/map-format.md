@@ -73,6 +73,20 @@ points as the teams it supports, spread out.
 | `team` | Owning team, from 0 |
 | `kind` | `flag` (capture the flag) or `bomb_site` (plant the bomb); R2 |
 
+## Art maps
+
+`maps/bedroom/` is built from the art lab's kit (`assets/maps/bedroom/kit.json`) by
+`tools/make_bedroom.gd`: each prop is a `KitProp` node that draws its kit piece, and its
+collision polygons come from the same kit entry, so the terrain is what is drawn. Kit
+"platform" shapes are solid like the rest (the sim has no one-way terrain). The wall, window
+and posters sit in a `Parallax2D` that scrolls a little slower than play; the floor and skirting
+are `KitTiles`. `Terrain.draw_shapes` is off. The bedroom is the default map; the blockout stays
+for tests and old shot runs.
+
+```sh
+godot --headless --path . -s tools/make_bedroom.gd    # rebuild maps/bedroom/bedroom.tscn
+```
+
 ## Making a map
 
 1. Open the Godot editor, create a scene with a `GameMap` root, add the four holder nodes and a

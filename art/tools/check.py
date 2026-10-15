@@ -85,7 +85,7 @@ def check_json():
         if p["parent"] not in names:
             fail(f"rig.json: {p['name']} parent {p['parent']} unknown")
         inside(p["pivot"], sizes[f], name=f"rig.json {p['name']} pivot")
-    for k, f in list(rig["faces"].items()) + list(rig["team"]["baked"].items()):
+    for k, f in list(rig["faces"].items()) + list(rig["team"]["baked"].items()) + list(rig["team"].get("pattern_files", {}).items()):
         if os.path.join(sd, f) not in sizes:
             fail(f"rig.json: {k} file {f} missing")
     poses = json.load(open(os.path.join(sd, "poses.json")))
@@ -130,11 +130,20 @@ def check_json():
                 fail(f"kit.json {n}: shape {i} has under 3 points")
             for pt in c["poly"]:
                 inside(pt, sizes[f], slack=40, name=f"kit.json {n} shape {i}")
+    # pickups
+    pk_path = os.path.join(ASSETS, "pickups", "pickups.json")
+    pickups = json.load(open(pk_path))["pickups"] if os.path.exists(pk_path) else {}
+    for n, e in pickups.items():
+        f = os.path.join(ASSETS, "pickups", e["file"])
+        if f not in sizes:
+            fail(f"pickups.json: {n} file missing")
+            continue
+        inside(e["origin"], sizes[f], name=f"pickups.json {n} origin")
     # every svg is referenced by some json
     referenced = set()
     for p in rig["parts"]:
         referenced.add(os.path.join(sd, p["file"]))
-    for f in list(rig["faces"].values()) + list(rig["team"]["baked"].values()):
+    for f in list(rig["faces"].values()) + list(rig["team"]["baked"].values()) + list(rig["team"].get("pattern_files", {}).values()):
         referenced.add(os.path.join(sd, f))
     for w in weapons.values():
         referenced.add(os.path.join(ASSETS, "weapons", w["file"]))
@@ -142,6 +151,8 @@ def check_json():
         referenced.add(os.path.join(ASSETS, "fx", e["file"]))
     for e in kit.values():
         referenced.add(os.path.join(ASSETS, "maps", "bedroom", e["file"]))
+    for e in pickups.values():
+        referenced.add(os.path.join(ASSETS, "pickups", e["file"]))
     for p in sizes:
         if p not in referenced:
             fail(f"{os.path.relpath(p, ROOT)}: not listed in any json")

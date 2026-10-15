@@ -29,3 +29,6 @@ mono_crash.*.json
 /build/
 *.keystore
 *.jks
+
+# Python
+__pycache__/

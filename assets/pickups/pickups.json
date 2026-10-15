@@ -1,0 +1,27 @@
+{
+  "units": "author px, 4 per game px at 720p; origin is the floor contact, px from the file's top-left",
+  "pickups": {
+    "health_pack": {
+      "file": "health_pack.svg",
+      "size": [
+        128,
+        112
+      ],
+      "origin": [
+        64,
+        108
+      ]
+    },
+    "battery_pack": {
+      "file": "battery_pack.svg",
+      "size": [
+        112,
+        138
+      ],
+      "origin": [
+        56,
+        134
+      ]
+    }
+  }
+}

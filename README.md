@@ -6,8 +6,9 @@ needed.
 
 Built with Godot 4.7, typed GDScript, the Compatibility renderer. Android first.
 
-**Status:** early. A toy walks, jumps, crouches and flies on the jetpack on a blockout map.
-No weapons yet.
+**Status:** the first playable. Plastic army soldiers walk, fly, shoot and pop on a bedroom
+map, with touch controls and a HUD. Bootcamp: free-for-all or team deathmatch against 1 to 11
+bots, with five short lessons. LAN play comes next.
 
 ## Run it
 
@@ -71,15 +72,18 @@ game refuses a ruleset with a missing or out-of-range value and names it.
 
 | Path | What |
 |---|---|
-| `src/sim/` | The match server's simulation: rules, toys, the fixed clock. Reads no input, draws nothing |
+| `src/sim/` | The match server's simulation: rules, toys, the fixed clock, match rules and bots ([match and bots](docs/match-and-bots.md)). Reads no input, draws nothing |
+| `src/app/`, `src/lessons/` | The app's screens: menu, bootcamp, match, results, lessons, settings |
 | `src/view/` | The app: input, drawing, camera, debug overlay |
+| `src/art/` | The art in the game: SVG sheets, the soldier rig and its animation, effects, kit pieces ([art in game](docs/art-in-game.md)) |
+| `assets/`, `art/` | The SVG art and the scripts that draw it ([assets](assets/README.md), [art](art/README.md)) |
 | `src/rules/` | Ruleset schema, values and loader |
 | `src/maps/`, `maps/` | Map node types and the maps ([format](docs/map-format.md)) |
 | `data/rulesets/` | Rulesets |
 | `tests/` | Headless tests |
 | `tools/` | Test, screenshot, map and Android build scripts |
 | `platform/android/` | Launcher icon (placeholder) |
-| `docs/` | [Architecture](docs/architecture.md), [map format](docs/map-format.md), [Android](docs/android.md) |
+| `docs/` | [Architecture](docs/architecture.md), [map format](docs/map-format.md), [Android](docs/android.md), [art in game](docs/art-in-game.md) |
 
 ## License
 

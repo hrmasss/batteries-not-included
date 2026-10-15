@@ -4,7 +4,7 @@ extends Node2D
 ## feeds it the local player's intent each tick, and draws it (rules A1 to A3). With LAN play
 ## the sim moves to the host and this view sends intents instead; nothing here decides a rule.
 
-## The map to play. Default: the bedroom blockout.
+## The map to play. Default: the bedroom (maps/bedroom); the blockout stays for tests.
 @export var map_scene: PackedScene
 ## The ruleset directory to run.
 @export var ruleset_dir: String = RulesetLoader.STANDARD_DIR
@@ -31,21 +31,27 @@ var me: Fighter
 var combat_view: CombatView
 ## Fixed intents for other toys by toy id, for test scenes and scripted runs.
 var extra_intents: Dictionary = {}
+## A ruleset to run instead of loading `ruleset_dir`, e.g. one with a host's choices in it.
+var ruleset: Ruleset = null
+## Steps the match one tick with the intents, when set (a `MatchRunner` adds bots and rules).
+var stepper: Callable = Callable()
 
 var _last_frame: float = 0.0
 
 
 func _ready() -> void:
 	InputActions.ensure()
-	var loaded := RulesetLoader.load_dir(ruleset_dir)
-	if not loaded.ok():
+	var loaded := RulesetLoader.load_dir(ruleset_dir) if ruleset == null else null
+	if loaded != null and not loaded.ok():
 		_refuse(loaded.errors)
 		return
+	if ruleset == null:
+		ruleset = loaded.ruleset
 	if map_scene == null:
-		map_scene = load("res://maps/bedroom_blockout/bedroom_blockout.tscn")
+		map_scene = load("res://maps/bedroom/bedroom.tscn")
 	sim = MatchSim.new()
 	sim.name = "MatchSim"
-	sim.setup(loaded.ruleset, map_scene.instantiate())
+	sim.setup(ruleset, map_scene.instantiate())
 	add_child(sim)
 	player = sim.spawn_toy(spawn_index)
 	combat = sim.start_combat(combat_seed)
@@ -87,7 +93,10 @@ func _process(delta: float) -> void:
 		player_hud.on_intent(intent)
 		var intents := extra_intents.duplicate()
 		intents[player.toy_id] = intent
-		sim.step(intents)
+		if stepper.is_valid():
+			stepper.call(intents)
+		else:
+			sim.step(intents)
 	_sync_views(delta)
 
 
@@ -134,8 +143,13 @@ func add_dummy(team: int, at: Variant = null, protect: bool = true) -> Fighter:
 	return f
 
 
+## Draws a toy that joined after the start (a bot, a lesson's target).
+func add_toy_view(t: SimToy) -> void:
+	_add_toy_view(t)
+
+
 func _add_toy_view(t: SimToy) -> void:
-	var v := ToyView.new(t, sim.rules)
+	var v := ToyView.new(t, sim.rules, combat)
 	v.show_hitboxes = show_hitboxes
 	toy_views.append(v)
 	add_child(v)

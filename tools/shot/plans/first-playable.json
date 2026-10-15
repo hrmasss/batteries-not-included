@@ -1,0 +1,25 @@
+{
+  "autoplay": true,
+  "fresh": true,
+  "config": {"mode": 0, "bots": 5, "length": 120, "skill": "normal", "seed": 21},
+  "steps": [
+    {"t": 2.0, "shot": "01-main-menu"},
+    {"t": 2.6, "press": "NotNow"},
+    {"t": 3.4, "press": "Bootcamp"},
+    {"t": 5.0, "shot": "02-bootcamp-setup"},
+    {"t": 6.0, "press": "Start"},
+    {"when": "match", "delay": 4.0, "shot": "03-match-start"},
+    {"when": "pop", "delay": 0.25, "shot": "04-pop"},
+    {"t": 40.0, "shot": "05-fight-a"},
+    {"t": 55.0, "shot": "05-fight-b"},
+    {"t": 70.0, "scores": true},
+    {"t": 70.3, "shot": "06-scoreboard-mid-match"},
+    {"t": 73.0, "scores": false},
+    {"t": 85.0, "shot": "05-fight-c"},
+    {"t": 100.0, "shot": "05-fight-d"},
+    {"when": "results", "delay": 1.5, "shot": "07-results"},
+    {"when": "results", "delay": 5.0, "press": "Rematch"},
+    {"when": "match", "delay": 6.0, "shot": "08-rematch-running"},
+    {"t": 0, "quit": true}
+  ]
+}
