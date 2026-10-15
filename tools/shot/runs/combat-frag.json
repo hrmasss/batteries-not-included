@@ -1,0 +1,16 @@
+{
+  "duration": 4.0,
+  "overlay": false,
+  "spawn": 1,
+  "steps": [
+    {"t": 0.0, "move": [0, 0], "held": false, "aim": [0.35, -1]},
+    {"t": 0.5, "buttons": 1},
+    {"t": 0.6, "buttons": 0}
+  ],
+  "dummies": [{"at": [1370, 1216], "team": 1}],
+  "shots": [
+    {"t": 1.4, "name": "03-frag-at-own-feet"},
+    {"when": "blast", "delay": 0.08, "name": "04-frag-blast-hurts-thrower-and-target"},
+    {"when": "blast", "delay": 0.6, "name": "05-after-the-blast"}
+  ]
+}
