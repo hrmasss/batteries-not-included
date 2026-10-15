@@ -23,7 +23,10 @@ godot --path . --editor   # open the editor
 | Move stick: walk, jump (up), crouch (down), fly (keep pushing) | WASD or arrows | Left stick |
 | Aim | Mouse | Right stick |
 | Fire | Left mouse button | Right trigger |
+| Grenade, melee, reload | G, F, R | LB, B, X |
+| Switch weapon, pick up, zoom, grenade type | Q, E, Z, X | Y, A, right stick click, D-pad down |
 | Debug overlay, hitboxes, respawn | F1, F2, F5 | Back (respawn) |
+| Spawn a dummy target: enemy, teammate | F6, F7 | |
 
 Jump, keep pushing up, and the jetpack takes over half a second later. Then the toy flies
 wherever the stick points. The battery drains faster pointing up and refills a second after

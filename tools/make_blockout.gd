@@ -46,6 +46,11 @@ const PICKUPS := [
 	["PickupShelf", Vector2(1248, 400), ["sniper_rifle"], 90.0],
 	["PickupDesk", Vector2(1640, 896), ["frag"], 30.0],
 	["PickupFloor", Vector2(1400, FLOOR), ["health_pack", "battery_pack"], -1.0],
+	["PickupShelfLeft", Vector2(200, 560), ["assault_rifle", "pump_shotgun"], -1.0],
+	["PickupShelfRight", Vector2(1950, 512), ["pump_shotgun", "uzi"], -1.0],
+	["PickupToyBox", Vector2(680, 1120), ["frag", "health_pack"], 30.0],
+	# The rocket launcher is a rare pickup (US-11.1): one draw in four, every two minutes.
+	["PickupWardrobe", Vector2(2350, 640), ["rocket_launcher", "assault_rifle", "pump_shotgun", "smg"], 120.0],
 ]
 
 ## name, position, team, kind

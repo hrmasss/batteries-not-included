@@ -1,0 +1,405 @@
+{
+  "toy": "soldier",
+  "units": "author px, 4 per game px at 720p; 8 per world unit u; the toy stands about 360 tall",
+  "facing": "right; mirror the root on x to face left",
+  "root": "ground contact point, between the feet",
+  "rot": "degrees, clockwise, applied about the pivot",
+  "pivot": "the joint, in px from the file's top-left",
+  "pos": "where the pivot sits in the parent's frame (parent pivot at 0,0)",
+  "z": "draw order, low first; the weapon goes in at 14",
+  "parts": [
+    {
+      "name": "far_upper_arm",
+      "file": "upper_arm.svg",
+      "pivot": [
+        34.0,
+        34.0
+      ],
+      "size": [
+        68.0,
+        122.0
+      ],
+      "parent": "torso",
+      "pos": [
+        44,
+        -66
+      ],
+      "rot": 0,
+      "z": 1,
+      "modulate": [
+        0.78,
+        0.82,
+        0.78,
+        1.0
+      ]
+    },
+    {
+      "name": "far_forearm",
+      "file": "forearm.svg",
+      "pivot": [
+        32.0,
+        28.0
+      ],
+      "size": [
+        64.0,
+        122.0
+      ],
+      "parent": "far_upper_arm",
+      "pos": [
+        0,
+        62
+      ],
+      "rot": 0,
+      "z": 2,
+      "modulate": [
+        0.78,
+        0.82,
+        0.78,
+        1.0
+      ]
+    },
+    {
+      "name": "far_thigh",
+      "file": "thigh.svg",
+      "pivot": [
+        36.0,
+        30.0
+      ],
+      "size": [
+        72.0,
+        124.0
+      ],
+      "parent": "torso",
+      "pos": [
+        22,
+        6
+      ],
+      "rot": 0,
+      "z": 3,
+      "modulate": [
+        0.78,
+        0.82,
+        0.78,
+        1.0
+      ]
+    },
+    {
+      "name": "far_shin",
+      "file": "shin.svg",
+      "pivot": [
+        36.0,
+        28.0
+      ],
+      "size": [
+        98.0,
+        120.0
+      ],
+      "parent": "far_thigh",
+      "pos": [
+        0,
+        67
+      ],
+      "rot": 0,
+      "z": 4,
+      "modulate": [
+        0.78,
+        0.82,
+        0.78,
+        1.0
+      ]
+    },
+    {
+      "name": "jetpack_back",
+      "file": "jetpack_back.svg",
+      "pivot": [
+        80.0,
+        112.0
+      ],
+      "size": [
+        160.0,
+        220.0
+      ],
+      "parent": "torso",
+      "pos": [
+        -50,
+        -34
+      ],
+      "rot": 0,
+      "z": 5
+    },
+    {
+      "name": "jetpack_team",
+      "file": "jetpack_team.svg",
+      "pivot": [
+        80.0,
+        112.0
+      ],
+      "size": [
+        160.0,
+        220.0
+      ],
+      "parent": "jetpack_back",
+      "pos": [
+        0,
+        0
+      ],
+      "rot": 0,
+      "z": 6
+    },
+    {
+      "name": "jetpack_front",
+      "file": "jetpack_front.svg",
+      "pivot": [
+        80.0,
+        112.0
+      ],
+      "size": [
+        160.0,
+        220.0
+      ],
+      "parent": "jetpack_back",
+      "pos": [
+        0,
+        0
+      ],
+      "rot": 0,
+      "z": 7
+    },
+    {
+      "name": "near_thigh",
+      "file": "thigh.svg",
+      "pivot": [
+        36.0,
+        30.0
+      ],
+      "size": [
+        72.0,
+        124.0
+      ],
+      "parent": "torso",
+      "pos": [
+        -18,
+        6
+      ],
+      "rot": 0,
+      "z": 8
+    },
+    {
+      "name": "near_shin",
+      "file": "shin.svg",
+      "pivot": [
+        36.0,
+        28.0
+      ],
+      "size": [
+        98.0,
+        120.0
+      ],
+      "parent": "near_thigh",
+      "pos": [
+        0,
+        67
+      ],
+      "rot": 0,
+      "z": 9
+    },
+    {
+      "name": "torso",
+      "file": "torso.svg",
+      "pivot": [
+        70.0,
+        104.0
+      ],
+      "size": [
+        146.0,
+        142.0
+      ],
+      "parent": "root",
+      "pos": [
+        0,
+        -152
+      ],
+      "rot": 0,
+      "z": 10
+    },
+    {
+      "name": "head",
+      "file": "head.svg",
+      "pivot": [
+        76.0,
+        136.0
+      ],
+      "size": [
+        152.0,
+        160.0
+      ],
+      "parent": "torso",
+      "pos": [
+        6,
+        -84
+      ],
+      "rot": 0,
+      "z": 11
+    },
+    {
+      "name": "face",
+      "file": "face_determined.svg",
+      "pivot": [
+        76.0,
+        136.0
+      ],
+      "size": [
+        152.0,
+        160.0
+      ],
+      "parent": "head",
+      "pos": [
+        0,
+        0
+      ],
+      "rot": 0,
+      "z": 12
+    },
+    {
+      "name": "helmet",
+      "file": "helmet.svg",
+      "pivot": [
+        90.0,
+        42.0
+      ],
+      "size": [
+        178.0,
+        94.0
+      ],
+      "parent": "head",
+      "pos": [
+        6,
+        -108
+      ],
+      "rot": 0,
+      "z": 13
+    },
+    {
+      "name": "near_upper_arm",
+      "file": "upper_arm.svg",
+      "pivot": [
+        34.0,
+        34.0
+      ],
+      "size": [
+        68.0,
+        122.0
+      ],
+      "parent": "torso",
+      "pos": [
+        -30,
+        -66
+      ],
+      "rot": 0,
+      "z": 15
+    },
+    {
+      "name": "near_forearm",
+      "file": "forearm.svg",
+      "pivot": [
+        32.0,
+        28.0
+      ],
+      "size": [
+        64.0,
+        122.0
+      ],
+      "parent": "near_upper_arm",
+      "pos": [
+        0,
+        62
+      ],
+      "rot": 0,
+      "z": 16
+    }
+  ],
+  "faces": {
+    "determined": "face_determined.svg",
+    "cocky": "face_cocky.svg",
+    "hurt": "face_hurt.svg",
+    "shocked": "face_shocked.svg"
+  },
+  "team": {
+    "layer": "jetpack_team",
+    "tint_source": "jetpack_team.svg is greyscale; modulate it with the team colour",
+    "baked": {
+      "blue": "jetpack_team_blue.svg",
+      "orange": "jetpack_team_orange.svg",
+      "pink": "jetpack_team_pink.svg",
+      "yellow": "jetpack_team_yellow.svg",
+      "neutral": "jetpack_team_neutral.svg"
+    },
+    "outline": "a thin team-colour outline around the whole toy is a shader on the composed toy",
+    "patterns": "each baked team wrap also carries a pattern (plain, stripes, dots, chevrons) for colour-blind players"
+  },
+  "sockets": {
+    "weapon_grip": {
+      "parent": "near_forearm",
+      "pos": [
+        3,
+        62
+      ],
+      "note": "trigger hand: the near arm, drawn over the weapon"
+    },
+    "weapon_support": {
+      "parent": "far_forearm",
+      "pos": [
+        3,
+        62
+      ],
+      "note": "support hand: the far arm, reaching from the front shoulder"
+    },
+    "thrust": [
+      {
+        "parent": "jetpack_back",
+        "pos": [
+          -26,
+          99.0
+        ],
+        "dir": [
+          0,
+          1
+        ]
+      },
+      {
+        "parent": "jetpack_back",
+        "pos": [
+          8,
+          89.0
+        ],
+        "dir": [
+          0,
+          1
+        ]
+      }
+    ],
+    "head_centre": {
+      "parent": "head",
+      "pos": [
+        2,
+        -60
+      ]
+    },
+    "name_tag": {
+      "parent": "root",
+      "pos": [
+        0,
+        -400
+      ]
+    }
+  },
+  "hitbox_u": {
+    "body": [
+      24,
+      20
+    ],
+    "head_radius": 10.5,
+    "head_above_body_origin": 14,
+    "note": "T-18. Looks never change it; 8 author px per u"
+  }
+}

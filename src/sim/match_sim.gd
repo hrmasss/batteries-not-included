@@ -13,6 +13,8 @@ var map: GameMap
 var tick: int = 0
 var toys: Array[SimToy] = []
 var env := ToyMotor.Env.new()
+## Fighting: weapons, health, pops, spawns, pickups. Null until `start_combat`.
+var combat: CombatSim = null
 
 var _next_id: int = 1
 
@@ -54,13 +56,24 @@ func spawn_toy(index: int = 0, toy_type: StringName = &"plastic_soldier", at: Va
 	else:
 		var points := map.spawn_points()
 		feet = points[index % points.size()].global_position if not points.is_empty() else Vector2.ZERO
-	toy.position = feet + Vector2(0.0, rules.body_bottom - SimToy.SAFE_MARGIN)
-	toy.prev_position = toy.position
+	place_toy(toy, feet)
 	toy.battery = env.battery_full
 	toy.battery_max = env.battery_full
 	add_child(toy)
 	toys.append(toy)
 	return toy
+
+
+## Puts a toy's feet at `feet`.
+func place_toy(toy: SimToy, feet: Vector2) -> void:
+	toy.position = feet + Vector2(0.0, rules.body_bottom - SimToy.SAFE_MARGIN)
+	toy.prev_position = toy.position
+
+
+## Turns on fighting for this match. `seed_value` seeds every random roll the match makes.
+func start_combat(seed_value: int = 0) -> CombatSim:
+	combat = CombatSim.new(self, seed_value)
+	return combat
 
 
 func toy(toy_id: int) -> SimToy:
@@ -72,11 +85,16 @@ func toy(toy_id: int) -> SimToy:
 
 ## Runs one tick. `intents` maps toy id to that toy's `InputIntent`; a missing one is idle.
 func step(intents: Dictionary = {}) -> void:
+	var clean := {}
 	for t in toys:
 		t.prev_position = t.position
 		var intent: InputIntent = intents.get(t.toy_id, null)
 		intent = intent.sanitized() if intent != null else InputIntent.idle()
-		ToyMotor.step(t, intent, rules, env, SimClock.TICK)
+		clean[t.toy_id] = intent
+		if t.active:
+			ToyMotor.step(t, intent, rules, env, SimClock.TICK)
+	if combat != null:
+		combat.step(clean, SimClock.TICK)
 	tick += 1
 	ticked.emit(tick)
 

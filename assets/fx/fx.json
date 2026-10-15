@@ -1,0 +1,193 @@
+{
+  "units": "author px, 4 per game px at 720p; origin is px from the file's top-left",
+  "blend": "normal: draw as is; add: additive blending (CanvasItemMaterial BLEND_MODE_ADD)",
+  "fx": {
+    "muzzle_flash": {
+      "file": "muzzle_flash.svg",
+      "size": [
+        136.0,
+        108.80000000000001
+      ],
+      "origin": [
+        16,
+        54.400000000000006
+      ],
+      "blend": "normal",
+      "note": "starts at the muzzle, points right"
+    },
+    "muzzle_flash_b": {
+      "file": "muzzle_flash_b.svg",
+      "size": [
+        121.0,
+        128.0
+      ],
+      "origin": [
+        16,
+        64.0
+      ],
+      "blend": "normal",
+      "note": "starts at the muzzle, points right"
+    },
+    "muzzle_flash_glow": {
+      "file": "muzzle_flash_glow.svg",
+      "size": [
+        220,
+        140
+      ],
+      "origin": [
+        60,
+        70
+      ],
+      "blend": "add"
+    },
+    "thrust_flame": {
+      "file": "thrust_flame.svg",
+      "size": [
+        106.39999999999999,
+        200
+      ],
+      "origin": [
+        53.199999999999996,
+        10
+      ],
+      "blend": "normal",
+      "note": "starts at the nozzle exit, points down (+y)"
+    },
+    "thrust_flame_b": {
+      "file": "thrust_flame_b.svg",
+      "size": [
+        95.19999999999999,
+        180
+      ],
+      "origin": [
+        47.599999999999994,
+        10
+      ],
+      "blend": "normal",
+      "note": "starts at the nozzle exit, points down (+y)"
+    },
+    "thrust_glow": {
+      "file": "thrust_glow.svg",
+      "size": [
+        200,
+        280
+      ],
+      "origin": [
+        100,
+        50
+      ],
+      "blend": "add"
+    },
+    "smoke_ring": {
+      "file": "smoke_ring.svg",
+      "size": [
+        192,
+        92
+      ],
+      "origin": [
+        96,
+        46
+      ],
+      "blend": "normal",
+      "note": "centred; spawn it at the nozzles on take-off"
+    },
+    "smoke_puff": {
+      "file": "smoke_puff.svg",
+      "size": [
+        144.0,
+        120.0
+      ],
+      "origin": [
+        72.0,
+        64.0
+      ],
+      "blend": "normal"
+    },
+    "tracer": {
+      "file": "tracer.svg",
+      "size": [
+        252,
+        28
+      ],
+      "origin": [
+        240,
+        14
+      ],
+      "blend": "add",
+      "note": "origin is the head; stretch along x with speed"
+    },
+    "frag_blast": {
+      "file": "frag_blast.svg",
+      "size": [
+        440,
+        440
+      ],
+      "origin": [
+        220,
+        220
+      ],
+      "blend": "normal",
+      "note": "centred on the grenade"
+    },
+    "blast_smoke": {
+      "file": "blast_smoke.svg",
+      "size": [
+        252.0,
+        210.0
+      ],
+      "origin": [
+        126.0,
+        112.0
+      ],
+      "blend": "normal"
+    },
+    "frag_blast_glow": {
+      "file": "frag_blast_glow.svg",
+      "size": [
+        640,
+        640
+      ],
+      "origin": [
+        320,
+        320
+      ],
+      "blend": "add"
+    },
+    "pop_burst": {
+      "file": "pop_burst.svg",
+      "size": [
+        340,
+        260
+      ],
+      "origin": [
+        170,
+        130
+      ],
+      "blend": "normal"
+    },
+    "pop_text": {
+      "file": "pop_text.svg",
+      "size": [
+        340,
+        180
+      ],
+      "origin": [
+        170,
+        90
+      ],
+      "blend": "normal"
+    },
+    "pop_snap": {
+      "file": "pop_snap.svg",
+      "size": [
+        80,
+        80
+      ],
+      "origin": [
+        40,
+        40
+      ],
+      "blend": "normal"
+    }
+  }
+}

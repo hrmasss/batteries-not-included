@@ -24,6 +24,8 @@ var toy_id: int = 0
 var toy_type: StringName = &"plastic_soldier"
 
 var health: float = 0.0
+## False while popped and waiting to respawn: the toy neither moves nor takes hits.
+var active: bool = true
 var battery: float = 0.0
 var battery_max: float = 0.0
 var jetpack_on: bool = false

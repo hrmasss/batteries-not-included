@@ -65,13 +65,80 @@ var drain_rate: float
 var drain_floor_share: float
 var refill_pause: float
 var refill_rate: float
+var battery_pack_time: float
 
 # health
 var max_health: float
+var regen_rate: float
+var pack_instant: float
+var pack_flow: float
+var pack_flow_rate: float
+var knockback_per_hp: float
+var knockback_cap: float
+var out_of_bounds_damage: float
+var out_of_bounds_interval: float
+
+# guns
+var headshot_factor: float
+var falloff_start_share: float
+var inherit_velocity: float
+var bullet_fade: float
+var pickup_reach: float
+var pickup_reach_up: float
+var melee_swing: float
+var lunge_meter_max: float
+var lunge_cost: float
+var lunge_refill: float
+var lunge_speed_cap: float
+var bare_hand_damage: float
+var bare_hand_reach: float
+
+# throwables
+var grenade_cap: float
+var throw_speed: float
+var throw_offset: float
+var frag_fuse: float
+var frag_gravity: float
+var frag_speed_kept: float
+var frag_bounce: float
+var frag_friction: float
+var frag_power: float
+var blast_radius: float
+var blast_damage: float
+var blast_falloff: float
+var blast_min_damage: float
+var blast_knockback_per_hp: float
+var blast_knockback_cap: float
+var blast_shake_reach: float
+var rocket_direct_damage: float
+var rocket_arm_time: float
+var rocket_life: float
+var rocket_speed_cap: float
+var rocket_power: float
+var rocket_bounce: float
+
+# match
+var respawn_wait: float
+var spawn_protection: float
+var spawn_enemy_weight: float
+var spawn_explosive_weight: float
+var spawn_pick_share: float
+var spawn_reuse_block: float
+var pickup_interval: float
+var floor_lifetime_lead: float
+var floor_fade: float
+var empty_gun_lifetime: float
+var dropped_gun_lifetime: float
+var crowd_start: float
+var crowd_full: float
+var crowd_min_share: float
 
 # camera
 var anchor_below_middle: float
 var view_height: float
+
+# weapon table (T-50) and spawn kit, from weapons.cfg
+var weapons: WeaponTable
 
 # modifiers
 var batteries_included: bool
@@ -85,6 +152,7 @@ func copy() -> Ruleset:
 	r.version = version
 	for f: Dictionary in RulesetSchema.FIELDS:
 		r.set(f.key, get(f.key))
+	r.weapons = weapons
 	return r
 
 
@@ -93,4 +161,5 @@ func to_dict() -> Dictionary:
 	var out := {"id": id, "name": name, "version": version}
 	for f: Dictionary in RulesetSchema.FIELDS:
 		out[f.key] = get(f.key)
+	out["weapons"] = weapons.to_dict() if weapons != null else {}
 	return out

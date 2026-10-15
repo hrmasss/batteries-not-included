@@ -1,0 +1,14 @@
+{
+  "duration": 6.0,
+  "overlay": false,
+  "spawn": 1,
+  "steps": [
+    {"t": 0.0, "move": [0, 0], "held": false, "aim": [1, 0]},
+    {"t": 0.5, "fire": true}
+  ],
+  "dummies": [{"at": [1500, 1216], "team": 1}],
+  "shots": [
+    {"t": 1.6, "name": "01-shooting-a-target"},
+    {"when": "pop", "who": "other", "delay": 0.12, "name": "02-target-pops"}
+  ]
+}

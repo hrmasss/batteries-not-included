@@ -1,0 +1,87 @@
+{
+  "_doc": "Key poses for previews and as a start for animation. rot: degrees clockwise per part. grip_at: where the weapon grip sits in the root frame (ground between the feet, facing right); aim: weapon angle, negative is up. Arms reach the grip and support points by two-bone IK.",
+  "stand": {
+    "face": "determined",
+    "rot": {
+      "near_upper_arm": 12,
+      "near_forearm": -16,
+      "far_upper_arm": -10,
+      "far_forearm": -18,
+      "near_thigh": 9,
+      "near_shin": -4,
+      "far_thigh": -12,
+      "far_shin": 6,
+      "head": -3
+    }
+  },
+  "run": {
+    "face": "determined",
+    "offset": [
+      0,
+      -10
+    ],
+    "lean": 9,
+    "weapon": "assault_rifle",
+    "grip_at": [
+      64,
+      -150
+    ],
+    "aim": 6,
+    "near_bend": 1,
+    "far_bend": 1,
+    "rot": {
+      "near_thigh": -42,
+      "near_shin": 30,
+      "far_thigh": 34,
+      "far_shin": 62,
+      "head": -6
+    }
+  },
+  "fly": {
+    "face": "cocky",
+    "offset": [
+      0,
+      -60
+    ],
+    "lean": 14,
+    "thrust": "flame",
+    "weapon": "assault_rifle",
+    "grip_at": [
+      64,
+      -168
+    ],
+    "aim": -4,
+    "near_bend": 1,
+    "far_bend": 1,
+    "rot": {
+      "near_thigh": -18,
+      "near_shin": 46,
+      "far_thigh": 10,
+      "far_shin": 22,
+      "head": -8
+    }
+  },
+  "aim": {
+    "face": "determined",
+    "offset": [
+      0,
+      6
+    ],
+    "lean": 4,
+    "weapon": "assault_rifle",
+    "grip_at": [
+      60,
+      -160
+    ],
+    "aim": 0,
+    "near_bend": 1,
+    "far_bend": 1,
+    "rot": {
+      "near_thigh": 16,
+      "near_shin": -10,
+      "far_thigh": -24,
+      "far_shin": 20,
+      "head": -4
+    }
+  }
+}
