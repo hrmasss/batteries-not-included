@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="432" height="432" viewBox="0 0 432 432">
+  <!-- two AA batteries taped together: the jetpack every toy wears. Kept inside the 66% safe zone. -->
+  <g fill="#ffd34d" stroke="#1d1a24" stroke-width="7" stroke-linejoin="round">
+    <path d="M170 310 h36 q2 26 -18 52 q-20 -26 -18 -52 z"/>
+    <path d="M226 310 h36 q2 26 -18 52 q-20 -26 -18 -52 z"/>
+  </g>
+  <g stroke="#1d1a24" stroke-width="10" stroke-linejoin="round">
+    <rect x="186" y="140" width="22" height="18" rx="4" fill="#d9d4cc"/>
+    <rect x="224" y="140" width="22" height="18" rx="4" fill="#d9d4cc"/>
+    <rect x="160" y="156" width="56" height="150" rx="14" fill="#2f7de1"/>
+    <rect x="216" y="156" width="56" height="150" rx="14" fill="#ff8c1a"/>
+    <rect x="150" y="214" width="132" height="30" rx="6" fill="#f2ead8"/>
+  </g>
+</svg>
