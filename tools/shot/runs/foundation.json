@@ -1,0 +1,26 @@
+{
+  "duration": 24.0,
+  "overlay": true,
+  "hitboxes": false,
+  "spawn": 1,
+  "steps": [
+    {"t": 0.0, "move": [0, 0], "held": false, "aim": [1, 0]},
+    {"t": 1.0, "move": [1, 0]},
+    {"t": 2.0, "move": [0, -1]},
+    {"t": 2.8, "move": [0, 0], "held": false},
+    {"t": 3.2, "move": [0, 1], "aim": [1, 0.3]},
+    {"t": 4.8, "move": [0.6, 0.8]},
+    {"t": 6.6, "move": [-1, 0.15], "aim": [-1, -0.2]},
+    {"t": 13.0, "move": [0, 0], "held": false}
+  ],
+  "shots": [
+    {"t": 0.8, "name": "01-standing", "hitboxes": true},
+    {"t": 1.7, "name": "02-walking"},
+    {"t": 2.6, "name": "03-crouched", "hitboxes": true},
+    {"t": 3.45, "name": "04-mid-jump"},
+    {"t": 4.4, "name": "05-flying-up"},
+    {"t": 7.5, "name": "06-flying-sideways"},
+    {"when": "battery_empty", "delay": 0.25, "name": "07-battery-empty-falling"},
+    {"t": 23.5, "name": "08-refilled"}
+  ]
+}
