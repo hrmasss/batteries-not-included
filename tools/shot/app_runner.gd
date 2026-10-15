@@ -14,6 +14,7 @@ extends Node
 ##       {"when": "results", "delay": 4.0, "press": "Rematch"},
 ##       {"when": "match", "delay": 3.0, "shot": "rematch"},     once a new match runs
 ##       {"when": "lesson", "delay": 2.0, "shot": "fly"},        once a new lesson runs
+##       {"when": "pop", "delay": 0.3, "shot": "pop"},           once another toy pops on screen
 ##       {"t": 99, "quit": true}
 ##     ]
 ##   }
@@ -26,6 +27,9 @@ var _t: float = 0.0
 var _since: float = -1.0
 var _busy: bool = false
 var _last_screen: Node = null
+## Seconds since the run started when a toy last popped on screen; -1 for never.
+var _pop_at: float = -1.0
+var _watched: Node = null
 
 
 func _ready() -> void:
@@ -50,6 +54,8 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	_t += delta
+	if _app != null:
+		_watch_pops(_current())
 	if _busy or _steps.is_empty():
 		return
 	var s: Dictionary = _steps[0]
@@ -70,6 +76,11 @@ func _process(delta: float) -> void:
 func _happened(what: String) -> bool:
 	var screen := _current()
 	match what:
+		"pop":
+			if _pop_at >= 0.0 and _t - _pop_at < 0.2:
+				_pop_at = -1.0
+				return true
+			return false
 		"results":
 			return screen is MatchScreen and screen.find_child("Results", true, false) != null
 		"match":
@@ -87,6 +98,21 @@ func _happened(what: String) -> bool:
 		"setup":
 			return screen is BootcampSetup
 	return false
+
+
+## Notes when a toy other than the player's pops inside the camera's view, for "when": "pop".
+func _watch_pops(screen: Node) -> void:
+	if not screen is MatchScreen or screen == _watched:
+		return
+	_watched = screen
+	var view := (screen as MatchScreen).view
+	view.combat.event.connect(func(e: Dictionary) -> void:
+		if e.type != &"pop" or int(e.toy) == view.me.id():
+			return
+		var f := view.combat.fighter(int(e.toy))
+		var half := get_viewport().get_visible_rect().size * 0.5 / view.camera.zoom
+		if f != null and Rect2(view.camera.get_screen_center_position() - half, half * 2.0).has_point(f.toy.position):
+			_pop_at = _t)
 
 
 func _current() -> Node:

@@ -25,13 +25,14 @@ timeout 600 "$GODOT" --headless --path . --import >/dev/null 2>&1 || true
 ARGS=(--path . --rendering-driver opengl3 --resolution "$SIZE" --fixed-fps "$FPS" --disable-vsync --audio-driver Dummy)
 FRAMES=""
 if [ "$MOVIE" = 1 ]; then
+  # MJPEG in an AVI: Godot writes it far faster than a PNG per frame.
   FRAMES="$(mktemp -d)"
-  ARGS+=(--write-movie "$FRAMES/frame.png")
+  ARGS+=(--write-movie "$FRAMES/run.avi")
 fi
 timeout 900 xvfb-run -a -s "-screen 0 ${SIZE}x24" "$GODOT" "${ARGS[@]}" res://tools/shot/app_run.tscn -- --plan "$RUN" --out "$OUT"
 if [ "$MOVIE" = 1 ]; then
-  timeout 600 ffmpeg -y -loglevel error -framerate "$FPS" -i "$FRAMES/frame%08d.png" \
-    -c:v libx264 -pix_fmt yuv420p -crf 22 -movflags +faststart "$OUT/run.mp4"
+  timeout 600 ffmpeg -y -loglevel error -i "$FRAMES/run.avi" \
+    -an -c:v libx264 -pix_fmt yuv420p -crf 22 -movflags +faststart "$OUT/run.mp4"
   rm -rf "$FRAMES"
   echo "movie $OUT/run.mp4"
 fi

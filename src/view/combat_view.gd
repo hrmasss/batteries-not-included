@@ -18,11 +18,8 @@ const HEALTH_BACK := Color(0.1, 0.08, 0.12, 0.75)
 const HEALTH := Color(0.4, 0.9, 0.4)
 const HEALTH_LOW := Color(0.95, 0.32, 0.25)
 const OFFER := Color(1.0, 0.95, 0.75, 0.55)
-const TEXT := Color(1.0, 1.0, 1.0)
-const TEXT_SHADOW := Color(0.0, 0.0, 0.0, 0.7)
 const BLINK := Color(1.0, 0.25, 0.15)
 const HIT_LIFE := 0.25
-const FONT_SIZE := 10
 ## Size of loose items on the floor, against their size in a hand.
 const ITEM_SCALE := 0.9
 ## Health and battery packs read bigger than toy scale, so they are seen from afar.
@@ -114,7 +111,6 @@ func sync(delta: float) -> void:
 func _draw() -> void:
 	if combat == null:
 		return
-	var font := ThemeDB.fallback_font
 	for it in combat.items:
 		_draw_item(it)
 	for b in combat.bullets:
@@ -134,11 +130,6 @@ func _draw() -> void:
 	for f in combat.fighters:
 		if f.alive:
 			_draw_fighter(f)
-	if me != null and not me.alive:
-		var who := combat.fighter(me.popped_by)
-		var by := "yourself" if who == me or who == null else "toy %d" % me.popped_by
-		var line := "POPPED by %s with %s   respawn in %d" % [by, String(me.popped_with).replace("_", " "), ceili(me.respawn_left)]
-		_text(font, me.toy.position + Vector2(-90, -50), line, TEXT)
 
 
 func _bullet_alpha(b: CombatSim.Bullet) -> float:
@@ -244,8 +235,3 @@ func _draw_fighter(f: Fighter) -> void:
 func _fx_origin(piece: StringName) -> Vector2:
 	var d: Dictionary = ArtLibrary.fx().get(String(piece).trim_prefix("fx/"), {})
 	return Vector2(float(d.origin[0]), float(d.origin[1])) if d.has("origin") else Vector2.ZERO
-
-
-func _text(font: Font, at: Vector2, s: String, c: Color, size: int = FONT_SIZE) -> void:
-	draw_string(font, at + Vector2(1, 1), s, HORIZONTAL_ALIGNMENT_LEFT, -1, size, Color(TEXT_SHADOW, c.a * TEXT_SHADOW.a))
-	draw_string(font, at, s, HORIZONTAL_ALIGNMENT_LEFT, -1, size, c)
