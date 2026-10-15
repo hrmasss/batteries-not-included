@@ -79,6 +79,41 @@ def svgm(m):
     return "matrix(" + " ".join(f(v) for v in m) + ")"
 
 
+# ---------------------------------------------------------------- scene records
+# Every placement returns a Rec: the SVG text, plus records of what was placed where, so the
+# same scene can be rebuilt in Godot from the assets (art/tools/godot_frame.gd).
+
+class Rec(str):
+    def __new__(cls, s, recs=()):
+        o = super().__new__(cls, s)
+        o.recs = list(recs)
+        return o
+
+
+def join(parts):
+    parts = list(parts)
+    return Rec("".join(parts), [r for p in parts for r in getattr(p, "recs", [])])
+
+
+def raw(svg):
+    """Free SVG (shadows, light washes) in scene coordinates."""
+    return Rec(svg, [{"kind": "raw", "svg": svg}])
+
+
+def _rel(path):
+    return os.path.relpath(path, ROOT)
+
+
+def records(parts, blend="normal"):
+    out = []
+    for p in parts:
+        for r in getattr(p, "recs", []):
+            r = dict(r)
+            r["blend"] = blend
+            out.append(r)
+    return out
+
+
 # ---------------------------------------------------------------- rig
 
 def rig():
@@ -197,16 +232,12 @@ def toy(pose_name_or_dict, root=(0, 0), facing=1, team="blue", face=None, weapon
         out.append(thrust_fx(mats, r, pose.get("thrust")))
     for z, name, file, m, mod in items:
         path = file if os.path.isabs(file) else os.path.join(SOLDIER, file)
-        g = body(path)
+        out.append(place_m(path, m))
         if mod:
-            # far-side limbs: a dark veil drawn over the part, clipped to itself
-            out.append(f'<g transform="{svgm(m)}">{g}</g>')
+            # far-side limbs: a dark veil over the part (a modulate in the engine)
             dim = 1 - (mod[0] + mod[1] + mod[2]) / 3
-            out.append(f'<g transform="{svgm(m)}" opacity="{f(dim * 1.6)}">'
-                       f'{_silhouette(path, "#0d1a08")}</g>')
-        else:
-            out.append(f'<g transform="{svgm(m)}">{g}</g>')
-    grp = "".join(out)
+            out.append(place_flat_m(path, m, "#0d1a08", dim * 1.6))
+    grp = join(out)
     if outline:
         fid = f"tout{_count[0]}"
         w = 6 * scale
@@ -214,8 +245,9 @@ def toy(pose_name_or_dict, root=(0, 0), facing=1, team="blue", face=None, weapon
                 f'<feMorphology in="SourceAlpha" operator="dilate" radius="{f(w)}" result="d"/>'
                 f'<feFlood flood-color="{outline}"/><feComposite in2="d" operator="in" result="o"/>'
                 f'<feMerge><feMergeNode in="o"/><feMergeNode in="SourceGraphic"/></feMerge></filter>')
-        return f'<defs>{filt}</defs><g filter="url(#{fid})">{extra_under}{grp}</g>'
-    return extra_under + grp
+        recs = [{"kind": "group_begin", "outline": outline, "width": w}] + grp.recs + [{"kind": "group_end"}]
+        return Rec(f'<defs>{filt}</defs><g filter="url(#{fid})">{extra_under}{grp}</g>', recs)
+    return join([raw(extra_under) if extra_under else "", grp])
 
 
 def _silhouette(path, colour):
@@ -236,15 +268,21 @@ def thrust_fx(mats, r, kind):
         return ""
     out = []
     for s in r["sockets"]["thrust"]:
-        m = mul(mats[s["parent"]], T(*s["pos"]))
-        out.append(f'<g transform="{svgm(m)}">{body(path)}</g>')
-    return "".join(out)
+        out.append(place_m(path, mul(mats[s["parent"]], T(*s["pos"]))))
+    return join(out)
 
 
 def place_m(path, m, opacity=None):
     """Place a whole SVG file under a matrix; the drawing's own origin goes to the matrix origin."""
     op = f' opacity="{f(opacity)}"' if opacity is not None else ""
-    return f'<g transform="{svgm(m)}"{op}>{body(path)}</g>'
+    return Rec(f'<g transform="{svgm(m)}"{op}>{body(path)}</g>',
+               [{"kind": "file", "path": _rel(path), "m": list(m), "opacity": 1 if opacity is None else opacity}])
+
+
+def place_flat_m(path, m, colour, opacity):
+    """The file's silhouette in one flat colour under a matrix (shadows, far-side veils)."""
+    return Rec(f'<g transform="{svgm(m)}" opacity="{f(opacity)}">{_silhouette(path, colour)}</g>',
+               [{"kind": "flat", "path": _rel(path), "m": list(m), "colour": colour, "opacity": opacity}])
 
 
 def place_flat(path, x, y, colour, opacity, anchor=(0, 0), topleft=False, scale=1.0):
@@ -253,7 +291,7 @@ def place_flat(path, x, y, colour, opacity, anchor=(0, 0), topleft=False, scale=
         vb = viewbox(load(path))
         anchor = (anchor[0] + vb[0], anchor[1] + vb[1])
     m = mul(T(x, y), mul(S(scale), T(-anchor[0], -anchor[1])))
-    return f'<g transform="{svgm(m)}" opacity="{f(opacity)}">{_silhouette(path, colour)}</g>'
+    return place_flat_m(path, m, colour, opacity)
 
 
 def place(path, x, y, scale=1.0, rot=0.0, anchor=(0, 0), flip=False, opacity=None, topleft=False):
@@ -265,8 +303,7 @@ def place(path, x, y, scale=1.0, rot=0.0, anchor=(0, 0), flip=False, opacity=Non
         vb = viewbox(load(path))
         anchor = (anchor[0] + vb[0], anchor[1] + vb[1])
     m = mul(T(x, y), mul(R(rot), mul(S(scale * (-1 if flip else 1), scale), T(-anchor[0], -anchor[1]))))
-    op = f' opacity="{f(opacity)}"' if opacity is not None else ""
-    return f'<g transform="{svgm(m)}"{op}>{body(path)}</g>'
+    return place_m(path, m, opacity)
 
 
 def doc(w, h, content, bg=None, defs=""):

@@ -38,10 +38,11 @@ def prop(name, x, y, scale=1.0, opacity=None, wall_shadow=True):
     """
     k = kit(name)
     path = os.path.join(KIT, k["file"])
-    out = ""
+    out = []
     if wall_shadow and k["kind"] == "prop":
-        out = c.place_flat(path, x + 70, y - 10, "#2b3442", 0.16, anchor=k["origin"], topleft=True)
-    return out + c.place(path, x, y, scale=scale, anchor=k["origin"], topleft=True, opacity=opacity)
+        out.append(c.place_flat(path, x + 70, y - 10, "#2b3442", 0.16, anchor=k["origin"], topleft=True))
+    out.append(c.place(path, x, y, scale=scale, anchor=k["origin"], topleft=True, opacity=opacity))
+    return c.join(out)
 
 
 def fxp(name, x, y, scale=1.0, rot=0.0, flip=False, opacity=None):
@@ -54,7 +55,7 @@ def fxm(name, m, opacity=None):
 
 def shadow(x, y, w=150, h=26, op=0.45):
     gid = f"sh{x}{y}"
-    return (f'<defs><radialGradient id="{gid}" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#1a1008" '
+    return c.raw(f'<defs><radialGradient id="{gid}" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#1a1008" '
             f'stop-opacity="{op}"/><stop offset="1" stop-color="#1a1008" stop-opacity="0"/></radialGradient></defs>'
             f'<ellipse cx="{x}" cy="{y}" rx="{w}" ry="{h}" fill="url(#{gid})"/>')
 
@@ -66,17 +67,17 @@ def backdrop():
             out.append(prop("wall_tile", tx, ty))
     out.append(prop("window", 1900, 240))
     # moonlight falling in from the window, added light on the backdrop
-    out.append('<defs><linearGradient id="beam" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#eef4ff" '
+    out.append(c.raw('<defs><linearGradient id="beam" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#eef4ff" '
                'stop-opacity="0.35"/><stop offset="1" stop-color="#eef4ff" stop-opacity="0"/></linearGradient></defs>'
-               '<path d="M2000 380L3600 380L4600 2700L2700 2700Z" fill="url(#beam)"/>')
+               '<path d="M2000 380L3600 380L4600 2700L2700 2700Z" fill="url(#beam)"/>'))
     out.append(prop("poster", 4200, 260))
     for tx in range(0, W, 1024):
         out.append(prop("skirting", tx, FLOOR_Y - 88))
     # a soft wash of lamp light over the wall, part of the backdrop
-    out.append('<defs><radialGradient id="wash" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#fff6e0" '
+    out.append(c.raw('<defs><radialGradient id="wash" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#fff6e0" '
                'stop-opacity="0.45"/><stop offset="1" stop-color="#fff6e0" stop-opacity="0"/></radialGradient></defs>'
-               f'<ellipse cx="2600" cy="1200" rx="2600" ry="1500" fill="url(#wash)"/>')
-    return "".join(out)
+               f'<ellipse cx="2600" cy="1200" rx="2600" ry="1500" fill="url(#wash)"/>'))
+    return c.join(out)
 
 
 def pop_scene(cx, cy, team, rng):
@@ -95,24 +96,25 @@ def pop_scene(cx, cy, team, rng):
     for name, dx, dy, rot in layout:
         p = parts[name]
         m = c.mul(c.T(cx + dx, cy + dy), c.R(rot))
-        out.append(f'<g transform="{c.svgm(m)}">{c.body(path(p["file"]))}</g>')
+        out.append(c.place_m(path(p["file"]), m))
         if parts[name].get("modulate"):
-            out.append(f'<g transform="{c.svgm(m)}" opacity="0.35">{c._silhouette(path(p["file"]), "#0d1a08")}</g>')
+            out.append(c.place_flat_m(path(p["file"]), m, "#0d1a08", 0.35))
     # head with its hurt face, popped up and back
     hm = c.mul(c.T(cx - 20, cy - 190), c.R(-24))
-    out.append(f'<g transform="{c.svgm(hm)}">{c.body(path("head.svg"))}{c.body(path("face_shocked.svg"))}</g>')
+    out.append(c.place_m(path("head.svg"), hm))
+    out.append(c.place_m(path("face_shocked.svg"), hm))
     # helmet flying off, spinning
-    out.append(f'<g transform="{c.svgm(c.mul(c.T(cx + 120, cy - 380), c.R(38)))}">{c.body(path("helmet.svg"))}</g>')
+    out.append(c.place_m(path("helmet.svg"), c.mul(c.T(cx + 120, cy - 380), c.R(38))))
     # a battery flung clear: the jetpack's three layers
     jm = c.mul(c.T(cx - 260, cy - 220), c.mul(c.R(-58), c.S(0.9)))
     for f_ in ("jetpack_back.svg", r["team"]["baked"][team], "jetpack_front.svg"):
-        out.append(f'<g transform="{c.svgm(jm)}">{c.body(path(f_))}</g>')
+        out.append(c.place_m(path(f_), jm))
     snaps = [(cx + 60, cy + 100), (cx - 90, cy + 110), (cx - 20, cy - 110)]
     for x, y in snaps:
         out.append(fxp("pop_snap", x, y, scale=0.9 + rng.random() * 0.4, rot=rng.random() * 90))
-    burst = (fxp("pop_burst", cx + 300, cy - 360, scale=1.15, rot=-8)
-             + fxp("pop_text", cx + 300, cy - 360, scale=1.15, rot=-8))
-    return "".join(out), burst
+    burst = c.join([fxp("pop_burst", cx + 300, cy - 360, scale=1.15, rot=-8),
+                    fxp("pop_text", cx + 300, cy - 360, scale=1.15, rot=-8)])
+    return c.join(out), burst
 
 
 def scene():
@@ -176,12 +178,17 @@ def scene():
     pop_parts, pop_burst = pop_scene(gx - 40, gy - 420, "orange", rng)
     top.append(pop_parts)
     top.append(pop_burst)
-    return "".join(base) + "".join(top), "".join(glow)
+    return base + top, glow
 
 
-def render(out_png):
+def render(out_png, scene_json=None):
     from PIL import Image, ImageChops
-    body, glow = scene()
+    parts, glow_parts = scene()
+    if scene_json:
+        with open(scene_json, "w") as fh:
+            json.dump({"size": [W, H], "view": [1280, 720], "clear": "#d9e4ea",
+                       "items": c.records(parts) + c.records(glow_parts, "add")}, fh)
+    body, glow = "".join(parts), "".join(glow_parts)
     tmp = out_png[:-4]
     c.render(c.doc(W, H, body, bg="#d9e4ea"), tmp + "_base.png", width=1280, height=720)
     c.render(c.doc(W, H, glow), tmp + "_glow.png", width=1280, height=720)
@@ -202,4 +209,4 @@ def render(out_png):
 
 if __name__ == "__main__":
     dst = sys.argv[1] if len(sys.argv) > 1 else os.path.join(c.ROOT, "art", "previews", "battle_frame.png")
-    print(render(dst))
+    print(render(dst, sys.argv[2] if len(sys.argv) > 2 else None))
