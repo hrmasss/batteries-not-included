@@ -116,6 +116,16 @@ func _init() -> void:
 		# Seen from a camera centred on the piece, it lands where it is written.
 		p.position = want - want * (Vector2.ONE - WALL_SCROLL)
 		_add(root, wall, p)
+	# Moonlight through the window, added onto the wall (the lamp's glow, tinted).
+	var moon := KitProp.new()
+	moon.name = "MoonLight"
+	moon.piece = "desk_lamp_glow"
+	moon.cast_shadow = false
+	moon.size_scale = 2.4
+	moon.tint = Color(0.55, 0.68, 1.0, 0.55)
+	var win: Vector2 = BACK[0][1]
+	moon.position = win - win * (Vector2.ONE - WALL_SCROLL) + Vector2(115, 145)
+	_add(root, wall, moon)
 	var skirting := KitTiles.new()
 	skirting.name = "Skirting"
 	skirting.piece = "skirting"

@@ -20,679 +20,687 @@ size = Vector2(64, 1200)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_tvy34"]
 size = Vector2(2688, 64)
 
-[node name="Bedroom" type="Node2D" unique_id=1075768279]
+[node name="Bedroom" type="Node2D" unique_id=190931457]
 script = ExtResource("1_2ogqj")
 display_name = "Bedroom"
 bounds = Rect2(0, -1040, 2560, 1063)
 
-[node name="Backdrop" type="Node2D" parent="." unique_id=46619422]
+[node name="Backdrop" type="Node2D" parent="." unique_id=1953155816]
 z_index = -10
 
-[node name="Wall" type="Parallax2D" parent="Backdrop" unique_id=1869009541]
+[node name="Wall" type="Parallax2D" parent="Backdrop" unique_id=1350153662]
 scroll_scale = Vector2(0.9, 0.94)
 
-[node name="Paper" type="Node2D" parent="Backdrop/Wall" unique_id=1520272933]
+[node name="Paper" type="Node2D" parent="Backdrop/Wall" unique_id=915857637]
 script = ExtResource("2_djorq")
 area = Rect2(-400, -1340, 3360, 1340)
 wash_top = Color(0.16, 0.18, 0.3, 0.22)
 wash_bottom = Color(0.98, 0.86, 0.66, 0.1)
 
-[node name="Window1" type="Node2D" parent="Backdrop/Wall" unique_id=2109137699]
+[node name="Window1" type="Node2D" parent="Backdrop/Wall" unique_id=1761652509]
 position = Vector2(981, -564)
 script = ExtResource("3_nkc1q")
 piece = "window"
 cast_shadow = false
 
-[node name="Poster2" type="Node2D" parent="Backdrop/Wall" unique_id=125158748]
+[node name="Poster2" type="Node2D" parent="Backdrop/Wall" unique_id=147819422]
 position = Vector2(1791, -601.6)
 script = ExtResource("3_nkc1q")
 piece = "poster"
 cast_shadow = false
 
-[node name="Poster3" type="Node2D" parent="Backdrop/Wall" unique_id=694920647]
+[node name="Poster3" type="Node2D" parent="Backdrop/Wall" unique_id=1763776743]
 position = Vector2(504, -770.8)
 script = ExtResource("3_nkc1q")
 piece = "poster"
 cast_shadow = false
 
-[node name="Skirting" type="Node2D" parent="Backdrop" unique_id=1718999262]
+[node name="MoonLight" type="Node2D" parent="Backdrop/Wall" unique_id=202340288]
+position = Vector2(1096, -419)
+script = ExtResource("3_nkc1q")
+piece = "desk_lamp_glow"
+size_scale = 2.4
+cast_shadow = false
+tint = Color(0.55, 0.68, 1, 0.55)
+
+[node name="Skirting" type="Node2D" parent="Backdrop" unique_id=174618525]
 script = ExtResource("2_djorq")
 piece = "skirting"
 area = Rect2(-64, -40, 2688, 40)
 along_x = true
 
-[node name="Props" type="Node2D" parent="." unique_id=1887567868]
+[node name="Props" type="Node2D" parent="." unique_id=693895181]
 
-[node name="Bookshelf1" type="Node2D" parent="Props" unique_id=1805552934]
+[node name="Bookshelf1" type="Node2D" parent="Props" unique_id=1579342371]
 position = Vector2(4, 0)
 script = ExtResource("3_nkc1q")
 piece = "bookshelf"
 
-[node name="Bed1" type="Node2D" parent="Props" unique_id=1058122494]
+[node name="Bed1" type="Node2D" parent="Props" unique_id=869369332]
 position = Vector2(300, 0)
 script = ExtResource("3_nkc1q")
 piece = "bed"
 
-[node name="BookStack1" type="Node2D" parent="Props" unique_id=744242765]
+[node name="BookStack1" type="Node2D" parent="Props" unique_id=860600014]
 position = Vector2(876, 0)
 script = ExtResource("3_nkc1q")
 piece = "book_stack"
 
-[node name="BlockStar1" type="Node2D" parent="Props" unique_id=2053277837]
+[node name="BlockStar1" type="Node2D" parent="Props" unique_id=283621766]
 position = Vector2(1000, 0)
 script = ExtResource("3_nkc1q")
 piece = "block_star"
 
-[node name="BlockMoon1" type="Node2D" parent="Props" unique_id=1334787751]
+[node name="BlockMoon1" type="Node2D" parent="Props" unique_id=1344173461]
 position = Vector2(1027, 0)
 script = ExtResource("3_nkc1q")
 piece = "block_moon"
 
-[node name="BlockHeart1" type="Node2D" parent="Props" unique_id=1617272798]
+[node name="BlockHeart1" type="Node2D" parent="Props" unique_id=88553019]
 position = Vector2(1013, -26.25)
 script = ExtResource("3_nkc1q")
 piece = "block_heart"
 
-[node name="ToyChest1" type="Node2D" parent="Props" unique_id=1959353028]
+[node name="ToyChest1" type="Node2D" parent="Props" unique_id=713101044]
 position = Vector2(1110, 0)
 script = ExtResource("3_nkc1q")
 piece = "toy_chest"
 
-[node name="BlockHeart2" type="Node2D" parent="Props" unique_id=950077943]
+[node name="BlockHeart2" type="Node2D" parent="Props" unique_id=2043715760]
 position = Vector2(1410, 0)
 script = ExtResource("3_nkc1q")
 piece = "block_heart"
 
-[node name="Desk1" type="Node2D" parent="Props" unique_id=723860492]
+[node name="Desk1" type="Node2D" parent="Props" unique_id=1518328514]
 position = Vector2(1560, 0)
 script = ExtResource("3_nkc1q")
 piece = "desk"
 
-[node name="BlockMoon2" type="Node2D" parent="Props" unique_id=1583717428]
+[node name="BlockMoon2" type="Node2D" parent="Props" unique_id=74550396]
 position = Vector2(2015, 0)
 script = ExtResource("3_nkc1q")
 piece = "block_moon"
 
-[node name="BookStack2" type="Node2D" parent="Props" unique_id=2129208610]
+[node name="BookStack2" type="Node2D" parent="Props" unique_id=1515363390]
 position = Vector2(2140, 0)
 script = ExtResource("3_nkc1q")
 piece = "book_stack"
 flip = true
 
-[node name="Bookshelf2" type="Node2D" parent="Props" unique_id=1668584968]
+[node name="Bookshelf2" type="Node2D" parent="Props" unique_id=1388222367]
 position = Vector2(2320, 0)
 script = ExtResource("3_nkc1q")
 piece = "bookshelf"
 flip = true
 
-[node name="WallShelf1" type="Node2D" parent="Props" unique_id=1859730407]
+[node name="WallShelf1" type="Node2D" parent="Props" unique_id=590050355]
 position = Vector2(420, -470)
 script = ExtResource("3_nkc1q")
 piece = "wall_shelf"
 
-[node name="WallShelf2" type="Node2D" parent="Props" unique_id=1950356801]
+[node name="WallShelf2" type="Node2D" parent="Props" unique_id=1015421230]
 position = Vector2(80, -640)
 script = ExtResource("3_nkc1q")
 piece = "wall_shelf"
 flip = true
 
-[node name="WallShelf3" type="Node2D" parent="Props" unique_id=984986366]
+[node name="WallShelf3" type="Node2D" parent="Props" unique_id=2011542385]
 position = Vector2(760, -720)
 script = ExtResource("3_nkc1q")
 piece = "wall_shelf"
 
-[node name="WallShelf4" type="Node2D" parent="Props" unique_id=74663933]
+[node name="WallShelf4" type="Node2D" parent="Props" unique_id=1019731970]
 position = Vector2(1180, -820)
 script = ExtResource("3_nkc1q")
 piece = "wall_shelf"
 flip = true
 
-[node name="WallShelf5" type="Node2D" parent="Props" unique_id=1549727600]
+[node name="WallShelf5" type="Node2D" parent="Props" unique_id=563434772]
 position = Vector2(1540, -600)
 script = ExtResource("3_nkc1q")
 piece = "wall_shelf"
 
-[node name="WallShelf6" type="Node2D" parent="Props" unique_id=1820739067]
+[node name="WallShelf6" type="Node2D" parent="Props" unique_id=1079114787]
 position = Vector2(1890, -780)
 script = ExtResource("3_nkc1q")
 piece = "wall_shelf"
 flip = true
 
-[node name="WallShelf7" type="Node2D" parent="Props" unique_id=1079198638]
+[node name="WallShelf7" type="Node2D" parent="Props" unique_id=613203011]
 position = Vector2(2090, -470)
 script = ExtResource("3_nkc1q")
 piece = "wall_shelf"
 
-[node name="WallShelf8" type="Node2D" parent="Props" unique_id=185574549]
+[node name="WallShelf8" type="Node2D" parent="Props" unique_id=737390569]
 position = Vector2(2320, -650)
 script = ExtResource("3_nkc1q")
 piece = "wall_shelf"
 
-[node name="CeilingFan1" type="Node2D" parent="Props" unique_id=164627031]
+[node name="CeilingFan1" type="Node2D" parent="Props" unique_id=849884220]
 position = Vector2(1280, -1040)
 script = ExtResource("3_nkc1q")
 piece = "ceiling_fan"
 
-[node name="Terrain" type="StaticBody2D" parent="." unique_id=639196367]
+[node name="Terrain" type="StaticBody2D" parent="." unique_id=200024061]
 script = ExtResource("4_766wc")
 draw_shapes = false
 
-[node name="Floor" type="CollisionShape2D" parent="Terrain" unique_id=254356275]
+[node name="Floor" type="CollisionShape2D" parent="Terrain" unique_id=1639126817]
 position = Vector2(1280, 48)
 shape = SubResource("RectangleShape2D_lxuxl")
 
-[node name="WallLeft" type="CollisionShape2D" parent="Terrain" unique_id=1184798792]
+[node name="WallLeft" type="CollisionShape2D" parent="Terrain" unique_id=471600407]
 position = Vector2(-32, -504)
 shape = SubResource("RectangleShape2D_7ybg7")
 
-[node name="WallRight" type="CollisionShape2D" parent="Terrain" unique_id=1274268649]
+[node name="WallRight" type="CollisionShape2D" parent="Terrain" unique_id=92603531]
 position = Vector2(2592, -504)
 shape = SubResource("RectangleShape2D_73llf")
 
-[node name="Ceiling" type="CollisionShape2D" parent="Terrain" unique_id=1086987937]
+[node name="Ceiling" type="CollisionShape2D" parent="Terrain" unique_id=914220601]
 position = Vector2(1280, -1072)
 shape = SubResource("RectangleShape2D_tvy34")
 
-[node name="Bookshelf11" type="CollisionPolygon2D" parent="Terrain" unique_id=1529740905]
+[node name="Bookshelf11" type="CollisionPolygon2D" parent="Terrain" unique_id=558500825]
 polygon = PackedVector2Array(17.75, -92.67499, 30.5875, -92.67499, 30.5875, -17.5, 17.75, -17.5)
 
-[node name="Bookshelf12" type="CollisionPolygon2D" parent="Terrain" unique_id=1483710083]
+[node name="Bookshelf12" type="CollisionPolygon2D" parent="Terrain" unique_id=1142106860]
 polygon = PackedVector2Array(31.3375, -84.29999, 44.775, -84.29999, 44.775, -17.5, 31.3375, -17.5)
 
-[node name="Bookshelf13" type="CollisionPolygon2D" parent="Terrain" unique_id=1305607390]
+[node name="Bookshelf13" type="CollisionPolygon2D" parent="Terrain" unique_id=1821983633]
 polygon = PackedVector2Array(45.525, -47.075012, 88.025, -47.075012, 88.025, -17.5, 45.525, -17.5)
 
-[node name="Bookshelf14" type="CollisionPolygon2D" parent="Terrain" unique_id=1819346288]
+[node name="Bookshelf14" type="CollisionPolygon2D" parent="Terrain" unique_id=1617337047]
 polygon = PackedVector2Array(120.3, -86.63751, 133.85, -86.63751, 133.85, -17.5, 120.3, -17.5)
 
-[node name="Bookshelf15" type="CollisionPolygon2D" parent="Terrain" unique_id=607722805]
+[node name="Bookshelf15" type="CollisionPolygon2D" parent="Terrain" unique_id=3758839]
 polygon = PackedVector2Array(134.6, -96.88751, 149.85, -96.88751, 149.85, -17.5, 134.6, -17.5)
 
-[node name="Bookshelf16" type="CollisionPolygon2D" parent="Terrain" unique_id=417723093]
+[node name="Bookshelf16" type="CollisionPolygon2D" parent="Terrain" unique_id=1825457196]
 polygon = PackedVector2Array(150.6, -84.26251, 164.3875, -84.26251, 164.3875, -17.5, 150.6, -17.5)
 
-[node name="Bookshelf17" type="CollisionPolygon2D" parent="Terrain" unique_id=315087776]
+[node name="Bookshelf17" type="CollisionPolygon2D" parent="Terrain" unique_id=2121986200]
 polygon = PackedVector2Array(165.1375, -90.787506, 178.325, -90.787506, 178.325, -17.5, 165.1375, -17.5)
 
-[node name="Bookshelf18" type="CollisionPolygon2D" parent="Terrain" unique_id=931971217]
+[node name="Bookshelf18" type="CollisionPolygon2D" parent="Terrain" unique_id=1511624712]
 polygon = PackedVector2Array(179.075, -95.5, 194.3125, -95.5, 194.3125, -17.5, 179.075, -17.5)
 
-[node name="Bookshelf19" type="CollisionPolygon2D" parent="Terrain" unique_id=1484618064]
+[node name="Bookshelf19" type="CollisionPolygon2D" parent="Terrain" unique_id=1035198129]
 polygon = PackedVector2Array(195.0625, -102.13751, 210.4125, -102.13751, 210.4125, -17.5, 195.0625, -17.5)
 
-[node name="Bookshelf110" type="CollisionPolygon2D" parent="Terrain" unique_id=1660552164]
+[node name="Bookshelf110" type="CollisionPolygon2D" parent="Terrain" unique_id=1804516884]
 polygon = PackedVector2Array(46.9625, -214.175, 62.725, -214.175, 62.725, -125, 46.9625, -125)
 
-[node name="Bookshelf111" type="CollisionPolygon2D" parent="Terrain" unique_id=1119128561]
+[node name="Bookshelf111" type="CollisionPolygon2D" parent="Terrain" unique_id=1911053612]
 polygon = PackedVector2Array(63.475, -154.55, 105.975, -154.55, 105.975, -125, 63.475, -125)
 
-[node name="Bookshelf112" type="CollisionPolygon2D" parent="Terrain" unique_id=606605483]
+[node name="Bookshelf112" type="CollisionPolygon2D" parent="Terrain" unique_id=1414101490]
 polygon = PackedVector2Array(108.475, -198.275, 121.925, -198.275, 121.925, -125, 108.475, -125)
 
-[node name="Bookshelf113" type="CollisionPolygon2D" parent="Terrain" unique_id=779725203]
+[node name="Bookshelf113" type="CollisionPolygon2D" parent="Terrain" unique_id=397440945]
 polygon = PackedVector2Array(122.675, -199.65, 134.325, -199.65, 134.325, -125, 122.675, -125)
 
-[node name="Bookshelf114" type="CollisionPolygon2D" parent="Terrain" unique_id=1055339848]
+[node name="Bookshelf114" type="CollisionPolygon2D" parent="Terrain" unique_id=543790221]
 polygon = PackedVector2Array(135.075, -214.8625, 148.2, -214.8625, 148.2, -125, 135.075, -125)
 
-[node name="Bookshelf115" type="CollisionPolygon2D" parent="Terrain" unique_id=1413931483]
+[node name="Bookshelf115" type="CollisionPolygon2D" parent="Terrain" unique_id=503405066]
 polygon = PackedVector2Array(148.95, -213.55, 164.675, -213.55, 164.675, -125, 148.95, -125)
 
-[node name="Bookshelf116" type="CollisionPolygon2D" parent="Terrain" unique_id=848908026]
+[node name="Bookshelf116" type="CollisionPolygon2D" parent="Terrain" unique_id=1810731428]
 polygon = PackedVector2Array(196.7125, -214.875, 212.6875, -214.875, 212.6875, -125, 196.7125, -125)
 
-[node name="Bookshelf117" type="CollisionPolygon2D" parent="Terrain" unique_id=185070812]
+[node name="Bookshelf117" type="CollisionPolygon2D" parent="Terrain" unique_id=1195172467]
 polygon = PackedVector2Array(17.75, -303.3, 31.85, -303.3, 31.85, -232.5, 17.75, -232.5)
 
-[node name="Bookshelf118" type="CollisionPolygon2D" parent="Terrain" unique_id=1387309316]
+[node name="Bookshelf118" type="CollisionPolygon2D" parent="Terrain" unique_id=1865215620]
 polygon = PackedVector2Array(32.6, -305.3375, 45.65, -305.3375, 45.65, -232.5, 32.6, -232.5)
 
-[node name="Bookshelf119" type="CollisionPolygon2D" parent="Terrain" unique_id=1613552516]
+[node name="Bookshelf119" type="CollisionPolygon2D" parent="Terrain" unique_id=532944237]
 polygon = PackedVector2Array(46.4, -263.575, 88.9, -263.575, 88.9, -232.5, 46.4, -232.5)
 
-[node name="Bookshelf120" type="CollisionPolygon2D" parent="Terrain" unique_id=178716712]
+[node name="Bookshelf120" type="CollisionPolygon2D" parent="Terrain" unique_id=900674234]
 polygon = PackedVector2Array(91.4, -301.65, 103.2375, -301.65, 103.2375, -232.5, 91.4, -232.5)
 
-[node name="Bookshelf121" type="CollisionPolygon2D" parent="Terrain" unique_id=1833728818]
+[node name="Bookshelf121" type="CollisionPolygon2D" parent="Terrain" unique_id=1962159444]
 polygon = PackedVector2Array(103.9875, -321.5, 118.5, -321.5, 118.5, -232.5, 103.9875, -232.5)
 
-[node name="Bookshelf122" type="CollisionPolygon2D" parent="Terrain" unique_id=1445160593]
+[node name="Bookshelf122" type="CollisionPolygon2D" parent="Terrain" unique_id=2122023444]
 polygon = PackedVector2Array(119.25, -262.2, 161.75, -262.2, 161.75, -232.5, 119.25, -232.5)
 
-[node name="Bookshelf123" type="CollisionPolygon2D" parent="Terrain" unique_id=1531743779]
+[node name="Bookshelf123" type="CollisionPolygon2D" parent="Terrain" unique_id=161852511]
 polygon = PackedVector2Array(164.25, -324.4625, 179.6125, -324.4625, 179.6125, -232.5, 164.25, -232.5)
 
-[node name="Bookshelf124" type="CollisionPolygon2D" parent="Terrain" unique_id=1572206887]
+[node name="Bookshelf124" type="CollisionPolygon2D" parent="Terrain" unique_id=528437564]
 polygon = PackedVector2Array(180.3625, -306.0125, 196.6, -306.0125, 196.6, -232.5, 180.3625, -232.5)
 
-[node name="Bookshelf125" type="CollisionPolygon2D" parent="Terrain" unique_id=1551178138]
+[node name="Bookshelf125" type="CollisionPolygon2D" parent="Terrain" unique_id=531496986]
 polygon = PackedVector2Array(197.35, -298.3625, 210.5875, -298.3625, 210.5875, -232.5, 197.35, -232.5)
 
-[node name="Bookshelf126" type="CollisionPolygon2D" parent="Terrain" unique_id=2092178085]
+[node name="Bookshelf126" type="CollisionPolygon2D" parent="Terrain" unique_id=736941542]
 polygon = PackedVector2Array(15.25, -125, 217.75, -125, 217.75, -115, 15.25, -115)
 
-[node name="Bookshelf127" type="CollisionPolygon2D" parent="Terrain" unique_id=1331475210]
+[node name="Bookshelf127" type="CollisionPolygon2D" parent="Terrain" unique_id=1878931666]
 polygon = PackedVector2Array(15.25, -232.5, 217.75, -232.5, 217.75, -222.5, 15.25, -222.5)
 
-[node name="Bookshelf128" type="CollisionPolygon2D" parent="Terrain" unique_id=311644842]
+[node name="Bookshelf128" type="CollisionPolygon2D" parent="Terrain" unique_id=1378112392]
 polygon = PackedVector2Array(4, -375, 15.25, -375, 15.25, 0, 4, 0)
 
-[node name="Bookshelf129" type="CollisionPolygon2D" parent="Terrain" unique_id=1466295949]
+[node name="Bookshelf129" type="CollisionPolygon2D" parent="Terrain" unique_id=1320058067]
 polygon = PackedVector2Array(217.75, -375, 229, -375, 229, 0, 217.75, 0)
 
-[node name="Bookshelf130" type="CollisionPolygon2D" parent="Terrain" unique_id=783458424]
+[node name="Bookshelf130" type="CollisionPolygon2D" parent="Terrain" unique_id=1728282996]
 polygon = PackedVector2Array(1, -377.5, 232, -377.5, 232, -363.75, 1, -363.75)
 
-[node name="Bookshelf131" type="CollisionPolygon2D" parent="Terrain" unique_id=715676893]
+[node name="Bookshelf131" type="CollisionPolygon2D" parent="Terrain" unique_id=1244771074]
 polygon = PackedVector2Array(15.25, -17.5, 217.75, -17.5, 217.75, 0, 15.25, 0)
 
-[node name="Bookshelf132" type="CollisionPolygon2D" parent="Terrain" unique_id=1787854704]
+[node name="Bookshelf132" type="CollisionPolygon2D" parent="Terrain" unique_id=1983827764]
 polygon = PackedVector2Array(128.5, -375.25, 158.5, -375.25, 158.5, -350, 128.5, -350)
 
-[node name="Bed11" type="CollisionPolygon2D" parent="Terrain" unique_id=2084129143]
+[node name="Bed11" type="CollisionPolygon2D" parent="Terrain" unique_id=987824435]
 polygon = PackedVector2Array(300, -300, 325, -300, 325, 0, 300, 0)
 
-[node name="Bed12" type="CollisionPolygon2D" parent="Terrain" unique_id=212568943]
+[node name="Bed12" type="CollisionPolygon2D" parent="Terrain" unique_id=2146609653]
 polygon = PackedVector2Array(800, -212.5, 825, -212.5, 825, 0, 800, 0)
 
-[node name="Bed13" type="CollisionPolygon2D" parent="Terrain" unique_id=1493747724]
+[node name="Bed13" type="CollisionPolygon2D" parent="Terrain" unique_id=580417915]
 polygon = PackedVector2Array(325, -153.75, 800, -153.75, 800, -80, 325, -80)
 
-[node name="Bed14" type="CollisionPolygon2D" parent="Terrain" unique_id=1592175748]
+[node name="Bed14" type="CollisionPolygon2D" parent="Terrain" unique_id=599579190]
 polygon = PackedVector2Array(320, -80, 805, -80, 805, -52.5, 320, -52.5)
 
-[node name="Bed15" type="CollisionPolygon2D" parent="Terrain" unique_id=548639405]
+[node name="Bed15" type="CollisionPolygon2D" parent="Terrain" unique_id=1457989212]
 polygon = PackedVector2Array(337.5, -181.25, 387.5, -187.5, 435, -182.5, 437.5, -155, 335, -155)
 
-[node name="BookStack11" type="CollisionPolygon2D" parent="Terrain" unique_id=2001710802]
+[node name="BookStack11" type="CollisionPolygon2D" parent="Terrain" unique_id=795039752]
 polygon = PackedVector2Array(876, -37.5, 971, -37.5, 971, 0, 876, 0)
 
-[node name="BlockStar11" type="CollisionPolygon2D" parent="Terrain" unique_id=1776823528]
+[node name="BlockStar11" type="CollisionPolygon2D" parent="Terrain" unique_id=213045323]
 polygon = PackedVector2Array(1000, -26.25, 1026.25, -26.25, 1026.25, 0, 1000, 0)
 
-[node name="BlockMoon11" type="CollisionPolygon2D" parent="Terrain" unique_id=672910193]
+[node name="BlockMoon11" type="CollisionPolygon2D" parent="Terrain" unique_id=966135157]
 polygon = PackedVector2Array(1027, -26.25, 1053.25, -26.25, 1053.25, 0, 1027, 0)
 
-[node name="BlockHeart11" type="CollisionPolygon2D" parent="Terrain" unique_id=1683762071]
+[node name="BlockHeart11" type="CollisionPolygon2D" parent="Terrain" unique_id=1783878116]
 polygon = PackedVector2Array(1013, -52.5, 1039.25, -52.5, 1039.25, -26.25, 1013, -26.25)
 
-[node name="ToyChest11" type="CollisionPolygon2D" parent="Terrain" unique_id=1677861993]
+[node name="ToyChest11" type="CollisionPolygon2D" parent="Terrain" unique_id=1826855800]
 polygon = PackedVector2Array(1103.75, -153.75, 1341.25, -153.75, 1341.25, -131.25, 1103.75, -131.25)
 
-[node name="ToyChest12" type="CollisionPolygon2D" parent="Terrain" unique_id=679836782]
+[node name="ToyChest12" type="CollisionPolygon2D" parent="Terrain" unique_id=74409502]
 polygon = PackedVector2Array(1110, -131.25, 1335, -131.25, 1335, 0, 1110, 0)
 
-[node name="BlockHeart21" type="CollisionPolygon2D" parent="Terrain" unique_id=1256706735]
+[node name="BlockHeart21" type="CollisionPolygon2D" parent="Terrain" unique_id=709759591]
 polygon = PackedVector2Array(1410, -26.25, 1436.25, -26.25, 1436.25, 0, 1410, 0)
 
-[node name="Desk11" type="CollisionPolygon2D" parent="Terrain" unique_id=1551756827]
+[node name="Desk11" type="CollisionPolygon2D" parent="Terrain" unique_id=1249012143]
 polygon = PackedVector2Array(1555, -262.5, 1940, -262.5, 1940, -250, 1555, -250)
 
-[node name="Desk12" type="CollisionPolygon2D" parent="Terrain" unique_id=1064798580]
+[node name="Desk12" type="CollisionPolygon2D" parent="Terrain" unique_id=2074115589]
 polygon = PackedVector2Array(1560, -250, 1672.5, -250, 1672.5, 0, 1560, 0)
 
-[node name="Desk13" type="CollisionPolygon2D" parent="Terrain" unique_id=1161994596]
+[node name="Desk13" type="CollisionPolygon2D" parent="Terrain" unique_id=1527026918]
 polygon = PackedVector2Array(1916.25, -250, 1928.75, -250, 1928.75, 0, 1916.25, 0)
 
-[node name="Desk14" type="CollisionPolygon2D" parent="Terrain" unique_id=1563680534]
+[node name="Desk14" type="CollisionPolygon2D" parent="Terrain" unique_id=1157594915]
 polygon = PackedVector2Array(1797.5, -288.75, 1892.5, -288.75, 1892.5, -262.5, 1797.5, -262.5)
 
-[node name="Desk15" type="CollisionPolygon2D" parent="Terrain" unique_id=1380123710]
+[node name="Desk15" type="CollisionPolygon2D" parent="Terrain" unique_id=844619077]
 polygon = PackedVector2Array(1747.5, -315, 1780, -315, 1780, -262.5, 1747.5, -262.5)
 
-[node name="Desk16" type="CollisionPolygon2D" parent="Terrain" unique_id=871711427]
+[node name="Desk16" type="CollisionPolygon2D" parent="Terrain" unique_id=41613288]
 polygon = PackedVector2Array(1582.5, -272.5, 1637.5, -272.5, 1637.5, -262.5, 1582.5, -262.5)
 
-[node name="Desk17" type="CollisionPolygon2D" parent="Terrain" unique_id=489623887]
+[node name="Desk17" type="CollisionPolygon2D" parent="Terrain" unique_id=1137004239]
 polygon = PackedVector2Array(1662.5, -375, 1685, -375, 1685, -371.25, 1662.5, -371.25)
 
-[node name="BlockMoon21" type="CollisionPolygon2D" parent="Terrain" unique_id=1030844500]
+[node name="BlockMoon21" type="CollisionPolygon2D" parent="Terrain" unique_id=1512150126]
 polygon = PackedVector2Array(2015, -26.25, 2041.25, -26.25, 2041.25, 0, 2015, 0)
 
-[node name="BookStack21" type="CollisionPolygon2D" parent="Terrain" unique_id=1421286609]
+[node name="BookStack21" type="CollisionPolygon2D" parent="Terrain" unique_id=1412258988]
 polygon = PackedVector2Array(2232.5, -37.5, 2137.5, -37.5, 2137.5, 0, 2232.5, 0)
 
-[node name="Bookshelf21" type="CollisionPolygon2D" parent="Terrain" unique_id=26281059]
+[node name="Bookshelf21" type="CollisionPolygon2D" parent="Terrain" unique_id=102871642]
 polygon = PackedVector2Array(2531.25, -92.67499, 2518.4126, -92.67499, 2518.4126, -17.5, 2531.25, -17.5)
 
-[node name="Bookshelf22" type="CollisionPolygon2D" parent="Terrain" unique_id=1613804217]
+[node name="Bookshelf22" type="CollisionPolygon2D" parent="Terrain" unique_id=980840862]
 polygon = PackedVector2Array(2517.6626, -84.29999, 2504.225, -84.29999, 2504.225, -17.5, 2517.6626, -17.5)
 
-[node name="Bookshelf23" type="CollisionPolygon2D" parent="Terrain" unique_id=957648622]
+[node name="Bookshelf23" type="CollisionPolygon2D" parent="Terrain" unique_id=1276863144]
 polygon = PackedVector2Array(2503.475, -47.075012, 2460.975, -47.075012, 2460.975, -17.5, 2503.475, -17.5)
 
-[node name="Bookshelf24" type="CollisionPolygon2D" parent="Terrain" unique_id=295214423]
+[node name="Bookshelf24" type="CollisionPolygon2D" parent="Terrain" unique_id=4619177]
 polygon = PackedVector2Array(2428.7, -86.63751, 2415.15, -86.63751, 2415.15, -17.5, 2428.7, -17.5)
 
-[node name="Bookshelf25" type="CollisionPolygon2D" parent="Terrain" unique_id=816026735]
+[node name="Bookshelf25" type="CollisionPolygon2D" parent="Terrain" unique_id=678312057]
 polygon = PackedVector2Array(2414.4, -96.88751, 2399.15, -96.88751, 2399.15, -17.5, 2414.4, -17.5)
 
-[node name="Bookshelf26" type="CollisionPolygon2D" parent="Terrain" unique_id=287616787]
+[node name="Bookshelf26" type="CollisionPolygon2D" parent="Terrain" unique_id=1424067252]
 polygon = PackedVector2Array(2398.4, -84.26251, 2384.6125, -84.26251, 2384.6125, -17.5, 2398.4, -17.5)
 
-[node name="Bookshelf27" type="CollisionPolygon2D" parent="Terrain" unique_id=1853066769]
+[node name="Bookshelf27" type="CollisionPolygon2D" parent="Terrain" unique_id=537818210]
 polygon = PackedVector2Array(2383.8625, -90.787506, 2370.675, -90.787506, 2370.675, -17.5, 2383.8625, -17.5)
 
-[node name="Bookshelf28" type="CollisionPolygon2D" parent="Terrain" unique_id=1216552293]
+[node name="Bookshelf28" type="CollisionPolygon2D" parent="Terrain" unique_id=1461480165]
 polygon = PackedVector2Array(2369.925, -95.5, 2354.6875, -95.5, 2354.6875, -17.5, 2369.925, -17.5)
 
-[node name="Bookshelf29" type="CollisionPolygon2D" parent="Terrain" unique_id=1465204127]
+[node name="Bookshelf29" type="CollisionPolygon2D" parent="Terrain" unique_id=674464619]
 polygon = PackedVector2Array(2353.9375, -102.13751, 2338.5874, -102.13751, 2338.5874, -17.5, 2353.9375, -17.5)
 
-[node name="Bookshelf210" type="CollisionPolygon2D" parent="Terrain" unique_id=1240432705]
+[node name="Bookshelf210" type="CollisionPolygon2D" parent="Terrain" unique_id=1513475803]
 polygon = PackedVector2Array(2502.0376, -214.175, 2486.275, -214.175, 2486.275, -125, 2502.0376, -125)
 
-[node name="Bookshelf211" type="CollisionPolygon2D" parent="Terrain" unique_id=1417141514]
+[node name="Bookshelf211" type="CollisionPolygon2D" parent="Terrain" unique_id=629400956]
 polygon = PackedVector2Array(2485.525, -154.55, 2443.025, -154.55, 2443.025, -125, 2485.525, -125)
 
-[node name="Bookshelf212" type="CollisionPolygon2D" parent="Terrain" unique_id=2130506918]
+[node name="Bookshelf212" type="CollisionPolygon2D" parent="Terrain" unique_id=739251041]
 polygon = PackedVector2Array(2440.525, -198.275, 2427.075, -198.275, 2427.075, -125, 2440.525, -125)
 
-[node name="Bookshelf213" type="CollisionPolygon2D" parent="Terrain" unique_id=1277549924]
+[node name="Bookshelf213" type="CollisionPolygon2D" parent="Terrain" unique_id=1363218117]
 polygon = PackedVector2Array(2426.325, -199.65, 2414.675, -199.65, 2414.675, -125, 2426.325, -125)
 
-[node name="Bookshelf214" type="CollisionPolygon2D" parent="Terrain" unique_id=417798660]
+[node name="Bookshelf214" type="CollisionPolygon2D" parent="Terrain" unique_id=102909442]
 polygon = PackedVector2Array(2413.925, -214.8625, 2400.8, -214.8625, 2400.8, -125, 2413.925, -125)
 
-[node name="Bookshelf215" type="CollisionPolygon2D" parent="Terrain" unique_id=1440745039]
+[node name="Bookshelf215" type="CollisionPolygon2D" parent="Terrain" unique_id=1360594574]
 polygon = PackedVector2Array(2400.05, -213.55, 2384.325, -213.55, 2384.325, -125, 2400.05, -125)
 
-[node name="Bookshelf216" type="CollisionPolygon2D" parent="Terrain" unique_id=1544228781]
+[node name="Bookshelf216" type="CollisionPolygon2D" parent="Terrain" unique_id=348935592]
 polygon = PackedVector2Array(2352.2876, -214.875, 2336.3125, -214.875, 2336.3125, -125, 2352.2876, -125)
 
-[node name="Bookshelf217" type="CollisionPolygon2D" parent="Terrain" unique_id=327708861]
+[node name="Bookshelf217" type="CollisionPolygon2D" parent="Terrain" unique_id=1889491693]
 polygon = PackedVector2Array(2531.25, -303.3, 2517.15, -303.3, 2517.15, -232.5, 2531.25, -232.5)
 
-[node name="Bookshelf218" type="CollisionPolygon2D" parent="Terrain" unique_id=1340541917]
+[node name="Bookshelf218" type="CollisionPolygon2D" parent="Terrain" unique_id=1473410745]
 polygon = PackedVector2Array(2516.4, -305.3375, 2503.35, -305.3375, 2503.35, -232.5, 2516.4, -232.5)
 
-[node name="Bookshelf219" type="CollisionPolygon2D" parent="Terrain" unique_id=570156827]
+[node name="Bookshelf219" type="CollisionPolygon2D" parent="Terrain" unique_id=128281293]
 polygon = PackedVector2Array(2502.6, -263.575, 2460.1, -263.575, 2460.1, -232.5, 2502.6, -232.5)
 
-[node name="Bookshelf220" type="CollisionPolygon2D" parent="Terrain" unique_id=1464078708]
+[node name="Bookshelf220" type="CollisionPolygon2D" parent="Terrain" unique_id=600376774]
 polygon = PackedVector2Array(2457.6, -301.65, 2445.7625, -301.65, 2445.7625, -232.5, 2457.6, -232.5)
 
-[node name="Bookshelf221" type="CollisionPolygon2D" parent="Terrain" unique_id=530539585]
+[node name="Bookshelf221" type="CollisionPolygon2D" parent="Terrain" unique_id=347171852]
 polygon = PackedVector2Array(2445.0125, -321.5, 2430.5, -321.5, 2430.5, -232.5, 2445.0125, -232.5)
 
-[node name="Bookshelf222" type="CollisionPolygon2D" parent="Terrain" unique_id=872080366]
+[node name="Bookshelf222" type="CollisionPolygon2D" parent="Terrain" unique_id=46123933]
 polygon = PackedVector2Array(2429.75, -262.2, 2387.25, -262.2, 2387.25, -232.5, 2429.75, -232.5)
 
-[node name="Bookshelf223" type="CollisionPolygon2D" parent="Terrain" unique_id=1194102350]
+[node name="Bookshelf223" type="CollisionPolygon2D" parent="Terrain" unique_id=2038230222]
 polygon = PackedVector2Array(2384.75, -324.4625, 2369.3875, -324.4625, 2369.3875, -232.5, 2384.75, -232.5)
 
-[node name="Bookshelf224" type="CollisionPolygon2D" parent="Terrain" unique_id=951067133]
+[node name="Bookshelf224" type="CollisionPolygon2D" parent="Terrain" unique_id=492469230]
 polygon = PackedVector2Array(2368.6375, -306.0125, 2352.4, -306.0125, 2352.4, -232.5, 2368.6375, -232.5)
 
-[node name="Bookshelf225" type="CollisionPolygon2D" parent="Terrain" unique_id=1305237829]
+[node name="Bookshelf225" type="CollisionPolygon2D" parent="Terrain" unique_id=739568829]
 polygon = PackedVector2Array(2351.65, -298.3625, 2338.4126, -298.3625, 2338.4126, -232.5, 2351.65, -232.5)
 
-[node name="Bookshelf226" type="CollisionPolygon2D" parent="Terrain" unique_id=458015193]
+[node name="Bookshelf226" type="CollisionPolygon2D" parent="Terrain" unique_id=1442982027]
 polygon = PackedVector2Array(2533.75, -125, 2331.25, -125, 2331.25, -115, 2533.75, -115)
 
-[node name="Bookshelf227" type="CollisionPolygon2D" parent="Terrain" unique_id=1957632119]
+[node name="Bookshelf227" type="CollisionPolygon2D" parent="Terrain" unique_id=787641096]
 polygon = PackedVector2Array(2533.75, -232.5, 2331.25, -232.5, 2331.25, -222.5, 2533.75, -222.5)
 
-[node name="Bookshelf228" type="CollisionPolygon2D" parent="Terrain" unique_id=1959498338]
+[node name="Bookshelf228" type="CollisionPolygon2D" parent="Terrain" unique_id=144016842]
 polygon = PackedVector2Array(2545, -375, 2533.75, -375, 2533.75, 0, 2545, 0)
 
-[node name="Bookshelf229" type="CollisionPolygon2D" parent="Terrain" unique_id=1026405501]
+[node name="Bookshelf229" type="CollisionPolygon2D" parent="Terrain" unique_id=81700751]
 polygon = PackedVector2Array(2331.25, -375, 2320, -375, 2320, 0, 2331.25, 0)
 
-[node name="Bookshelf230" type="CollisionPolygon2D" parent="Terrain" unique_id=727337649]
+[node name="Bookshelf230" type="CollisionPolygon2D" parent="Terrain" unique_id=594708185]
 polygon = PackedVector2Array(2548, -377.5, 2317, -377.5, 2317, -363.75, 2548, -363.75)
 
-[node name="Bookshelf231" type="CollisionPolygon2D" parent="Terrain" unique_id=1241057391]
+[node name="Bookshelf231" type="CollisionPolygon2D" parent="Terrain" unique_id=1332503054]
 polygon = PackedVector2Array(2533.75, -17.5, 2331.25, -17.5, 2331.25, 0, 2533.75, 0)
 
-[node name="Bookshelf232" type="CollisionPolygon2D" parent="Terrain" unique_id=29266289]
+[node name="Bookshelf232" type="CollisionPolygon2D" parent="Terrain" unique_id=116081987]
 polygon = PackedVector2Array(2420.5, -375.25, 2390.5, -375.25, 2390.5, -350, 2420.5, -350)
 
-[node name="WallShelf11" type="CollisionPolygon2D" parent="Terrain" unique_id=1103831093]
+[node name="WallShelf11" type="CollisionPolygon2D" parent="Terrain" unique_id=1993331014]
 polygon = PackedVector2Array(417.5, -470, 610, -470, 610, -458.75, 417.5, -458.75)
 
-[node name="WallShelf12" type="CollisionPolygon2D" parent="Terrain" unique_id=711943374]
+[node name="WallShelf12" type="CollisionPolygon2D" parent="Terrain" unique_id=1768356397]
 polygon = PackedVector2Array(433.75, -525, 471.25, -525, 471.25, -470, 433.75, -470)
 
-[node name="WallShelf13" type="CollisionPolygon2D" parent="Terrain" unique_id=311061185]
+[node name="WallShelf13" type="CollisionPolygon2D" parent="Terrain" unique_id=1984673842]
 polygon = PackedVector2Array(500, -525, 530, -525, 530, -470, 500, -470)
 
-[node name="WallShelf14" type="CollisionPolygon2D" parent="Terrain" unique_id=1805807740]
+[node name="WallShelf14" type="CollisionPolygon2D" parent="Terrain" unique_id=1952356962]
 polygon = PackedVector2Array(567.5, -522.5, 576.25, -522.5, 576.25, -470, 567.5, -470)
 
-[node name="WallShelf21" type="CollisionPolygon2D" parent="Terrain" unique_id=1849127887]
+[node name="WallShelf21" type="CollisionPolygon2D" parent="Terrain" unique_id=67317708]
 polygon = PackedVector2Array(270, -640, 77.5, -640, 77.5, -628.75, 270, -628.75)
 
-[node name="WallShelf22" type="CollisionPolygon2D" parent="Terrain" unique_id=224617830]
+[node name="WallShelf22" type="CollisionPolygon2D" parent="Terrain" unique_id=690620965]
 polygon = PackedVector2Array(253.75, -695, 216.25, -695, 216.25, -640, 253.75, -640)
 
-[node name="WallShelf23" type="CollisionPolygon2D" parent="Terrain" unique_id=1552096729]
+[node name="WallShelf23" type="CollisionPolygon2D" parent="Terrain" unique_id=1952083380]
 polygon = PackedVector2Array(187.5, -695, 157.5, -695, 157.5, -640, 187.5, -640)
 
-[node name="WallShelf24" type="CollisionPolygon2D" parent="Terrain" unique_id=741873983]
+[node name="WallShelf24" type="CollisionPolygon2D" parent="Terrain" unique_id=300392184]
 polygon = PackedVector2Array(120, -692.5, 111.25, -692.5, 111.25, -640, 120, -640)
 
-[node name="WallShelf31" type="CollisionPolygon2D" parent="Terrain" unique_id=1581143873]
+[node name="WallShelf31" type="CollisionPolygon2D" parent="Terrain" unique_id=1230197490]
 polygon = PackedVector2Array(757.5, -720, 950, -720, 950, -708.75, 757.5, -708.75)
 
-[node name="WallShelf32" type="CollisionPolygon2D" parent="Terrain" unique_id=471691014]
+[node name="WallShelf32" type="CollisionPolygon2D" parent="Terrain" unique_id=645160771]
 polygon = PackedVector2Array(773.75, -775, 811.25, -775, 811.25, -720, 773.75, -720)
 
-[node name="WallShelf33" type="CollisionPolygon2D" parent="Terrain" unique_id=1165665665]
+[node name="WallShelf33" type="CollisionPolygon2D" parent="Terrain" unique_id=2138190028]
 polygon = PackedVector2Array(840, -775, 870, -775, 870, -720, 840, -720)
 
-[node name="WallShelf34" type="CollisionPolygon2D" parent="Terrain" unique_id=1587586627]
+[node name="WallShelf34" type="CollisionPolygon2D" parent="Terrain" unique_id=2031620165]
 polygon = PackedVector2Array(907.5, -772.5, 916.25, -772.5, 916.25, -720, 907.5, -720)
 
-[node name="WallShelf41" type="CollisionPolygon2D" parent="Terrain" unique_id=231980291]
+[node name="WallShelf41" type="CollisionPolygon2D" parent="Terrain" unique_id=1767452242]
 polygon = PackedVector2Array(1370, -820, 1177.5, -820, 1177.5, -808.75, 1370, -808.75)
 
-[node name="WallShelf42" type="CollisionPolygon2D" parent="Terrain" unique_id=1290438636]
+[node name="WallShelf42" type="CollisionPolygon2D" parent="Terrain" unique_id=1206264335]
 polygon = PackedVector2Array(1353.75, -875, 1316.25, -875, 1316.25, -820, 1353.75, -820)
 
-[node name="WallShelf43" type="CollisionPolygon2D" parent="Terrain" unique_id=2034742218]
+[node name="WallShelf43" type="CollisionPolygon2D" parent="Terrain" unique_id=1554153741]
 polygon = PackedVector2Array(1287.5, -875, 1257.5, -875, 1257.5, -820, 1287.5, -820)
 
-[node name="WallShelf44" type="CollisionPolygon2D" parent="Terrain" unique_id=1936497475]
+[node name="WallShelf44" type="CollisionPolygon2D" parent="Terrain" unique_id=941594108]
 polygon = PackedVector2Array(1220, -872.5, 1211.25, -872.5, 1211.25, -820, 1220, -820)
 
-[node name="WallShelf51" type="CollisionPolygon2D" parent="Terrain" unique_id=1137889011]
+[node name="WallShelf51" type="CollisionPolygon2D" parent="Terrain" unique_id=472352409]
 polygon = PackedVector2Array(1537.5, -600, 1730, -600, 1730, -588.75, 1537.5, -588.75)
 
-[node name="WallShelf52" type="CollisionPolygon2D" parent="Terrain" unique_id=99162147]
+[node name="WallShelf52" type="CollisionPolygon2D" parent="Terrain" unique_id=2068042498]
 polygon = PackedVector2Array(1553.75, -655, 1591.25, -655, 1591.25, -600, 1553.75, -600)
 
-[node name="WallShelf53" type="CollisionPolygon2D" parent="Terrain" unique_id=2767128]
+[node name="WallShelf53" type="CollisionPolygon2D" parent="Terrain" unique_id=60745577]
 polygon = PackedVector2Array(1620, -655, 1650, -655, 1650, -600, 1620, -600)
 
-[node name="WallShelf54" type="CollisionPolygon2D" parent="Terrain" unique_id=1826298212]
+[node name="WallShelf54" type="CollisionPolygon2D" parent="Terrain" unique_id=1030393794]
 polygon = PackedVector2Array(1687.5, -652.5, 1696.25, -652.5, 1696.25, -600, 1687.5, -600)
 
-[node name="WallShelf61" type="CollisionPolygon2D" parent="Terrain" unique_id=699054432]
+[node name="WallShelf61" type="CollisionPolygon2D" parent="Terrain" unique_id=1078907418]
 polygon = PackedVector2Array(2080, -780, 1887.5, -780, 1887.5, -768.75, 2080, -768.75)
 
-[node name="WallShelf62" type="CollisionPolygon2D" parent="Terrain" unique_id=1934042876]
+[node name="WallShelf62" type="CollisionPolygon2D" parent="Terrain" unique_id=159270849]
 polygon = PackedVector2Array(2063.75, -835, 2026.25, -835, 2026.25, -780, 2063.75, -780)
 
-[node name="WallShelf63" type="CollisionPolygon2D" parent="Terrain" unique_id=809416211]
+[node name="WallShelf63" type="CollisionPolygon2D" parent="Terrain" unique_id=2091152276]
 polygon = PackedVector2Array(1997.5, -835, 1967.5, -835, 1967.5, -780, 1997.5, -780)
 
-[node name="WallShelf64" type="CollisionPolygon2D" parent="Terrain" unique_id=2054217472]
+[node name="WallShelf64" type="CollisionPolygon2D" parent="Terrain" unique_id=2001421259]
 polygon = PackedVector2Array(1930, -832.5, 1921.25, -832.5, 1921.25, -780, 1930, -780)
 
-[node name="WallShelf71" type="CollisionPolygon2D" parent="Terrain" unique_id=1654694053]
+[node name="WallShelf71" type="CollisionPolygon2D" parent="Terrain" unique_id=1313960387]
 polygon = PackedVector2Array(2087.5, -470, 2280, -470, 2280, -458.75, 2087.5, -458.75)
 
-[node name="WallShelf72" type="CollisionPolygon2D" parent="Terrain" unique_id=1878451694]
+[node name="WallShelf72" type="CollisionPolygon2D" parent="Terrain" unique_id=1555579107]
 polygon = PackedVector2Array(2103.75, -525, 2141.25, -525, 2141.25, -470, 2103.75, -470)
 
-[node name="WallShelf73" type="CollisionPolygon2D" parent="Terrain" unique_id=612633677]
+[node name="WallShelf73" type="CollisionPolygon2D" parent="Terrain" unique_id=1580890219]
 polygon = PackedVector2Array(2170, -525, 2200, -525, 2200, -470, 2170, -470)
 
-[node name="WallShelf74" type="CollisionPolygon2D" parent="Terrain" unique_id=354152982]
+[node name="WallShelf74" type="CollisionPolygon2D" parent="Terrain" unique_id=1157427978]
 polygon = PackedVector2Array(2237.5, -522.5, 2246.25, -522.5, 2246.25, -470, 2237.5, -470)
 
-[node name="WallShelf81" type="CollisionPolygon2D" parent="Terrain" unique_id=1677466480]
+[node name="WallShelf81" type="CollisionPolygon2D" parent="Terrain" unique_id=1614757557]
 polygon = PackedVector2Array(2317.5, -650, 2510, -650, 2510, -638.75, 2317.5, -638.75)
 
-[node name="WallShelf82" type="CollisionPolygon2D" parent="Terrain" unique_id=583955865]
+[node name="WallShelf82" type="CollisionPolygon2D" parent="Terrain" unique_id=1668394627]
 polygon = PackedVector2Array(2333.75, -705, 2371.25, -705, 2371.25, -650, 2333.75, -650)
 
-[node name="WallShelf83" type="CollisionPolygon2D" parent="Terrain" unique_id=672703665]
+[node name="WallShelf83" type="CollisionPolygon2D" parent="Terrain" unique_id=1264019403]
 polygon = PackedVector2Array(2400, -705, 2430, -705, 2430, -650, 2400, -650)
 
-[node name="WallShelf84" type="CollisionPolygon2D" parent="Terrain" unique_id=1552875191]
+[node name="WallShelf84" type="CollisionPolygon2D" parent="Terrain" unique_id=2005667078]
 polygon = PackedVector2Array(2467.5, -702.5, 2476.25, -702.5, 2476.25, -650, 2467.5, -650)
 
-[node name="CeilingFan11" type="CollisionPolygon2D" parent="Terrain" unique_id=494399381]
+[node name="CeilingFan11" type="CollisionPolygon2D" parent="Terrain" unique_id=959547757]
 polygon = PackedVector2Array(1248.75, -990, 1311.25, -990, 1311.25, -963.75, 1248.75, -963.75)
 
-[node name="CeilingFan12" type="CollisionPolygon2D" parent="Terrain" unique_id=597241887]
+[node name="CeilingFan12" type="CollisionPolygon2D" parent="Terrain" unique_id=1317468896]
 polygon = PackedVector2Array(1080, -981.25, 1260, -980, 1260, -977.5, 1080, -977.5)
 
-[node name="CeilingFan13" type="CollisionPolygon2D" parent="Terrain" unique_id=14686141]
+[node name="CeilingFan13" type="CollisionPolygon2D" parent="Terrain" unique_id=1910503521]
 polygon = PackedVector2Array(1300, -980, 1480, -981.25, 1480, -977.5, 1300, -977.5)
 
-[node name="LampLight" type="Node2D" parent="." unique_id=1408399098]
+[node name="LampLight" type="Node2D" parent="." unique_id=1752530320]
 z_index = 5
 position = Vector2(1673.75, -342.5)
 script = ExtResource("3_nkc1q")
 piece = "desk_lamp_glow"
 cast_shadow = false
 
-[node name="FloorBoards" type="Node2D" parent="." unique_id=1258537442]
+[node name="FloorBoards" type="Node2D" parent="." unique_id=769446833]
 script = ExtResource("2_djorq")
 piece = "floor"
 area = Rect2(-64, -12, 2688, 12)
 along_x = true
 
-[node name="Spawns" type="Node2D" parent="." unique_id=252546842]
+[node name="Spawns" type="Node2D" parent="." unique_id=684822747]
 
-[node name="FloorLeft" type="Marker2D" parent="Spawns" unique_id=2103889939]
+[node name="FloorLeft" type="Marker2D" parent="Spawns" unique_id=1565149631]
 position = Vector2(268, 0)
 script = ExtResource("5_hchn5")
 
-[node name="UnderBed" type="Marker2D" parent="Spawns" unique_id=1369534872]
+[node name="UnderBed" type="Marker2D" parent="Spawns" unique_id=7785778]
 position = Vector2(560, 0)
 script = ExtResource("5_hchn5")
 
-[node name="FloorBlocks" type="Marker2D" parent="Spawns" unique_id=1844449169]
+[node name="FloorBlocks" type="Marker2D" parent="Spawns" unique_id=920392256]
 position = Vector2(1076, 0)
 script = ExtResource("5_hchn5")
 
-[node name="FloorMid" type="Marker2D" parent="Spawns" unique_id=933857999]
+[node name="FloorMid" type="Marker2D" parent="Spawns" unique_id=1142441826]
 position = Vector2(1480, 0)
 script = ExtResource("5_hchn5")
 
-[node name="UnderDesk" type="Marker2D" parent="Spawns" unique_id=1572943297]
+[node name="UnderDesk" type="Marker2D" parent="Spawns" unique_id=215953503]
 position = Vector2(1700, 0)
 script = ExtResource("5_hchn5")
 
-[node name="FloorRight" type="Marker2D" parent="Spawns" unique_id=1150651880]
+[node name="FloorRight" type="Marker2D" parent="Spawns" unique_id=1588656700]
 position = Vector2(2240, 0)
 script = ExtResource("5_hchn5")
 
-[node name="Bed" type="Marker2D" parent="Spawns" unique_id=1444012786]
+[node name="Bed" type="Marker2D" parent="Spawns" unique_id=1351738188]
 position = Vector2(600, -153.75)
 script = ExtResource("5_hchn5")
 
-[node name="Chest" type="Marker2D" parent="Spawns" unique_id=1814999123]
+[node name="Chest" type="Marker2D" parent="Spawns" unique_id=1147206596]
 position = Vector2(1230, -153.75)
 script = ExtResource("5_hchn5")
 
-[node name="Desk" type="Marker2D" parent="Spawns" unique_id=630578643]
+[node name="Desk" type="Marker2D" parent="Spawns" unique_id=1969349220]
 position = Vector2(1760, -315)
 script = ExtResource("5_hchn5")
 
-[node name="ShelfTopLeft" type="Marker2D" parent="Spawns" unique_id=529376949]
+[node name="ShelfTopLeft" type="Marker2D" parent="Spawns" unique_id=824441833]
 position = Vector2(120, -377.5)
 script = ExtResource("5_hchn5")
 
-[node name="ShelfTopRight" type="Marker2D" parent="Spawns" unique_id=2130809161]
+[node name="ShelfTopRight" type="Marker2D" parent="Spawns" unique_id=7565387]
 position = Vector2(2436, -377.5)
 script = ExtResource("5_hchn5")
 
-[node name="ShelfHighLeft" type="Marker2D" parent="Spawns" unique_id=1757829479]
+[node name="ShelfHighLeft" type="Marker2D" parent="Spawns" unique_id=561161426]
 position = Vector2(860, -775)
 script = ExtResource("5_hchn5")
 
-[node name="ShelfHighRight" type="Marker2D" parent="Spawns" unique_id=636066717]
+[node name="ShelfHighRight" type="Marker2D" parent="Spawns" unique_id=2024667106]
 position = Vector2(1990, -835)
 script = ExtResource("5_hchn5")
 
-[node name="ShelfMidRight" type="Marker2D" parent="Spawns" unique_id=2141983278]
+[node name="ShelfMidRight" type="Marker2D" parent="Spawns" unique_id=465720936]
 position = Vector2(2190, -525)
 script = ExtResource("5_hchn5")
 
-[node name="Pickups" type="Node2D" parent="." unique_id=415120332]
+[node name="Pickups" type="Node2D" parent="." unique_id=1775250326]
 
-[node name="UnderBed" type="Marker2D" parent="Pickups" unique_id=565531267]
+[node name="UnderBed" type="Marker2D" parent="Pickups" unique_id=767647307]
 position = Vector2(700, 0)
 script = ExtResource("6_0gbdm")
 items = PackedStringArray("uzi", "smg")
 
-[node name="Pillow" type="Marker2D" parent="Pickups" unique_id=359046811]
+[node name="Pillow" type="Marker2D" parent="Pickups" unique_id=525453749]
 position = Vector2(470, -153.75)
 script = ExtResource("6_0gbdm")
 items = PackedStringArray("frag", "health_pack")
 interval = 30.0
 
-[node name="ShelfWindow" type="Marker2D" parent="Pickups" unique_id=988774441]
+[node name="ShelfWindow" type="Marker2D" parent="Pickups" unique_id=1068078654]
 position = Vector2(1278, -875)
 script = ExtResource("6_0gbdm")
 items = PackedStringArray("sniper_rifle")
 interval = 90.0
 
-[node name="Fan" type="Marker2D" parent="Pickups" unique_id=1494917303]
+[node name="Fan" type="Marker2D" parent="Pickups" unique_id=1879903675]
 position = Vector2(1160, -980.75)
 script = ExtResource("6_0gbdm")
 items = PackedStringArray("rocket_launcher", "assault_rifle", "pump_shotgun", "smg")
 interval = 120.0
 
-[node name="DeskTop" type="Marker2D" parent="Pickups" unique_id=2026044979]
+[node name="DeskTop" type="Marker2D" parent="Pickups" unique_id=1898575555]
 position = Vector2(1660, -262.5)
 script = ExtResource("6_0gbdm")
 items = PackedStringArray("frag")
 interval = 30.0
 
-[node name="FloorMid" type="Marker2D" parent="Pickups" unique_id=1531054998]
+[node name="FloorMid" type="Marker2D" parent="Pickups" unique_id=533163497]
 position = Vector2(1300, 0)
 script = ExtResource("6_0gbdm")
 items = PackedStringArray("health_pack", "battery_pack")
 
-[node name="ShelfOverBed" type="Marker2D" parent="Pickups" unique_id=533586757]
+[node name="ShelfOverBed" type="Marker2D" parent="Pickups" unique_id=2122195081]
 position = Vector2(520, -525)
 script = ExtResource("6_0gbdm")
 items = PackedStringArray("assault_rifle", "pump_shotgun")
 
-[node name="ShelfRight" type="Marker2D" parent="Pickups" unique_id=279537234]
+[node name="ShelfRight" type="Marker2D" parent="Pickups" unique_id=379459008]
 position = Vector2(2180, -525)
 script = ExtResource("6_0gbdm")
 items = PackedStringArray("pump_shotgun", "uzi")
 
-[node name="Chest" type="Marker2D" parent="Pickups" unique_id=1342998017]
+[node name="Chest" type="Marker2D" parent="Pickups" unique_id=996439070]
 position = Vector2(1180, -153.75)
 script = ExtResource("6_0gbdm")
 items = PackedStringArray("frag", "health_pack")
 interval = 30.0
 
-[node name="ShelfLeftHigh" type="Marker2D" parent="Pickups" unique_id=1023212584]
+[node name="ShelfLeftHigh" type="Marker2D" parent="Pickups" unique_id=1088358542]
 position = Vector2(170, -695)
 script = ExtResource("6_0gbdm")
 items = PackedStringArray("battery_pack", "health_pack")
 
-[node name="ShelfRightHigh" type="Marker2D" parent="Pickups" unique_id=1408881514]
+[node name="ShelfRightHigh" type="Marker2D" parent="Pickups" unique_id=1072768691]
 position = Vector2(2410, -705)
 script = ExtResource("6_0gbdm")
 items = PackedStringArray("smg", "assault_rifle")
 
-[node name="Bases" type="Node2D" parent="." unique_id=509034698]
+[node name="Bases" type="Node2D" parent="." unique_id=506984873]
 
-[node name="BaseTeam0" type="Marker2D" parent="Bases" unique_id=2065270389]
+[node name="BaseTeam0" type="Marker2D" parent="Bases" unique_id=560213265]
 position = Vector2(120, 0)
 script = ExtResource("7_yw6dh")
 
-[node name="BaseTeam1" type="Marker2D" parent="Bases" unique_id=1976358741]
+[node name="BaseTeam1" type="Marker2D" parent="Bases" unique_id=2008156060]
 position = Vector2(2440, 0)
 script = ExtResource("7_yw6dh")
 team = 1
