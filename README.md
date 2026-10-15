@@ -6,8 +6,8 @@ needed.
 
 Built with Godot 4.7, typed GDScript, the Compatibility renderer. Android first.
 
-**Status:** early. A toy walks, jumps, crouches and flies on the jetpack on a blockout map.
-No weapons yet.
+**Status:** the first playable. Bootcamp: free-for-all or team deathmatch against 1 to 11 bots
+on a blockout bedroom, with five short lessons. LAN play comes next.
 
 ## Run it
 
@@ -62,7 +62,8 @@ game refuses a ruleset with a missing or out-of-range value and names it.
 
 | Path | What |
 |---|---|
-| `src/sim/` | The match server's simulation: rules, toys, the fixed clock. Reads no input, draws nothing |
+| `src/sim/` | The match server's simulation: rules, toys, the fixed clock, match rules and bots ([match and bots](docs/match-and-bots.md)). Reads no input, draws nothing |
+| `src/app/`, `src/lessons/` | The app's screens: menu, bootcamp, match, results, lessons, settings |
 | `src/view/` | The app: input, drawing, camera, debug overlay |
 | `src/rules/` | Ruleset schema, values and loader |
 | `src/maps/`, `maps/` | Map node types and the maps ([format](docs/map-format.md)) |

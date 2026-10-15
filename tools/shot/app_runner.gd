@@ -13,6 +13,7 @@ extends Node
 ##       {"when": "results", "delay": 1.5, "shot": "results"},   once the results show
 ##       {"when": "results", "delay": 4.0, "press": "Rematch"},
 ##       {"when": "match", "delay": 3.0, "shot": "rematch"},     once a new match runs
+##       {"when": "lesson", "delay": 2.0, "shot": "fly"},        once a new lesson runs
 ##       {"t": 99, "quit": true}
 ##     ]
 ##   }
@@ -78,6 +79,11 @@ func _happened(what: String) -> bool:
 			return false
 		"menu":
 			return screen is MainMenu
+		"lesson":
+			if screen is LessonScreen and screen != _last_screen:
+				_last_screen = screen
+				return true
+			return false
 		"setup":
 			return screen is BootcampSetup
 	return false
