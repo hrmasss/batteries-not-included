@@ -23,6 +23,7 @@ func _ready() -> void:
 	_layer.name = "Menus"
 	add_child(_layer)
 	settings = AppSettings.load_or_default(settings_path)
+	autoplay = autoplay or settings.autoplay
 	var loaded := RulesetLoader.load_standard()
 	if not loaded.ok():
 		push_error("ruleset refused: %s" % "; ".join(loaded.errors))

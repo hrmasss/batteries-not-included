@@ -12,6 +12,9 @@ var tuning_overlay: bool = false
 var lessons_offered: bool = false
 var lessons_done: PackedStringArray = []
 var last_bootcamp: Dictionary = {}
+## Demo recordings only, set by hand in the file ([debug] autoplay=true): a bot plays the
+## player's toy. No screen offers it.
+var autoplay: bool = false
 
 var _path: String = PATH
 
@@ -27,6 +30,7 @@ static func load_or_default(path: String = PATH) -> AppSettings:
 		s.lessons_done = PackedStringArray(done) if done is PackedStringArray or done is Array else PackedStringArray()
 		var last: Variant = cfg.get_value("app", "last_bootcamp", {})
 		s.last_bootcamp = last if last is Dictionary else {}
+		s.autoplay = bool(cfg.get_value("debug", "autoplay", false))
 	return s
 
 
@@ -36,6 +40,8 @@ func save() -> Error:
 	cfg.set_value("app", "lessons_offered", lessons_offered)
 	cfg.set_value("app", "lessons_done", lessons_done)
 	cfg.set_value("app", "last_bootcamp", last_bootcamp)
+	if autoplay:
+		cfg.set_value("debug", "autoplay", true)
 	return cfg.save(_path)
 
 
