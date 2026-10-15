@@ -85,7 +85,7 @@ def check_json():
         if p["parent"] not in names:
             fail(f"rig.json: {p['name']} parent {p['parent']} unknown")
         inside(p["pivot"], sizes[f], name=f"rig.json {p['name']} pivot")
-    for k, f in list(rig["faces"].items()) + list(rig["team"]["baked"].items()):
+    for k, f in list(rig["faces"].items()) + list(rig["team"]["baked"].items()) + list(rig["team"].get("pattern_files", {}).items()):
         if os.path.join(sd, f) not in sizes:
             fail(f"rig.json: {k} file {f} missing")
     poses = json.load(open(os.path.join(sd, "poses.json")))
@@ -134,7 +134,7 @@ def check_json():
     referenced = set()
     for p in rig["parts"]:
         referenced.add(os.path.join(sd, p["file"]))
-    for f in list(rig["faces"].values()) + list(rig["team"]["baked"].values()):
+    for f in list(rig["faces"].values()) + list(rig["team"]["baked"].values()) + list(rig["team"].get("pattern_files", {}).values()):
         referenced.add(os.path.join(sd, f))
     for w in weapons.values():
         referenced.add(os.path.join(ASSETS, "weapons", w["file"]))

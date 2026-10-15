@@ -124,7 +124,7 @@ func add_dummy(team: int, at: Variant = null, protect: bool = true) -> Fighter:
 
 
 func _add_toy_view(t: SimToy) -> void:
-	var v := ToyView.new(t, sim.rules)
+	var v := ToyView.new(t, sim.rules, combat)
 	v.show_hitboxes = show_hitboxes
 	toy_views.append(v)
 	add_child(v)
