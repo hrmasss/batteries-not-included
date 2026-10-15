@@ -11,6 +11,11 @@ const SAMPLE := 30
 var sim: MatchSim
 
 
+## The map these checks run on; test_bots_on_bedroom.gd runs them all again on the art bedroom.
+func map_path() -> String:
+	return MAP
+
+
 func _run(mode: MatchConfig.Mode, bots: int, length: float, level: StringName = &"", seed_value: int = 1) -> Dictionary:
 	if sim != null and is_instance_valid(sim) and sim.get_parent() != null:
 		sim.get_parent().remove_child(sim)
@@ -23,7 +28,7 @@ func _run(mode: MatchConfig.Mode, bots: int, length: float, level: StringName = 
 	if level != &"":
 		cfg.skill = level
 	sim = MatchSim.new()
-	sim.setup(cfg.apply(loaded.ruleset), (load(MAP) as PackedScene).instantiate())
+	sim.setup(cfg.apply(loaded.ruleset), (load(map_path()) as PackedScene).instantiate())
 	add_child(sim)
 	autofree(sim)
 	sim.start_combat(seed_value)

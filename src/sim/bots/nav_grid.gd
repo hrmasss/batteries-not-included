@@ -28,6 +28,9 @@ var floor_cells: Array[Vector2i] = []
 
 var _space: PhysicsDirectSpaceState2D
 var _half_width: float
+## The toy's whole height, feet (less MARGIN) to the top of the head, swept by `clear`.
+var _sweep := PhysicsShapeQueryParameters2D.new()
+var _sweep_offset: Vector2
 
 
 ## Builds the grid for `sim`'s map. `cell_size` and `air_cost` come from the bot skill table.
@@ -45,6 +48,15 @@ func _make(sim: MatchSim, cell_size: float, air_cost: float) -> void:
 	size = Vector2i(ceili(b.size.x / cell), ceili(b.size.y / cell))
 	_space = sim.get_world_2d().direct_space_state
 	_half_width = rules.body_width * 0.5
+	# World y down: the feet are -body_bottom below the origin, the head's top above it.
+	var feet := -rules.body_bottom - MARGIN
+	var head := -(rules.head_height + rules.head_radius)
+	var tall := RectangleShape2D.new()
+	tall.size = Vector2(rules.body_width, feet - head)
+	_sweep.shape = tall
+	_sweep.collision_mask = 1 << (SimToy.TERRAIN_LAYER - 1)
+	_sweep.collide_with_areas = false
+	_sweep_offset = Vector2(0.0, (feet + head) * 0.5)
 	astar.region = Rect2i(Vector2i.ZERO, size)
 	astar.cell_size = Vector2(cell, cell)
 	astar.offset = origin + Vector2(cell, cell) * 0.5
@@ -60,7 +72,9 @@ func _make(sim: MatchSim, cell_size: float, air_cost: float) -> void:
 	q.shape = box
 	q.collision_mask = 1 << (SimToy.TERRAIN_LAYER - 1)
 	q.collide_with_areas = false
-	var floor_reach := cell * 0.5 - rules.body_bottom + MARGIN
+	# The free cell just above a surface has its centre up to a box half plus a cell above it,
+	# wherever the surface falls in the grid (the art maps' props are not on the grid).
+	var floor_reach := box.size.y * 0.5 + cell + MARGIN
 	for y in size.y:
 		for x in size.x:
 			var c := Vector2i(x, y)
@@ -154,13 +168,17 @@ func random_floor(rng: RandomNumberGenerator) -> Vector2:
 	return point(pool[rng.randi_range(0, pool.size() - 1)])
 
 
-## True when a toy-wide line from `a` to `b` touches no terrain.
+## True when a toy's whole body, feet to head, moves from `a` to `b` (body origins) and
+## touches no terrain. A line as wide as the toy is not enough: under the bed the gap is
+## barely taller than a toy, and a line through its middle misses the rail its head hits.
 func clear(a: Vector2, b: Vector2) -> bool:
 	var d := b - a
 	if d.length_squared() < EPSILON:
 		return true
-	var side := Vector2(-d.y, d.x).normalized() * _half_width
-	return _ray(a, b).is_empty() and _ray(a + side, b + side).is_empty() and _ray(a - side, b - side).is_empty()
+	_sweep.transform = Transform2D(0.0, a + _sweep_offset)
+	_sweep.motion = d
+	var hit := _space.cast_motion(_sweep)
+	return hit.is_empty() or hit[0] >= 1.0
 
 
 ## True when nothing solid lies on the thin line from `a` to `b` (sight).

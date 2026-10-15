@@ -226,16 +226,25 @@ func test_us38_4_bedroom_collision_is_the_kit_collision() -> void:
 	var m: GameMap = load("res://maps/bedroom/bedroom.tscn").instantiate()
 	autofree(m)
 	var kit := ArtLibrary.kit()
+	# The bed's foot post and the desk's right leg stop short of the floor, so toys can get in
+	# and out from under them (tools/make_bedroom.gd FLOOR_GAPS).
+	var gaps: Dictionary = (load("res://tools/make_bedroom.gd") as GDScript).get_script_constant_map().FLOOR_GAPS
 	var want := 0
 	var polys := []
 	for p in m.get_node("Props").get_children():
 		var prop := p as KitProp
 		var xf := Transform2D(0.0, prop.position) * KitProp.image_xf_for(prop.piece, prop.flip)
+		var n := 0
 		for c: Dictionary in kit[prop.piece].get("collision", []):
 			want += 1
+			n += 1
 			var poly := PackedVector2Array()
 			for pt: Array in c.poly:
 				poly.append(xf * Vector2(float(pt[0]), float(pt[1])))
+			var cname := "%s%d" % [prop.name, n]
+			if gaps.has(cname):
+				for k in poly.size():
+					poly[k].y = minf(poly[k].y, -float(gaps[cname]))
 			polys.append(poly)
 	var got := []
 	for c in m.get_node("Terrain").get_children():

@@ -8,7 +8,9 @@ enum Mode { FFA, TDM }
 
 ## A match needs two sides: two players, or two teams. A rule of the game, not tuning.
 const SIDES := 2
-const DEFAULT_MAP := "res://maps/bedroom_blockout/bedroom_blockout.tscn"
+## The art bedroom is the default; the blockout stays for tests (maps/bedroom_blockout).
+const DEFAULT_MAP := "res://maps/bedroom/bedroom.tscn"
+const BLOCKOUT_MAP := "res://maps/bedroom_blockout/bedroom_blockout.tscn"
 
 var mode: Mode = Mode.FFA
 ## Teams in team deathmatch (T-78).

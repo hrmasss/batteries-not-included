@@ -301,7 +301,7 @@ polygon = PackedVector2Array(128.5, -375.25, 158.5, -375.25, 158.5, -350, 128.5,
 polygon = PackedVector2Array(300, -300, 325, -300, 325, 0, 300, 0)
 
 [node name="Bed12" type="CollisionPolygon2D" parent="Terrain" unique_id=2146609653]
-polygon = PackedVector2Array(800, -212.5, 825, -212.5, 825, 0, 800, 0)
+polygon = PackedVector2Array(800, -212.5, 825, -212.5, 825, -53, 800, -53)
 
 [node name="Bed13" type="CollisionPolygon2D" parent="Terrain" unique_id=580417915]
 polygon = PackedVector2Array(325, -153.75, 800, -153.75, 800, -80, 325, -80)
@@ -340,7 +340,7 @@ polygon = PackedVector2Array(1555, -262.5, 1940, -262.5, 1940, -250, 1555, -250)
 polygon = PackedVector2Array(1560, -250, 1672.5, -250, 1672.5, 0, 1560, 0)
 
 [node name="Desk13" type="CollisionPolygon2D" parent="Terrain" unique_id=1527026918]
-polygon = PackedVector2Array(1916.25, -250, 1928.75, -250, 1928.75, 0, 1916.25, 0)
+polygon = PackedVector2Array(1916.25, -250, 1928.75, -250, 1928.75, -53, 1916.25, -53)
 
 [node name="Desk14" type="CollisionPolygon2D" parent="Terrain" unique_id=1157594915]
 polygon = PackedVector2Array(1797.5, -288.75, 1892.5, -288.75, 1892.5, -262.5, 1797.5, -262.5)

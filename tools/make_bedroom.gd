@@ -43,6 +43,12 @@ const PROPS := [
 	["ceiling_fan", Vector2(1280, -CEILING), false],
 ]
 
+## Collision polygons lifted off the floor to this height, u, so toys walk under them: the bed's
+## foot post and the desk's right leg. Without the gap, the spaces under the bed and the desk are
+## sealed and a toy spawned there can never leave. The drawn leg still reaches the floor; the toy
+## passes in front of it. The gap matches the bed rail (53 u), over a standing toy (39.5 u).
+const FLOOR_GAPS := {"Bed12": 53.0, "Desk13": 53.0}
+
 ## Backdrop pieces: where they should appear when the camera looks at them (u).
 const BACK := [
 	["window", Vector2(1090, -600)],
@@ -171,6 +177,9 @@ func _init() -> void:
 			var cp := CollisionPolygon2D.new()
 			n += 1
 			cp.name = "%s%d" % [p.name, n]
+			if FLOOR_GAPS.has(cp.name):
+				for k in poly.size():
+					poly[k].y = minf(poly[k].y, -float(FLOOR_GAPS[cp.name]))
 			cp.polygon = poly
 			_add(root, terrain, cp)
 			_solids.append(poly)

@@ -1,6 +1,6 @@
 extends SceneTree
 ## Runs one bootcamp match headless and prints the scoreboard and how the bots moved.
-## godot --headless --path . -s tools/sim/bot_match.gd -- [bots] [seconds] [mode ffa|tdm] [skill] [seed]
+## godot --headless --path . -s tools/sim/bot_match.gd -- [bots] [seconds] [mode ffa|tdm] [skill] [seed] [map: bedroom|blockout|res path]
 
 func _init() -> void:
 	var args := OS.get_cmdline_user_args()
@@ -16,6 +16,9 @@ func _init() -> void:
 	if args.size() > 3:
 		cfg.skill = StringName(args[3])
 	cfg.seed_value = int(args[4]) if args.size() > 4 else 1
+	if args.size() > 5:
+		cfg.map_path = {"bedroom": MatchConfig.DEFAULT_MAP, "blockout": MatchConfig.BLOCKOUT_MAP}.get(args[5], args[5])
+	print("map %s" % cfg.map_path)
 	var rules := cfg.apply(loaded.ruleset)
 	var sim := MatchSim.new()
 	sim.setup(rules, (load(cfg.map_path) as PackedScene).instantiate())
