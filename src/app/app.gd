@@ -13,6 +13,8 @@ var autoplay: bool = false
 var settings_path: String = AppSettings.PATH
 
 var _screen: Node = null
+## The art bedroom behind the menus; freed while a match or lesson runs.
+var _backdrop: MenuBackdrop = null
 ## Menu screens are Controls; they sit on this layer so they fill the screen.
 var _layer: CanvasLayer
 
@@ -48,8 +50,14 @@ func _show(node: Node) -> void:
 		_screen.queue_free()
 	_screen = node
 	if node is Control:
+		if _backdrop == null:
+			_backdrop = MenuBackdrop.new()
+			add_child(_backdrop)
 		_layer.add_child(node)
 	else:
+		if _backdrop != null:
+			_backdrop.free()
+			_backdrop = null
 		add_child(node)
 
 

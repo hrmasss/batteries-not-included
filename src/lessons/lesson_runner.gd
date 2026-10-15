@@ -27,6 +27,17 @@ const TARGET_DISTANCE := 220.0
 const ITEM_DISTANCE := 110.0
 const GRENADE_TARGET_DISTANCE := 320.0
 const GUN := &"smg"
+## Placing things beside the player: shares of the asked distance tried, nearest to the ask
+## first, how far above the player's feet a floor may be, the step along a floor and the
+## height change that still counts as the same floor. Solver detail, not lesson pacing.
+const TRIES: Array[float] = [1.0, 0.85, 1.15, 0.7, 1.3, 0.55, 0.4]
+const RISE := 60.0
+const PROBE := 8.0
+const LEDGE := 6.0
+## How far a start spot's open floor is measured on each side, u, and the open air it needs
+## above the head (the fly lesson takes off from it).
+const ROOM_REACH := 400.0
+const HEADROOM := 200.0
 
 signal advanced(step: int)
 signal finished(id: StringName)
@@ -133,15 +144,109 @@ func _mine(e: Dictionary) -> bool:
 	return e.get("toy", 0) == me.id()
 
 
-## A point on the floor `distance` to the side of the player with the most room.
-func _beside(distance: float) -> Vector2:
+## Feet on a floor about `distance` to one side of the player, where a toy fits: on the
+## player's own floor with nothing in the way when `walk` (an item to walk to), else anywhere
+## in the player's sight (a target). Art maps are cluttered: the bed's post, the space under it.
+func _beside(distance: float, walk: bool = false) -> Vector2:
 	var p := me.toy.position
 	var b := sim.map.bounds
-	var side := 1.0 if b.end.x - p.x > p.x - b.position.x else -1.0
-	var at := p + Vector2(side * distance, 0.0)
-	var q := PhysicsRayQueryParameters2D.create(at, at + Vector2(0, TARGET_DISTANCE), 1 << (SimToy.TERRAIN_LAYER - 1))
+	var first := 1.0 if b.end.x - p.x > p.x - b.position.x else -1.0
+	var my_feet := _feet(p)
+	for k in TRIES:
+		for side: float in [first, -first]:
+			var found: Variant = _floor_at(p.x + side * distance * k, p.y)
+			if found == null:
+				continue
+			var feet: Vector2 = found
+			if walk and (absf(feet.y - my_feet.y) > LEDGE or not _walkable(p.x, feet.x, my_feet.y)):
+				continue
+			if not walk and not _in_sight(p, _origin(feet)):
+				continue
+			return feet
+	return _feet(p + Vector2(first * distance, 0.0))
+
+
+## Feet on the first floor below (x, a little above `y`) where a toy fits, or null.
+func _floor_at(x: float, y: float) -> Variant:
+	var from := Vector2(x, y - RISE)
+	var q := PhysicsRayQueryParameters2D.create(from, from + Vector2(0, RISE + TARGET_DISTANCE), 1 << (SimToy.TERRAIN_LAYER - 1))
 	var hit := sim.get_world_2d().direct_space_state.intersect_ray(q)
-	return hit.position if not hit.is_empty() else at - Vector2(0, sim.rules.body_bottom)
+	if hit.is_empty() or (hit.normal as Vector2).y > SimToy.FLOOR_NORMAL_Y:
+		return null
+	var feet: Vector2 = hit.position
+	return feet if _fits(_origin(feet)) else null
+
+
+## True when a standing toy at `origin` touches no terrain.
+func _fits(origin: Vector2) -> bool:
+	var rules := sim.rules
+	var top := rules.head_height + rules.head_radius
+	var box := RectangleShape2D.new()
+	box.size = Vector2(rules.body_width, top - rules.body_bottom - SimToy.SAFE_MARGIN * 4.0)
+	var q := PhysicsShapeQueryParameters2D.new()
+	q.shape = box
+	q.collision_mask = 1 << (SimToy.TERRAIN_LAYER - 1)
+	q.transform = Transform2D(0.0, origin + Vector2(0.0, -(top + rules.body_bottom) * 0.5))
+	return sim.get_world_2d().direct_space_state.intersect_shape(q, 1).is_empty()
+
+
+## True when floor runs at `floor_y` from x `a` to x `b` with room for a toy all the way.
+func _walkable(a: float, b: float, floor_y: float) -> bool:
+	var dir := signf(b - a)
+	var x := a
+	while absf(b - x) > PROBE:
+		x += dir * PROBE
+		var found: Variant = _floor_at(x, floor_y)
+		if found == null or absf((found as Vector2).y - floor_y) > LEDGE:
+			return false
+	return true
+
+
+## How far a toy standing at `origin` can walk on its floor to one side, up to ROOM_REACH.
+func room_at(origin: Vector2, side: float) -> float:
+	var floor_y := _feet(origin).y
+	var d := 0.0
+	while d < ROOM_REACH:
+		var found: Variant = _floor_at(origin.x + side * (d + PROBE), floor_y)
+		if found == null or absf((found as Vector2).y - floor_y) > LEDGE:
+			break
+		d += PROBE
+	return d
+
+
+func _in_sight(from: Vector2, to: Vector2) -> bool:
+	var eye := Vector2(0.0, -sim.rules.head_height)
+	var q := PhysicsRayQueryParameters2D.create(from + eye, to + eye, 1 << (SimToy.TERRAIN_LAYER - 1))
+	return sim.get_world_2d().direct_space_state.intersect_ray(q).is_empty()
+
+
+func _feet(origin: Vector2) -> Vector2:
+	return origin - Vector2(0.0, sim.rules.body_bottom - SimToy.SAFE_MARGIN)
+
+
+func _origin(feet: Vector2) -> Vector2:
+	return feet + Vector2(0.0, sim.rules.body_bottom - SimToy.SAFE_MARGIN)
+
+
+## The map's spawn point with the most open floor around it, for a lesson to start on: the
+## lessons walk, and place an item and targets beside the player. Room on the tighter side
+## counts double, so the player is not pinned against a wall.
+func best_start() -> int:
+	var best := 0
+	var best_room := -1.0
+	var points := sim.map.spawn_points()
+	for i in points.size():
+		var o := _origin(points[i].global_position)
+		var head := o + Vector2(0.0, -sim.rules.head_height - sim.rules.head_radius)
+		if not _in_sight(head, head + Vector2(0.0, -HEADROOM)):
+			continue
+		var left := room_at(o, -1.0)
+		var right := room_at(o, 1.0)
+		var room := minf(left, right) * 2.0 + maxf(left, right)
+		if room > best_room:
+			best_room = room
+			best = i
+	return best
 
 
 ## A still target beside the player, once; a popped one respawns by the match's own rules.
@@ -206,7 +311,7 @@ func _place_gun() -> void:
 	if _gun_placed:
 		return
 	_gun_placed = true
-	combat.place_item(GUN, _beside(ITEM_DISTANCE) + Vector2(0, sim.rules.body_bottom))
+	combat.place_item(GUN, _origin(_beside(ITEM_DISTANCE, true)))
 
 
 ## Out of frags: a frag pickup lands at the player's feet, as one from the map would.

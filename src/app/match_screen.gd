@@ -153,7 +153,7 @@ func _toggle_pause() -> void:
 
 func _panel(children: Array) -> Control:
 	var dim := ColorRect.new()
-	dim.color = Color(0, 0, 0, 0.45)
+	dim.color = Color(HudStyle.INK, 0.45)
 	dim.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	_ui.add_child(dim)
 	var center := CenterContainer.new()

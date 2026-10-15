@@ -93,3 +93,30 @@ func test_winner_lines() -> void:
 	cfg.mode = MatchConfig.Mode.TDM
 	r.winner_team = 2
 	assert_string_contains(MatchScreen.winner_line(r, 1, cfg), "Orange team wins!")
+
+
+func test_menus_sit_over_the_bedroom_and_a_match_plays_on_it() -> void:
+	# The menus show the art bedroom; a match frees it first, so only one map is ever in the
+	# physics world, and the match itself runs on the bedroom by default.
+	assert_not_null(app._backdrop, "the bedroom behind the menu")
+	assert_eq(app.config.map_path, MatchConfig.DEFAULT_MAP)
+	var cfg := app.config.copy()
+	cfg.bots = 2
+	app.start_match(cfg)
+	await wait_process_frames(2)
+	assert_null(app._backdrop, "the backdrop goes when a match starts")
+	assert_eq(get_tree().root.find_children("*", "GameMap", true, false).size(), 1, "one map in the world")
+	var m := app._screen as MatchScreen
+	assert_eq(m.view.sim.map.scene_file_path, MatchConfig.DEFAULT_MAP)
+	app.show_menu()
+	await wait_process_frames(2)
+	assert_not_null(app._backdrop, "and comes back with the menu")
+
+
+func test_ui_wears_the_hud_look() -> void:
+	# Menus and HUD share one look (HudStyle): ink rims, cream text, the ammo yellow.
+	assert_eq(Ui.TEXT, HudStyle.TEXT)
+	assert_eq(Ui.ACCENT, HudStyle.AMMO)
+	var box := Ui.theme().get_stylebox("normal", "Button") as StyleBoxFlat
+	assert_eq(box.border_color, HudStyle.INK)
+	assert_gt(box.border_width_top, 0)

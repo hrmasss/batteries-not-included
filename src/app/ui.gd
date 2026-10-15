@@ -1,17 +1,20 @@
 class_name Ui
 extends RefCounted
-## Shared look and small builders for the menus: a night-bedroom navy, battery copper for the
-## main action, chunky buttons big enough for a thumb. Placeholder look until the HUD's own art.
+## Shared look and small builders for the menus, in the HUD's look (HudStyle, US-25.6): the
+## same chunky plastic slabs with a dark ink rim, cream text with an ink edge, and the ammo
+## yellow for the main action. Menus sit over the art bedroom (MenuBackdrop) under an ink wash.
 
-const BG := Color("#141a33")
-const PANEL := Color("#1f2850")
-const PANEL_LIGHT := Color("#2b3666")
-const ACCENT := Color("#e08a2c")
-const ACCENT_DARK := Color("#a85f17")
-const TEXT := Color("#f4f1ea")
-const TEXT_DIM := Color("#a9b0cf")
-const GOOD := Color("#7fd18b")
-## A glyph for each team shape (TeamPalette.SHAPES), so a team never rests on colour.
+## Ink wash over the bedroom behind a menu screen.
+const BG := Color(HudStyle.INK, 0.62)
+const PANEL := Color(HudStyle.INK, 0.9)
+const PANEL_LIGHT := Color("4a3d57")
+const ACCENT := HudStyle.AMMO
+const ACCENT_DARK := Color("d9a91f")
+const TEXT := HudStyle.TEXT
+const TEXT_DIM := HudStyle.PLASTIC_SHADE
+const GOOD := HudStyle.BATTERY_CHARGE
+## Ink edge on menu text, px, as on the HUD's numbers.
+const OUTLINE := 4
 const SHAPE_GLYPHS := {TeamPalette.Shape.CIRCLE: "●", TeamPalette.Shape.TRIANGLE: "▲", TeamPalette.Shape.SQUARE: "■", TeamPalette.Shape.DIAMOND: "◆"}
 const FONT_PATH := "res://assets/fonts/LilitaOne-Regular.ttf"
 
@@ -47,24 +50,34 @@ static func theme() -> Theme:
 	t.set_color("font_pressed_color", "Button", TEXT)
 	t.set_color("font_focus_color", "Button", TEXT)
 	t.set_color("font_disabled_color", "Button", TEXT_DIM)
-	t.set_stylebox("normal", "Button", _box(PANEL_LIGHT))
-	t.set_stylebox("hover", "Button", _box(PANEL_LIGHT.lightened(0.12)))
-	t.set_stylebox("pressed", "Button", _box(PANEL_LIGHT.darkened(0.2)))
-	t.set_stylebox("focus", "Button", _box(Color(0, 0, 0, 0), ACCENT))
-	t.set_stylebox("disabled", "Button", _box(PANEL))
-	t.set_stylebox("panel", "PanelContainer", _box(PANEL))
+	t.set_stylebox("normal", "Button", box(PANEL_LIGHT))
+	t.set_stylebox("hover", "Button", box(PANEL_LIGHT.lightened(0.12)))
+	t.set_stylebox("pressed", "Button", box(PANEL_LIGHT.darkened(0.2)))
+	var focus := box(Color(0, 0, 0, 0), ACCENT)
+	focus.shadow_size = 0
+	t.set_stylebox("focus", "Button", focus)
+	t.set_stylebox("disabled", "Button", box(PANEL))
+	t.set_stylebox("panel", "PanelContainer", box(PANEL))
 	t.set_color("font_color", "CheckButton", TEXT)
+	for type in ["Label", "Button", "CheckButton"]:
+		t.set_constant("outline_size", type, OUTLINE)
+		t.set_color("font_outline_color", type, HudStyle.INK)
 	return t
 
 
-static func _box(c: Color, border: Color = Color(0, 0, 0, 0)) -> StyleBoxFlat:
+## A plastic slab like the HUD's: ink rim, a drop shadow, a lighter top edge.
+static func box(c: Color, border: Color = HudStyle.INK) -> StyleBoxFlat:
 	var b := StyleBoxFlat.new()
 	b.bg_color = c
-	b.set_corner_radius_all(8)
+	b.set_corner_radius_all(10)
 	b.set_content_margin_all(6)
+	b.anti_aliasing = true
 	if border.a > 0.0:
-		b.set_border_width_all(2)
+		b.set_border_width_all(3)
 		b.border_color = border
+		b.shadow_color = Color(HudStyle.INK, 0.45 * c.a)
+		b.shadow_size = 1
+		b.shadow_offset = Vector2(0, 3)
 	return b
 
 
@@ -106,10 +119,14 @@ static func button(text: String, on_press: Callable, main: bool = false, width: 
 	b.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 	b.focus_mode = Control.FOCUS_ALL
 	if main:
-		b.add_theme_stylebox_override("normal", _box(ACCENT))
-		b.add_theme_stylebox_override("hover", _box(ACCENT.lightened(0.1)))
-		b.add_theme_stylebox_override("pressed", _box(ACCENT_DARK))
+		b.add_theme_stylebox_override("normal", box(ACCENT))
+		b.add_theme_stylebox_override("hover", box(ACCENT.lightened(0.1)))
+		b.add_theme_stylebox_override("pressed", box(ACCENT_DARK))
 		b.add_theme_font_size_override("font_size", FONT_BIG)
+		# Ink on yellow, like the HUD's cream clock face.
+		for state in ["font_color", "font_hover_color", "font_pressed_color", "font_focus_color"]:
+			b.add_theme_color_override(state, HudStyle.INK)
+		b.add_theme_constant_override("outline_size", 0)
 	b.pressed.connect(on_press)
 	return b
 

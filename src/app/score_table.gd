@@ -16,9 +16,7 @@ func _init(scoreboard: Scoreboard, me: int) -> void:
 	me_id = me
 	name = "ScoreTable"
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
-	var style := StyleBoxFlat.new()
-	style.bg_color = Color(Ui.PANEL, 0.92)
-	style.set_corner_radius_all(8)
+	var style := Ui.box(Ui.PANEL)
 	style.set_content_margin_all(8)
 	add_theme_stylebox_override("panel", style)
 	_grid = GridContainer.new()

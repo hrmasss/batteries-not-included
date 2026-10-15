@@ -141,3 +141,28 @@ func test_us35_2_grenade_waits_for_a_blast_on_the_target() -> void:
 	_tap(InputIntent.Act.GRENADE)
 	_play(4.0)
 	assert_true(lesson.done, "caught the target in a blast")
+
+
+func test_lessons_on_the_bedroom_start_in_the_open_and_place_things_in_reach() -> void:
+	# The art bedroom is cluttered: a lesson starts where there is floor and air, its gun lies on
+	# the player's floor with nothing in the way, and its targets stand in the player's sight.
+	var rules := RulesetLoader.load_standard().ruleset
+	sim = MatchSim.new()
+	sim.setup(rules, (load(MatchConfig.DEFAULT_MAP) as PackedScene).instantiate())
+	add_child_autofree(sim)
+	combat = sim.start_combat(1)
+	await wait_physics_frames(1)
+	me = combat.join(sim.spawn_toy(0), Fighter.NO_TEAM, false)
+	lesson = LessonRunner.new(sim, me, func(team: int, feet: Vector2) -> Fighter: return combat.join(sim.spawn_toy(0, &"plastic_soldier", feet), team, false))
+	var start := lesson.best_start()
+	sim.place_toy(me.toy, sim.map.spawn_points()[start].global_position)
+	var o := me.toy.position
+	assert_gte(lesson.room_at(o, -1.0) + lesson.room_at(o, 1.0), LessonRunner.ITEM_DISTANCE * 2.0, "room to walk")
+	assert_true(lesson._in_sight(o, o + Vector2(0, -LessonRunner.HEADROOM)), "air to fly")
+	var gun := lesson._beside(LessonRunner.ITEM_DISTANCE, true)
+	assert_almost_eq(gun.y, lesson._feet(o).y, LessonRunner.LEDGE, "the gun on the player's floor")
+	assert_true(lesson._walkable(o.x, gun.x, lesson._feet(o).y), "a straight walk to it")
+	for d in [LessonRunner.TARGET_DISTANCE, LessonRunner.GRENADE_TARGET_DISTANCE]:
+		var feet := lesson._beside(d)
+		assert_true(lesson._in_sight(o, lesson._origin(feet)), "a target %d u off is in sight" % d)
+		assert_true(lesson._fits(lesson._origin(feet)), "and stands in the open")

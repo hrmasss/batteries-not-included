@@ -35,6 +35,8 @@ func _ready() -> void:
 	add_child(view)
 	lesson = LessonRunner.new(view.sim, view.me, func(team: int, feet: Vector2) -> Fighter: return view.add_dummy(team, feet, false))
 	view.stepper = _step
+	# Start where there is open floor: the lessons walk and set things down beside the player.
+	view.sim.place_toy(view.player, view.sim.map.spawn_points()[lesson.best_start()].global_position)
 	var layer := CanvasLayer.new()
 	layer.layer = 60
 	add_child(layer)
