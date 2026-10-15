@@ -76,6 +76,14 @@ func start_combat(seed_value: int = 0) -> CombatSim:
 	return combat
 
 
+## Takes a toy out of the match and frees it.
+func remove_toy(t: SimToy) -> void:
+	toys.erase(t)
+	if t.get_parent() == self:
+		remove_child(t)
+	t.queue_free()
+
+
 func toy(toy_id: int) -> SimToy:
 	for t in toys:
 		if t.toy_id == toy_id:

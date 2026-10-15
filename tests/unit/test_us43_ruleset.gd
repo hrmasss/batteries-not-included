@@ -31,7 +31,7 @@ func test_us43_1_every_schema_value_comes_from_the_file() -> void:
 	for f: Dictionary in RulesetSchema.FIELDS:
 		assert_true(props.has(f.key), "Ruleset has %s" % f.key)
 		props.erase(f.key)
-	for meta: String in ["id", "name", "version", "weapons"]:
+	for meta: String in ["id", "name", "version", "weapons", "bots"]:
 		props.erase(meta)
 	assert_eq(props.keys(), [], "no Ruleset field outside the schema")
 

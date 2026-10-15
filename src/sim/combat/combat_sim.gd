@@ -148,6 +148,23 @@ func fighter(toy_id: int) -> Fighter:
 	return null
 
 
+## A toy leaves the match: its held weapon drops where it stood and its toy goes away.
+func leave(toy_id: int) -> void:
+	var f := fighter(toy_id)
+	if f == null:
+		return
+	if f.alive:
+		var w := f.main_weapon()
+		if w != null:
+			w.cancel_reload()
+			_drop(w, f.toy.position, f.toy.velocity)
+	fighters.erase(f)
+	f.alive = false
+	f.toy.active = false
+	sim.remove_toy(f.toy)
+	_emit({"type": &"leave", "toy": toy_id})
+
+
 func _equip(f: Fighter, protect: bool) -> void:
 	var t := f.toy
 	f.alive = true

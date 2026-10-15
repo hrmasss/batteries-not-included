@@ -132,6 +132,17 @@ var dropped_gun_lifetime: float
 var crowd_start: float
 var crowd_full: float
 var crowd_min_share: float
+var match_length: float
+var match_length_min: float
+var match_length_max: float
+var match_length_step: float
+var kill_limit_on: bool
+var kill_limit: float
+var players_max: float
+var players_default: float
+var players_min: float
+var teams_min: float
+var teams_max: float
 
 # camera
 var anchor_below_middle: float
@@ -139,6 +150,8 @@ var view_height: float
 
 # weapon table (T-50) and spawn kit, from weapons.cfg
 var weapons: WeaponTable
+# bot skill levels (T-95 to T-97), from bots.cfg
+var bots: BotSkills
 
 # modifiers
 var batteries_included: bool
@@ -153,6 +166,7 @@ func copy() -> Ruleset:
 	for f: Dictionary in RulesetSchema.FIELDS:
 		r.set(f.key, get(f.key))
 	r.weapons = weapons
+	r.bots = bots
 	return r
 
 
@@ -162,4 +176,5 @@ func to_dict() -> Dictionary:
 	for f: Dictionary in RulesetSchema.FIELDS:
 		out[f.key] = get(f.key)
 	out["weapons"] = weapons.to_dict() if weapons != null else {}
+	out["bots"] = bots.to_dict() if bots != null else {}
 	return out
