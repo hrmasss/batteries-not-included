@@ -297,7 +297,7 @@ func _act(f: Fighter, intent: InputIntent, dt: float) -> void:
 
 	if f.swing_left > 0.0:
 		f.swing_left -= dt
-		if f.swing_left <= 0.0:
+		if not f.swing_landed:
 			_land_swing(f)
 	f.lunge_meter = minf(rules.lunge_meter_max, f.lunge_meter + rules.lunge_refill * dt)
 	_update_weight(f)
@@ -439,6 +439,7 @@ func _start_swing(f: Fighter) -> void:
 	_attacked(f)
 	f.swing_left = rules.melee_swing
 	f.swing_dir = f.aim
+	f.swing_landed = false
 	var t := f.toy
 	var weight := t.weight_factor(rules)
 	var lunged := false
@@ -452,8 +453,8 @@ func _start_swing(f: Fighter) -> void:
 	_emit({"type": &"swing", "toy": f.id(), "dir": f.swing_dir, "lunge": lunged})
 
 
-## US-09.2, US-09.4: at the end of the swing, the nearest enemy in reach takes the melee
-## damage of the held weapon, or bare-hand damage; never a headshot.
+## US-09.2, US-09.4: the first enemy the swing reaches takes the melee damage of the held
+## weapon, or bare-hand damage, once per swing; never a headshot.
 func _land_swing(f: Fighter) -> void:
 	var w := f.main_weapon()
 	var reach := w.def.melee_reach if w != null else rules.bare_hand_reach
@@ -473,6 +474,7 @@ func _land_swing(f: Fighter) -> void:
 			best = other
 			best_d = d
 	if best != null:
+		f.swing_landed = true
 		hurt(best, dmg, f.id(), weapon_id, Hurt.MELEE, _knockback(f.swing_dir, dmg))
 
 

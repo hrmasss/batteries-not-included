@@ -29,6 +29,8 @@ var respawn_left: float = 0.0
 var lunge_meter: float = 0.0
 var swing_left: float = 0.0
 var swing_dir: Vector2 = Vector2.RIGHT
+## The swing under way has hit someone.
+var swing_landed: bool = true
 var pack_pending: float = 0.0
 var battery_pack_left: float = 0.0
 var out_of_bounds_time: float = 0.0
