@@ -4,6 +4,8 @@ extends RefCounted
 ## protection, respawn and score (01_world "Weapons and damage" to "Spawning").
 ## Only `CombatSim` writes it (rule A1); the view and the HUD read it.
 
+## A toy carries this many weapons (US-07.1): a rule of the game, not a tuning value.
+const SLOTS := 2
 ## No team: free-for-all. Toys with the same team above this are teammates.
 const NO_TEAM := 0
 
@@ -60,7 +62,7 @@ func main_weapon() -> WeaponItem:
 
 ## US-08.1: both carried weapons are dual-capable, so the other one sits in the off hand.
 func is_dual() -> bool:
-	return weapons.size() == 2 and weapons[0].def.dual and weapons[1].def.dual
+	return weapons.size() == SLOTS and weapons[0].def.dual and weapons[1].def.dual
 
 
 func off_weapon() -> WeaponItem:

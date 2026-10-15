@@ -15,6 +15,8 @@ extends RefCounted
 const SURFACE_GAP := 0.5
 ## Below this speed a bouncing grenade or rocket comes to rest. Solver detail, not tuning.
 const REST_SPEED := 1.0
+## Slack when comparing match times. Solver detail, not tuning.
+const TIME_EPSILON := 0.000001
 
 enum Hurt { BULLET, MELEE, BLAST, DIRECT, WORLD }
 
@@ -237,7 +239,8 @@ func choose_spawn(f: Fighter) -> SpawnPoint:
 ## One tick. `intents` maps toy id to its sanitized `InputIntent`.
 func step(intents: Dictionary, dt: float) -> void:
 	events.clear()
-	time += dt
+	# From the tick count, not a running sum, so schedules never drift.
+	time = (sim.tick + 1) * dt
 	for f in fighters:
 		if f.alive:
 			_act(f, intents.get(f.id(), InputIntent.idle()), dt)
@@ -325,7 +328,7 @@ func _attacked(f: Fighter) -> void:
 
 ## US-07.4: swap the held weapon for the other one.
 func _switch(f: Fighter) -> void:
-	if f.weapons.size() < 2:
+	if f.weapons.size() < Fighter.SLOTS:
 		return
 	var put_away := f.main_weapon()
 	f.held = 1 - f.held
@@ -806,7 +809,7 @@ func _pick_up(f: Fighter) -> void:
 		return
 	items.erase(it)
 	f.offer = -1
-	if f.weapons.size() < 2:
+	if f.weapons.size() < Fighter.SLOTS:
 		f.weapons.append(it.weapon)
 		f.held = f.weapons.size() - 1
 	else:
@@ -825,10 +828,10 @@ func _step_points() -> void:
 		return
 	for i in points.size():
 		var s := points[i]
-		if time < s.next_at:
+		if time + TIME_EPSILON < s.next_at:
 			continue
 		var interval := s.point.interval if s.point.interval > 0.0 else rules.pickup_interval
-		s.next_at = time + interval
+		s.next_at = maxf(s.next_at + interval, time)
 		var old := item(s.item_uid)
 		if old != null:
 			items.erase(old)
@@ -874,8 +877,9 @@ func _toy_hit(from: Vector2, to: Vector2, shooter: Fighter) -> Dictionary:
 			if cs.shape is CircleShape2D:
 				t = segment_circle(from, to, centre, (cs.shape as CircleShape2D).radius)
 			elif cs.shape is RectangleShape2D:
-				var size := (cs.shape as RectangleShape2D).size
-				t = segment_rect(from, to, Rect2(centre - size * 0.5, size))
+				var box := (cs.shape as RectangleShape2D).get_rect()
+				box.position += centre
+				t = segment_rect(from, to, box)
 			if t >= 0.0 and t < best_t:
 				best_t = t
 				best = {"fighter": f, "t": t, "head": cs.name == &"Head"}
@@ -887,7 +891,7 @@ static func segment_rect(from: Vector2, to: Vector2, box: Rect2) -> float:
 	var d := to - from
 	var t0 := 0.0
 	var t1 := 1.0
-	for axis in 2:
+	for axis: int in [Vector2.AXIS_X, Vector2.AXIS_Y]:
 		var lo := box.position[axis]
 		var hi := box.end[axis]
 		if is_zero_approx(d[axis]):
