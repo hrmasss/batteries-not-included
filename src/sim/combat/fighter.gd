@@ -8,6 +8,10 @@ extends RefCounted
 const SLOTS := 2
 ## No team: free-for-all. Toys with the same team above this are teammates.
 const NO_TEAM := 0
+## What zoom a weapon change lands on (US-10.3, US-10.4): the player's setting, sent with the
+## join. LAST_USED goes back to the weapon's last level, KEEP stays at or below the level now,
+## WIDEST takes the weapon's widest. Same order as the settings screen's choices.
+enum ZoomMode { LAST_USED, KEEP, WIDEST }
 
 var toy: SimToy
 var team: int = NO_TEAM
@@ -25,6 +29,7 @@ var aim: Vector2 = Vector2.RIGHT
 var zoom_level: int = 1
 ## Last zoom level used with each weapon id (US-10.3).
 var zoom_memory: Dictionary = {}
+var zoom_mode: ZoomMode = ZoomMode.LAST_USED
 
 var protect_left: float = 0.0
 var respawn_left: float = 0.0

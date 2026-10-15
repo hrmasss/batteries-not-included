@@ -25,6 +25,8 @@ var reload: float
 var range: float
 var bullet_speed: float
 var zoom: PackedInt32Array = []
+## Camera look-ahead factor toward the aim (T-81); the camera floors it.
+var look_ahead: float
 var weight: float
 var melee_damage: float
 var melee_reach: float

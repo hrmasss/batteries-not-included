@@ -1,8 +1,11 @@
 class_name CameraRig
 extends RefCounted
 ## What the camera shows, as logic only (US-24, US-10, T-80 to T-84, T-88): the anchor, the aim
-## look-ahead, the zoom ladder and the shake. `GameCamera` applies it to a Camera2D; tests drive
-## it directly.
+## look-ahead, easing to the zoom level and the shake. `GameCamera` applies it to a Camera2D;
+## tests drive it directly.
+##
+## The sim owns the zoom level and per-weapon memory (`Fighter.zoom_level`); the rig only eases
+## the view to it and reads the held weapon's look-ahead factor (`WeaponDef.look_ahead`).
 ##
 ## World space is Godot's: y down, 1 unit = 1 u. Aim and stick vectors are y up.
 
@@ -19,16 +22,11 @@ var look: Vector2 = Vector2.ZERO
 var look_target: Vector2 = Vector2.ZERO
 ## Last aim direction, y up. The view keeps looking that way after the thumb lifts.
 var aim_dir: Vector2 = Vector2.ZERO
-## Zoom level on the ladder (1 is 1X) and the scale easing toward it.
+## Zoom level on the ladder (1 is 1X), from the sim, and the scale easing toward it.
 var level: int = 1
 var scale: float = 1.0
-## Allowed levels for the held weapon (US-10.1), ascending.
-var levels: PackedInt32Array = [1]
 ## The held weapon's look-ahead factor (T-81), floored.
 var weapon_factor: float = 0.0
-## Weapon key to the level last used with it (US-10.3).
-var memory: Dictionary = {}
-var weapon_key: StringName = &""
 ## Shake strength now, u, before the player's setting.
 var shake: float = 0.0
 var shake_offset: Vector2 = Vector2.ZERO
@@ -68,32 +66,11 @@ func anchor_share(aspect: float, canvas_height: float) -> Vector2:
 	return Vector2(0.0, rules.anchor_below_middle / canvas_height)
 
 
-## Sets the held weapon (US-10.3). `key` names the weapon kind; `allowed` its zoom levels;
-## `factor` its look-ahead (T-81), or a negative number for bare hands.
-func set_weapon(key: StringName, allowed: PackedInt32Array, factor: float) -> void:
-	var clean := _clean_levels(allowed)
-	var changed := key != weapon_key
-	weapon_key = key
-	levels = clean
+## What the player's fighter holds now (US-10, T-81): its zoom level, from the sim, and the held
+## weapon's look-ahead factor, or a negative number for bare hands.
+func set_held(zoom_level: int, factor: float) -> void:
+	level = clampi(zoom_level, 1, rules.top_level())
 	weapon_factor = maxf(factor if factor >= 0.0 else rules.look_ahead_bare, rules.look_ahead_floor)
-	if not changed:
-		level = _nearest(level)
-		return
-	match settings.zoom_mode:
-		ControlSettings.ZoomMode.WIDEST:
-			level = levels[levels.size() - 1]
-		ControlSettings.ZoomMode.KEEP:
-			level = _at_or_below(level)
-		_:
-			level = memory[key] if memory.has(key) and levels.has(memory[key]) else _nearest(level)
-	memory[key] = level
-
-
-## Zoom tapped (US-10.2): the next allowed level, wrapping back to the first.
-func zoom_tap() -> void:
-	var i := levels.find(level)
-	level = levels[(i + 1) % levels.size()]
-	memory[weapon_key] = level
 
 
 ## Aim this tick, y up; zero when the thumb is off the aim stick.
@@ -102,9 +79,10 @@ func set_aim(aim: Vector2) -> void:
 		aim_dir = aim.normalized()
 
 
-## A blast at distance `d` with `power` (T-63): the classic's shake rule.
-func blast(d: float, power: float) -> void:
-	if d > rules.shake_reach * power:
+## A blast at distance `d` with `power` (T-63): the classic's shake rule. `reach` is how far
+## this blast shakes screens, from the sim's blast event.
+func blast(d: float, power: float, reach: float) -> void:
+	if d > reach:
 		return
 	var strength := maxf((rules.shake_peak_reach * power - d) * power * rules.shake_scale, rules.shake_min)
 	shake = maxf(shake, strength)
@@ -131,30 +109,3 @@ func step(dt: float) -> void:
 		shake_offset = Vector2(cos(a), sin(a)) * shake
 	else:
 		shake_offset = Vector2.ZERO
-
-
-func _clean_levels(allowed: PackedInt32Array) -> PackedInt32Array:
-	var out: PackedInt32Array = []
-	for l in allowed:
-		if l >= 1 and l <= rules.top_level() and not out.has(l):
-			out.append(l)
-	if out.is_empty():
-		out.append(1)
-	out.sort()
-	return out
-
-
-func _nearest(to: int) -> int:
-	var best := levels[0]
-	for l in levels:
-		if absi(l - to) < absi(best - to):
-			best = l
-	return best
-
-
-func _at_or_below(to: int) -> int:
-	var best := levels[0]
-	for l in levels:
-		if l <= to:
-			best = l
-	return best

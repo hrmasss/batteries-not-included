@@ -27,9 +27,8 @@ var radar_range: float = 0.0
 var radar_speed: float = 0.0
 var radar_ring: float = 0.0
 var radar_margin: float = 0.0
-## T-63: blast shake. Reach per unit of power; strength ((peak × power − d) × power × scale),
-## at least `shake_min`, in u.
-var shake_reach: float = 0.0
+## T-63: blast shake strength ((peak × power − d) × power × scale), at least `shake_min`, in u.
+## How far a blast shakes comes with the sim's blast event (throwables `blast_shake_reach`).
 var shake_peak_reach: float = 0.0
 var shake_scale: float = 0.0
 var shake_min: float = 0.0
@@ -53,7 +52,6 @@ static func from_ruleset(r: Ruleset) -> ViewRules:
 	v.radar_speed = r.radar_speed
 	v.radar_ring = r.radar_ring
 	v.radar_margin = r.radar_margin
-	v.shake_reach = r.shake_reach
 	v.shake_peak_reach = r.shake_peak_reach
 	v.shake_scale = r.shake_scale
 	v.shake_min = r.shake_min

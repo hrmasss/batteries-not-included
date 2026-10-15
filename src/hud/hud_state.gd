@@ -3,6 +3,11 @@ extends RefCounted
 ## Everything the HUD shows for one player, as plain values (US-25). Filled each frame by a
 ## `HudSource`; the HUD only reads it. Nothing here is a rule: the match decides every number.
 
+## How long a kill feed line stays, seconds, and how many show. Ours: the classic's message
+## layer was not read.
+const FEED_LIFE := 6.0
+const FEED_MAX := 4
+
 class Grenade:
 	extends RefCounted
 	var kind: StringName = &"frag"

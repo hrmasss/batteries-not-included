@@ -1,6 +1,7 @@
 extends GutTest
 ## US-24.1 (anchor), US-24.2 (look-ahead by weapon, easing at panning speed), US-24.3 (same world
-## area on every screen shape), US-10.1 and US-10.3 (zoom levels per weapon, memory), T-83.
+## area on every screen shape), T-80 and T-83 (easing to the sim's zoom level), T-63 shake.
+## The zoom level itself is the sim's (tests/controls/test_us10_camera_follows_sim.gd).
 
 const CANVAS_H := 360.0
 const DT := 1.0 / 60.0
@@ -41,21 +42,21 @@ func test_us24_1_hard_follow_has_no_lag() -> void:
 
 func test_us24_2_look_ahead_settles_on_weapon_factor() -> void:
 	var rig := _rig()
-	var w := WeaponView.for_weapon(&"sniper_rifle")
-	rig.set_weapon(w.key, w.zoom_levels, w.look_ahead)
+	var factor := 0.7
+	rig.set_held(1, factor)
 	rig.set_aim(Vector2(1, 0))
 	for i in 60 * 10:
 		rig.step(DT)
 	var aspect := 16.0 / 9.0
 	var view := rig.visible_world(aspect)
 	var shift := rig.center_for(Vector2.ZERO, aspect, CANVAS_H) + Vector2(0, view_rules.anchor_below_middle * view.y / CANVAS_H)
-	assert_almost_eq(shift.x, view.x * 0.25 * view_rules.look_ahead * w.look_ahead, 0.01, "T-81 (W/4) × share × factor")
+	assert_almost_eq(shift.x, view.x * 0.25 * view_rules.look_ahead * factor, 0.01, "T-81 (W/4) × share × factor")
 	assert_almost_eq(shift.y, 0.0, 0.01)
 
 
 func test_us24_2_look_ahead_eases_at_panning_speed() -> void:
 	var rig := _rig()
-	rig.set_weapon(&"pistol", [1, 2], 0.25)
+	rig.set_held(1, 0.25)
 	rig.set_aim(Vector2(0, 1))
 	var target := -view_rules.look_ahead * 0.25
 	rig.step(DT)
@@ -71,9 +72,9 @@ func test_us24_2_look_ahead_eases_at_panning_speed() -> void:
 
 func test_us24_2_bigger_factor_looks_further() -> void:
 	var near := _rig()
-	near.set_weapon(&"pistol", [1, 2], 0.25)
+	near.set_held(1, 0.25)
 	var far := _rig()
-	far.set_weapon(&"sniper_rifle", [1, 3, 5, 7], 0.7)
+	far.set_held(1, 0.7)
 	for r: CameraRig in [near, far]:
 		r.set_aim(Vector2(1, 0))
 		for i in 600:
@@ -83,9 +84,9 @@ func test_us24_2_bigger_factor_looks_further() -> void:
 
 func test_t81_factor_floor_applies() -> void:
 	var rig := _rig()
-	rig.set_weapon(&"odd", [1], 0.01)
+	rig.set_held(1, 0.01)
 	assert_almost_eq(rig.weapon_factor, view_rules.look_ahead_floor, 1e-6)
-	rig.set_weapon(&"", [1], -1.0)
+	rig.set_held(1, -1.0)
 	assert_almost_eq(rig.weapon_factor, maxf(view_rules.look_ahead_bare, view_rules.look_ahead_floor), 1e-6)
 
 
@@ -100,22 +101,9 @@ func test_us24_3_same_world_area_on_every_screen_shape() -> void:
 		assert_almost_eq(v.x / v.y, size.x / size.y, 1e-4, "shape at %s" % size)
 
 
-func test_us10_1_zoom_steps_only_through_allowed_levels() -> void:
-	var rig := _rig()
-	rig.set_weapon(&"assault_rifle", [1, 2, 4], 0.45)
-	var seen := []
-	for i in 6:
-		rig.zoom_tap()
-		seen.append(rig.level)
-	assert_eq(seen, [2, 4, 1, 2, 4, 1])
-
-
 func test_t80_zoom_scale_eases_to_the_ladder_value() -> void:
 	var rig := _rig()
-	rig.set_weapon(&"sniper_rifle", [1, 3, 5, 7], 0.7)
-	rig.zoom_tap()
-	rig.zoom_tap()
-	assert_eq(rig.level, 5)
+	rig.set_held(5, 0.7)
 	rig.step(DT)
 	assert_gt(rig.scale, view_rules.scale_for(5), "eases, not snaps")
 	for i in 120:
@@ -129,51 +117,33 @@ func test_t80_zoom_scale_eases_to_the_ladder_value() -> void:
 func test_t83_zoom_speed_zero_snaps() -> void:
 	settings.zoom_speed = 0.0
 	var rig := _rig()
-	rig.set_weapon(&"sniper_rifle", [1, 3, 5, 7], 0.7)
-	rig.zoom_tap()
+	rig.set_held(3, 0.7)
 	rig.step(DT)
 	assert_almost_eq(rig.scale, view_rules.scale_for(3), 1e-6)
 
 
-func test_us10_3_weapon_change_returns_to_last_used_level() -> void:
+func test_t80_levels_off_the_ladder_are_clamped() -> void:
 	var rig := _rig()
-	rig.set_weapon(&"sniper_rifle", [1, 3, 5, 7], 0.7)
-	rig.zoom_tap()
-	rig.zoom_tap()
-	assert_eq(rig.level, 5)
-	rig.set_weapon(&"pistol", [1, 2], 0.25)
-	assert_eq(rig.level, 2, "no memory: nearest allowed to 5 is 2")
-	rig.zoom_tap()
+	rig.set_held(99, 0.25)
+	assert_eq(rig.level, view_rules.top_level())
+	rig.set_held(0, 0.25)
 	assert_eq(rig.level, 1)
-	rig.set_weapon(&"sniper_rifle", [1, 3, 5, 7], 0.7)
-	assert_eq(rig.level, 5, "back to the sniper's last level")
-	rig.set_weapon(&"pistol", [1, 2], 0.25)
-	assert_eq(rig.level, 1, "back to the pistol's last level")
-
-
-func test_us10_4_zoom_modes() -> void:
-	settings.zoom_mode = ControlSettings.ZoomMode.WIDEST
-	var rig := _rig()
-	rig.set_weapon(&"sniper_rifle", [1, 3, 5, 7], 0.7)
-	assert_eq(rig.level, 7)
-	settings.zoom_mode = ControlSettings.ZoomMode.KEEP
-	rig.set_weapon(&"assault_rifle", [1, 2, 4], 0.45)
-	assert_eq(rig.level, 4, "keep: nearest allowed at or below")
 
 
 func test_us24_4_blast_shakes_by_distance_and_setting() -> void:
 	var rig := _rig()
-	rig.blast(10.0, 1.0)
+	var reach := TestWorld.rules().blast_shake_reach
+	rig.blast(10.0, 1.0, reach)
 	var close := rig.shake
 	var rig2 := _rig()
-	rig2.blast(120.0, 1.0)
+	rig2.blast(120.0, 1.0, reach)
 	assert_gt(close, rig2.shake, "nearer shakes harder")
 	var rig3 := _rig()
-	rig3.blast(view_rules.shake_reach + 1.0, 1.0)
+	rig3.blast(reach + 1.0, 1.0, reach)
 	assert_eq(rig3.shake, 0.0, "out of reach, no shake")
 	settings.shake = 0.0
 	var rig4 := _rig()
-	rig4.blast(10.0, 1.0)
+	rig4.blast(10.0, 1.0, reach)
 	rig4.step(DT)
 	var a := rig4.center_for(Vector2.ZERO, 16.0 / 9.0, CANVAS_H)
 	var calm := _rig().center_for(Vector2.ZERO, 16.0 / 9.0, CANVAS_H)

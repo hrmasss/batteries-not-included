@@ -185,7 +185,7 @@ func _grenade_color(kind: StringName, selected: bool) -> Color:
 func _draw_feed(top_right: Vector2) -> void:
 	var y := top_right.y
 	for l in state.feed:
-		var a := clampf((CombatStub.FEED_LIFE - l.age) / 0.6, 0.0, 1.0)
+		var a := clampf((HudState.FEED_LIFE - l.age) / 0.6, 0.0, 1.0)
 		var size := 12
 		var parts: Array = []
 		if l.suicide:

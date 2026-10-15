@@ -155,7 +155,6 @@ var radar_range: float
 var radar_speed: float
 var radar_ring: float
 var radar_margin: float
-var shake_reach: float
 var shake_peak_reach: float
 var shake_scale: float
 var shake_min: float

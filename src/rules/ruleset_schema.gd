@@ -153,7 +153,6 @@ const FIELDS: Array[Dictionary] = [
 	{"group": "camera", "key": "radar_speed", "tid": "T-87", "type": FLOAT, "min": 0.0, "max": 10000.0, "unit": "u/s", "what": "Radar shows toys moving faster than this"},
 	{"group": "camera", "key": "radar_ring", "tid": "T-87", "type": FLOAT, "min": 0.05, "max": 1.0, "unit": "share", "what": "Radar ring radius as a share of screen height"},
 	{"group": "camera", "key": "radar_margin", "tid": "T-87", "type": FLOAT, "min": 0.0, "max": 1000.0, "unit": "u", "what": "A toy this far outside the view still counts as on screen"},
-	{"group": "camera", "key": "shake_reach", "tid": "T-63", "type": FLOAT, "min": 0.0, "max": 10000.0, "unit": "u", "what": "Blast shake reaches this far per unit of power"},
 	{"group": "camera", "key": "shake_peak_reach", "tid": "T-63", "type": FLOAT, "min": 0.0, "max": 10000.0, "unit": "u", "what": "Shake strength is (this x power - d) x power x scale"},
 	{"group": "camera", "key": "shake_scale", "tid": "T-63", "type": FLOAT, "min": 0.0, "max": 10.0, "unit": "u/u", "what": "Shake strength scale"},
 	{"group": "camera", "key": "shake_min", "tid": "T-63", "type": FLOAT, "min": 0.0, "max": 100.0, "unit": "u", "what": "Least shake inside the reach"},

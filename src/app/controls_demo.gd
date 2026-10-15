@@ -1,12 +1,13 @@
 extends Node2D
 ## Controls, camera and HUD demo: one player toy with touch sticks, keyboard and mouse, a
-## teammate and two enemies, on a blockout room. Runs the match on its fixed clock and draws it
-## through a `PlayerView`.
+## teammate and two enemies, on a blockout room. Runs the match with real combat on its fixed
+## clock and draws it through a `PlayerHud`. Scripts set up moments through combat's own calls
+## (`place_item`, `hurt`), so every number on the HUD is the sim's.
 ##
 ## Scripted runs for proof (after `--` on the command line):
 ##   --script=flight   simulated thumbs: walk, take off, fly a loop, aim and fire past the ring
-##   --script=hud      a busy HUD moment: feed lines, a hit, radar arrows, low clock
-##   --script=popped   the respawn panel
+##   --script=hud      a busy HUD moment: rifle picked up, feed lines, hits, radar arrows, low clock
+##   --script=popped   the respawn panel, popped by an enemy's Uzi
 ##   --left-handed     mirror the layout
 ##   --bi              Batteries Included on
 ##   --frames=DIR      save every drawn frame as DIR/fNNNNN.png (use with --fixed-fps)
@@ -18,7 +19,11 @@ var rules: Ruleset
 var sim: MatchSim
 var view: PlayerHud
 var camera: GameCamera
-var stub := CombatStub.new()
+var combat: CombatSim
+## Toy id to player name, for the HUD and the name tags.
+var names: Dictionary = {}
+## Buttons a script holds down on the player's intent.
+var _buttons: int = 0
 var clock := SimClock.new()
 var me: SimToy
 var others: Array[SimToy] = []
@@ -54,13 +59,11 @@ func _ready() -> void:
 	me = sim.spawn_toy(0)
 	for i in 3:
 		others.append(sim.spawn_toy(i + 1))
-	stub.teams = {me.toy_id: 0, others[0].toy_id: 0, others[1].toy_id: 1, others[2].toy_id: 1}
-	stub.names = {me.toy_id: "Sarge", others[0].toy_id: "Bolt", others[1].toy_id: "Plushie", others[2].toy_id: "Tin Tom"}
-	stub.scores = _scores(7, 5)
-	var gas := HudState.Grenade.new()
-	gas.kind = &"gas"
-	gas.count = 1
-	stub.grenades.append(gas)
+	combat = sim.start_combat(1)
+	# Teams 1 and 2: me and Bolt against Plushie and Tin Tom. No spawn protection, for the scripts.
+	for pair: Array in [[me, 1], [others[0], 1], [others[1], 2], [others[2], 2]]:
+		combat.join(pair[0], pair[1], false)
+	names = {me.toy_id: "Sarge", others[0].toy_id: "Bolt", others[1].toy_id: "Plushie", others[2].toy_id: "Tin Tom"}
 	for t in sim.toys:
 		_add_toy_view(t)
 	InputActions.ensure()
@@ -72,7 +75,9 @@ func _ready() -> void:
 	view = PlayerHud.new()
 	view.name = "PlayerHud"
 	add_child(view)
-	view.setup(sim, me.toy_id, camera, stub)
+	view.setup(sim, me.toy_id, camera)
+	view.source.names = names
+	view.source.clock = 390.0
 
 	view.touch.always_show = true
 	for n: Dictionary in _toy_nodes.values():
@@ -81,12 +86,7 @@ func _ready() -> void:
 	_toy_nodes[me.toy_id].tag.queue_free()
 	_toy_nodes[me.toy_id].erase("tag")
 	if script_name == "popped":
-		stub.popped = true
-		stub.respawn_in = 6.4
-		stub.popped_by = "Plushie"
-		stub.popped_by_team = 1
-		stub.popped_with = "the Uzi"
-		stub.pop_line("Plushie", 1, "Sarge", 0, "uzi")
+		combat.hurt(_f(me), 1000.0, others[1].toy_id, &"uzi", CombatSim.Hurt.BULLET)
 
 
 func _room() -> GameMap:
@@ -134,24 +134,18 @@ func _add_toy_view(t: SimToy) -> void:
 	art.toy = t
 	outline.add_child(art)
 	add_child(outline)
-	outline.set_team(stub.team_of(t.toy_id))
+	var team := SimHudSource.hud_team(combat.fighter(t.toy_id))
+	outline.set_team(team)
 	var tag := NameTag.new()
-	tag.player_name = stub.name_of(t.toy_id)
-	tag.team = stub.team_of(t.toy_id)
+	tag.player_name = names.get(t.toy_id, "Toy %d" % t.toy_id)
+	tag.team = team
 	tag.target = outline
 	add_child(tag)
 	_toy_nodes[t.toy_id] = {"toy": t, "outline": outline, "tag": tag}
 
 
-func _scores(a: int, b: int) -> Array[HudState.Score]:
-	var out: Array[HudState.Score] = []
-	for pair in [[0, a], [1, b]]:
-		var s := HudState.Score.new()
-		s.team = pair[0]
-		s.kills = pair[1]
-		s.mine = pair[0] == 0
-		out.append(s)
-	return out
+func _f(t: SimToy) -> Fighter:
+	return combat.fighter(t.toy_id)
 
 
 func _process(dt: float) -> void:
@@ -171,12 +165,13 @@ func _process(dt: float) -> void:
 	for d: Dictionary in _toy_nodes.values():
 		var t: SimToy = d.toy
 		d.outline.position = t.prev_position.lerp(t.position, alpha)
+		d.outline.visible = t.active
 	camera.follow(me.prev_position.lerp(me.position, alpha), dt)
 	view.frame()
 
 
 ## The other toys: the teammate idles, one enemy zips along the far side (radar), one flies up
-## and fires now and then.
+## and fires a round now and then.
 func _others_intents(time: float) -> Dictionary:
 	var out := {}
 	var mate := InputIntent.make(Vector2(sin(time * 0.7) * 0.5, 0.0), true, Vector2(1, 0.2))
@@ -184,9 +179,8 @@ func _others_intents(time: float) -> Dictionary:
 	var zip := InputIntent.make(Vector2(1.0 if fmod(time, 6.0) < 3.0 else -1.0, 0.0), true, Vector2(-1, 0))
 	out[others[1].toy_id] = zip
 	var flyer := InputIntent.make(Vector2(0.3 * sin(time), 0.9 if fmod(time, 4.0) < 2.5 else 0.0), true, Vector2(-1, -0.3))
+	flyer.fire = fmod(time, 1.5) < SimClock.TICK * 2.0
 	out[others[2].toy_id] = flyer
-	if fmod(time, 1.5) < SimClock.TICK:
-		stub.mark_fired(others[2].toy_id)
 	return out
 
 
@@ -263,8 +257,6 @@ func _script_flight() -> void:
 	elif t >= 2.4 and t < 5.0:
 		var ang3 := -0.6 + sin(t * 1.5) * 0.5
 		_finger(1, a + Vector2(cos(ang3), sin(ang3)) * r * 1.45)
-		if _every(0.25):
-			stub.magazine = maxi(stub.magazine - 1, 0)
 	elif t >= 5.0 and t < 5.1:
 		_lift(1)
 	elif t >= 5.4 and t < 5.5:
@@ -280,17 +272,18 @@ func _script_flight() -> void:
 
 
 func _script_hud() -> void:
-	if _t < 0.05 and stub.feed.is_empty():
-		stub.clock = 27.0
-		stub.magazine = 3
-		stub.reserve = 42
-		stub.pop_line("Sarge", 0, "Tin Tom", 1, "pistol")
-		stub.pop_line("Plushie", 1, "Bolt", 0, "frag")
-		stub.pop_line("Tin Tom", 1, "Tin Tom", 1, "frag")
-		stub.weapon_name = "Assault rifle"
-		stub.weapon_key = &"assault_rifle"
-	if _every(0.6):
-		stub.hit_from(others[1].position)
+	if _t < 0.05 and _prev_t == 0.0:
+		view.source.clock = 27.0
+		# A rifle at my feet, picked up with the button.
+		combat.place_item(&"assault_rifle", me.position + Vector2(0, -20))
+		_buttons = int(InputIntent.Act.PICK_UP)
+	if _t > 0.15 and _prev_t <= 0.15:
+		_buttons = 0
+		combat.hurt(_f(others[2]), 1000.0, me.toy_id, &"assault_rifle", CombatSim.Hurt.BULLET)
+	if _t > 0.25 and _prev_t <= 0.25:
+		combat.hurt(_f(others[0]), 1000.0, others[1].toy_id, &"uzi", CombatSim.Hurt.BULLET)
+	if _every(0.6) and _t > 0.3:
+		combat.hurt(_f(me), 6.0, others[1].toy_id, &"uzi", CombatSim.Hurt.BULLET)
 	# Thumbs resting on the sticks for the shot.
 	var r := view.touch.move_stick.radius
 	if _t > 0.3:
@@ -315,6 +308,7 @@ func _intent() -> InputIntent:
 	if c.is_active() and c.since_touch < TouchInput.TOUCH_GRACE:
 		var i := InputIntent.new()
 		c.fill(i)
+		i.buttons |= _buttons
 		return i
 	var i := InputIntent.new()
 	i.move = Input.get_vector(InputActions.MOVE_LEFT, InputActions.MOVE_RIGHT, InputActions.MOVE_DOWN, InputActions.MOVE_UP)
@@ -325,4 +319,5 @@ func _intent() -> InputIntent:
 	i.fire = Input.is_action_pressed(InputActions.FIRE)
 	for b: Array in InputActions.BUTTONS:
 		i.set_button(b[1], Input.is_action_pressed(b[0]))
+	i.buttons |= _buttons
 	return i
