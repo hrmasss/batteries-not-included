@@ -1,4 +1,5 @@
 {
+  "map": "res://maps/bedroom_blockout/bedroom_blockout.tscn",
   "duration": 4.0,
   "overlay": false,
   "spawn": 1,

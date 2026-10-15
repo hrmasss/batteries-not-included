@@ -12,7 +12,7 @@ extends RefCounted
 
 const AUTHOR_PX_PER_U := 8.0
 ## Gap between pieces, texels: room for mipmaps without bleeding.
-const PAD := 4
+const PAD := 8
 const MAX_WIDTH := 4096
 
 ## Sheets by key, built once per run.
@@ -94,9 +94,14 @@ func _build(files: Dictionary) -> void:
 	# Shelf packing, tallest first.
 	images.sort_custom(func(a: Array, b: Array) -> bool: return (a[1] as Image).get_height() > (b[1] as Image).get_height())
 	var width := PAD
+	var area := 0.0
 	for e: Array in images:
-		width = maxi(width, (e[1] as Image).get_width() + PAD * 2)
-	width = clampi(nearest_po2(maxi(width, 256)), 256, MAX_WIDTH)
+		var im: Image = e[1]
+		width = maxi(width, im.get_width() + PAD * 2)
+		area += (im.get_width() + PAD) * (im.get_height() + PAD)
+	# Near square: GPUs cap each side, not the area.
+	width = maxi(width, int(sqrt(area) * 1.15))
+	width = clampi((maxi(width, 256) + 3) / 4 * 4, 256, MAX_WIDTH)
 	var x := PAD
 	var y := PAD
 	var row := 0
@@ -110,13 +115,28 @@ func _build(files: Dictionary) -> void:
 		places.append(Vector2i(x, y))
 		x += img.get_width() + PAD
 		row = maxi(row, img.get_height())
-	var height := nearest_po2(y + row + PAD)
+	var height := (y + row + PAD + 3) / 4 * 4
 	var sheet_img := Image.create_empty(width, height, false, Image.FORMAT_RGBA8)
 	for i in images.size():
 		var img: Image = images[i][1]
 		var at: Vector2i = places[i]
 		sheet_img.blit_rect(img, Rect2i(Vector2i.ZERO, img.get_size()), at)
+		_extrude(sheet_img, img, at)
 		regions[images[i][0]] = Rect2(Vector2(at), Vector2(img.get_size()))
 	sheet_img.generate_mipmaps()
 	texture = ImageTexture.create_from_image(sheet_img)
 	build_ms = Time.get_ticks_msec() - t0
+
+
+## Copies a piece's edge texels into the gap around it, so filtering and mipmaps at the edge
+## see the piece, not the gap: no seams between tiles, no dark fringe on props.
+static func _extrude(sheet_img: Image, img: Image, at: Vector2i) -> void:
+	var w := img.get_width()
+	var h := img.get_height()
+	var e := PAD / 2
+	for k in range(1, e + 1):
+		sheet_img.blit_rect(img, Rect2i(0, 0, 1, h), at + Vector2i(-k, 0))
+		sheet_img.blit_rect(img, Rect2i(w - 1, 0, 1, h), at + Vector2i(w - 1 + k, 0))
+	for k in range(1, e + 1):
+		sheet_img.blit_rect(sheet_img, Rect2i(at.x - e, at.y, w + e * 2, 1), Vector2i(at.x - e, at.y - k))
+		sheet_img.blit_rect(sheet_img, Rect2i(at.x - e, at.y + h - 1, w + e * 2, 1), Vector2i(at.x - e, at.y + h - 1 + k))

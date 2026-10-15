@@ -15,7 +15,7 @@ const SHADOW := Color(0.08, 0.06, 0.1, 0.32)
 ## How far below the feet a contact shadow still shows, u.
 const SHADOW_REACH := 90.0
 ## Thrust smoke puffs per second per nozzle at full thrust.
-const PUFF_RATE := 14.0
+const PUFF_RATE := 9.0
 const OUTLINE_WIDTH_U := 0.75
 const PX := 1.0 / ArtAtlas.AUTHOR_PX_PER_U
 
@@ -195,11 +195,11 @@ func _draw() -> void:
 	if toy.thrust > 0.0:
 		var piece := ArtLibrary.fx_piece("thrust_flame" if fmod(_flicker, 2.0) < 1.0 else "thrust_flame_b")
 		var origin := _fx_origin(piece)
-		var len := (0.5 + 0.5 * toy.thrust) * (0.88 + 0.12 * sin(_flicker * 1.7))
+		var len := (0.7 + 0.6 * toy.thrust) * (0.88 + 0.12 * sin(_flicker * 1.7))
 		for i in frame.nozzles.size():
 			var n: Vector2 = frame.nozzles[i]
 			var rot := frame.thrust_dir.angle() - PI * 0.5
-			var s := Vector2(0.55, len * (1.0 if i == 0 else 0.9)) * PX
+			var s := Vector2(0.7, len * (1.0 if i == 0 else 0.9)) * PX
 			draw_set_transform_matrix(Transform2D(rot, s, 0.0, n) * Transform2D(0.0, -origin))
 			_atlas.draw(self, piece)
 		draw_set_transform_matrix(Transform2D.IDENTITY)

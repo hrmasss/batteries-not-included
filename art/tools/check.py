@@ -130,6 +130,15 @@ def check_json():
                 fail(f"kit.json {n}: shape {i} has under 3 points")
             for pt in c["poly"]:
                 inside(pt, sizes[f], slack=40, name=f"kit.json {n} shape {i}")
+    # pickups
+    pk_path = os.path.join(ASSETS, "pickups", "pickups.json")
+    pickups = json.load(open(pk_path))["pickups"] if os.path.exists(pk_path) else {}
+    for n, e in pickups.items():
+        f = os.path.join(ASSETS, "pickups", e["file"])
+        if f not in sizes:
+            fail(f"pickups.json: {n} file missing")
+            continue
+        inside(e["origin"], sizes[f], name=f"pickups.json {n} origin")
     # every svg is referenced by some json
     referenced = set()
     for p in rig["parts"]:
@@ -142,6 +151,8 @@ def check_json():
         referenced.add(os.path.join(ASSETS, "fx", e["file"]))
     for e in kit.values():
         referenced.add(os.path.join(ASSETS, "maps", "bedroom", e["file"]))
+    for e in pickups.values():
+        referenced.add(os.path.join(ASSETS, "pickups", e["file"]))
     for p in sizes:
         if p not in referenced:
             fail(f"{os.path.relpath(p, ROOT)}: not listed in any json")

@@ -237,12 +237,12 @@ func blast(pos: Vector2, radius: float) -> void:
 
 ## Thrust smoke: a puff that drifts out of the nozzle along the thrust and rises.
 func thrust_puff(pos: Vector2, dir: Vector2, toy_vel: Vector2, strength: float) -> void:
-	var p := spawn(ArtLibrary.fx_piece("smoke_puff"), pos + dir * 6.0, randf() * TAU, 0.32 + 0.14 * strength, 0.6 + randf() * 0.3)
+	var p := spawn(ArtLibrary.fx_piece("smoke_puff"), pos + dir * 6.0, randf() * TAU, 0.5 + 0.2 * strength, 0.7 + randf() * 0.3)
 	p.vel = dir * (60.0 + 50.0 * strength) + toy_vel * 0.25 + Vector2(0, -12)
 	p.drag = 3.0
 	p.grow = 1.2
 	p.spin = randf_range(-2.0, 2.0)
-	p.alpha = 0.55
+	p.alpha = 0.42
 	p.fade = 0.75
 	p.fade_in = 0.1
 

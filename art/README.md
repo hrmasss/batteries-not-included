@@ -6,7 +6,7 @@ Godot checks need Godot 4.7 and `xvfb-run`.
 
 ```sh
 # regenerate every asset
-python3 art/src/soldier.py && python3 art/src/weapons.py && python3 art/src/fx.py && python3 art/src/bedroom.py
+python3 art/src/soldier.py && python3 art/src/weapons.py && python3 art/src/fx.py && python3 art/src/bedroom.py && python3 art/src/pickups.py
 
 # checks: Godot-safe SVG features, json cross-references, Godot raster vs librsvg per file
 python3 art/tools/check.py

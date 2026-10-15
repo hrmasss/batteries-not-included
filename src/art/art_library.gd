@@ -37,6 +37,10 @@ static func fx() -> Dictionary:
 	return data("fx/fx.json").get("fx", {})
 
 
+static func pickups() -> Dictionary:
+	return data("pickups/pickups.json").get("pickups", {})
+
+
 static func kit() -> Dictionary:
 	return data("maps/bedroom/kit.json").get("pieces", {})
 
@@ -82,6 +86,8 @@ static func actors() -> ArtAtlas:
 		files[StringName("weapons/" + String(weapons()[id].file).get_basename())] = ASSETS + "weapons/" + weapons()[id].file
 	for id: String in fx():
 		files[fx_piece(id)] = ASSETS + "fx/" + fx()[id].file
+	for id: String in pickups():
+		files[StringName("pickups/" + id)] = ASSETS + "pickups/" + pickups()[id].file
 	return ArtAtlas.sheet("actors", files)
 
 
