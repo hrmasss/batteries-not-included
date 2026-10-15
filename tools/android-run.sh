@@ -113,13 +113,27 @@ shot 03-after-left-up
 hold KEYCODE_S 1500
 shot 04-after-down
 hold KEYCODE_D 800
+# Then a real touch on the move stick: push up to fly, then right. The stick sits 100 x 80 units
+# from the bottom left of a 360-unit-high screen (src/controls/touch_layout.gd).
+size="$("${ADB[@]}" shell wm size | tr -d '\r' | grep -o -E '[0-9]+x[0-9]+' | tail -n1)"
+long="${size%x*}"; short="${size#*x}"; [ "$long" -ge "$short" ] || { t=$long; long=$short; short=$t; }
+u=$(( short * 1000 / 360 ))                      # pixels per unit, x1000
+mx=$(( 100 * u / 1000 )); my=$(( short - 80 * u / 1000 )); r=$(( 40 * u / 1000 ))
+touch() { "${ADB[@]}" shell input motionevent "$@" >/dev/null 2>&1 || true; }
+touch DOWN "$mx" "$my"
+touch MOVE "$mx" "$(( my - r ))"
+sleep 2.5
+shot 05-touch-flying
+touch MOVE "$(( mx + r ))" "$(( my - r / 2 ))"
+sleep 1.5
+touch UP "$(( mx + r ))" "$(( my - r / 2 ))"
 end=$(( $(date +%s) + PLAY_SECONDS ))
 while [ "$(date +%s)" -lt "$end" ] && kill -0 "$REC_PID" 2>/dev/null; do sleep 1; done
 wait "$REC_PID" 2>/dev/null || true
 sleep 2
 "${ADB[@]}" pull /sdcard/bni-run.mp4 "$OUT/run.mp4" >/dev/null 2>&1 && log "recording run.mp4" \
   || log "screenrecord produced nothing (see screenrecord.log)"
-shot 05-end
+shot 06-end
 
 # Frame times. SurfaceFlinger keeps the present times of the game's surface; gfxinfo covers
 # only Android's own UI renderer, so it is kept for reference.
