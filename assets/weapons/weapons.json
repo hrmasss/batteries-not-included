@@ -1,0 +1,173 @@
+{
+  "units": "author px, 4 per game px at 720p; points are px from the file's top-left",
+  "facing": "right; mirror on y-axis to face left",
+  "grip": "where the trigger hand's fist centre sits",
+  "support": "where the other hand holds it; absent for one-handed weapons",
+  "muzzle": "where bullets and the muzzle flash leave",
+  "weapons": {
+    "pistol": {
+      "file": "pistol.svg",
+      "size": [
+        140,
+        110
+      ],
+      "grip": [
+        34,
+        74
+      ],
+      "muzzle": [
+        118,
+        26
+      ],
+      "hands": 1,
+      "label": "pistol",
+      "support": [
+        38,
+        80
+      ]
+    },
+    "uzi": {
+      "file": "uzi.svg",
+      "size": [
+        176,
+        152
+      ],
+      "grip": [
+        76,
+        82
+      ],
+      "muzzle": [
+        165,
+        39
+      ],
+      "hands": 1,
+      "label": "Uzi"
+    },
+    "smg": {
+      "file": "smg.svg",
+      "size": [
+        262,
+        150
+      ],
+      "grip": [
+        124,
+        82
+      ],
+      "muzzle": [
+        251,
+        40
+      ],
+      "hands": 2,
+      "label": "SMG",
+      "support": [
+        170,
+        82
+      ]
+    },
+    "assault_rifle": {
+      "file": "assault_rifle.svg",
+      "size": [
+        360,
+        160
+      ],
+      "grip": [
+        138,
+        102
+      ],
+      "muzzle": [
+        357,
+        58
+      ],
+      "hands": 2,
+      "label": "assault rifle",
+      "support": [
+        240,
+        82
+      ]
+    },
+    "shotgun": {
+      "file": "shotgun.svg",
+      "size": [
+        400,
+        128
+      ],
+      "grip": [
+        146,
+        70
+      ],
+      "muzzle": [
+        389,
+        28
+      ],
+      "hands": 2,
+      "label": "pump shotgun",
+      "support": [
+        292,
+        54
+      ]
+    },
+    "sniper_rifle": {
+      "file": "sniper_rifle.svg",
+      "size": [
+        450,
+        160
+      ],
+      "grip": [
+        156,
+        112
+      ],
+      "muzzle": [
+        445,
+        66
+      ],
+      "hands": 2,
+      "label": "sniper rifle",
+      "support": [
+        260,
+        94
+      ]
+    },
+    "rocket_launcher": {
+      "file": "rocket_launcher.svg",
+      "size": [
+        380,
+        150
+      ],
+      "grip": [
+        138,
+        110
+      ],
+      "muzzle": [
+        364,
+        63
+      ],
+      "hands": 2,
+      "label": "rocket launcher",
+      "support": [
+        208,
+        110
+      ],
+      "exhaust": [
+        14,
+        63
+      ]
+    },
+    "frag_grenade": {
+      "file": "frag_grenade.svg",
+      "size": [
+        92,
+        104
+      ],
+      "grip": [
+        44,
+        66
+      ],
+      "muzzle": [
+        44,
+        66
+      ],
+      "hands": 1,
+      "label": "frag grenade"
+    }
+  }
+}
