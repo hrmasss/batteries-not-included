@@ -16,7 +16,8 @@ const FLOOR_Y := 900.0
 
 var rules: Ruleset
 var sim: MatchSim
-var view: PlayerView
+var view: PlayerHud
+var camera: GameCamera
 var stub := CombatStub.new()
 var clock := SimClock.new()
 var me: SimToy
@@ -62,12 +63,17 @@ func _ready() -> void:
 	stub.grenades.append(gas)
 	for t in sim.toys:
 		_add_toy_view(t)
+	InputActions.ensure()
 	var settings := ControlSettings.new()
 	settings.left_handed = args.has("--left-handed")
-	view = PlayerView.new()
-	view.name = "PlayerView"
+	camera = GameCamera.new(rules, settings)
+	add_child(camera)
+	camera.make_current()
+	view = PlayerHud.new()
+	view.name = "PlayerHud"
 	add_child(view)
-	view.setup(sim, me.toy_id, self, settings, stub)
+	view.setup(sim, me.toy_id, camera, stub)
+
 	view.touch.always_show = true
 	for n: Dictionary in _toy_nodes.values():
 		n.tag.viewer = _toy_nodes[me.toy_id].outline
@@ -156,14 +162,17 @@ func _process(dt: float) -> void:
 	_run_script()
 	var n := clock.advance(dt)
 	for i in n:
-		var intents := {me.toy_id: view.intent()}
+		var mine := _intent()
+		view.on_intent(mine)
+		var intents := {me.toy_id: mine}
 		intents.merge(_others_intents(sim.tick * SimClock.TICK))
 		sim.step(intents)
 	var alpha := clock.alpha()
 	for d: Dictionary in _toy_nodes.values():
 		var t: SimToy = d.toy
 		d.outline.position = t.prev_position.lerp(t.position, alpha)
-	view.frame(dt, alpha)
+	camera.follow(me.prev_position.lerp(me.position, alpha), dt)
+	view.frame()
 
 
 ## The other toys: the teammate idles, one enemy zips along the far side (radar), one flies up
@@ -298,3 +307,22 @@ func _save_frame() -> void:
 ## True on the frame a multiple of `period` seconds passes.
 func _every(period: float) -> bool:
 	return floori(_t / period) != floori(_prev_t / period)
+
+
+## The player's intent: touch, or keyboard and mouse aimed from the toy.
+func _intent() -> InputIntent:
+	var c := view.touch
+	if c.is_active() and c.since_touch < TouchInput.TOUCH_GRACE:
+		var i := InputIntent.new()
+		c.fill(i)
+		return i
+	var i := InputIntent.new()
+	i.move = Input.get_vector(InputActions.MOVE_LEFT, InputActions.MOVE_RIGHT, InputActions.MOVE_DOWN, InputActions.MOVE_UP)
+	i.move_held = i.move != Vector2.ZERO
+	var to_mouse := get_global_mouse_position() - me.position
+	if to_mouse.length() > 1.0:
+		i.aim = Vector2(to_mouse.x, -to_mouse.y).normalized()
+	i.fire = Input.is_action_pressed(InputActions.FIRE)
+	for b: Array in InputActions.BUTTONS:
+		i.set_button(b[1], Input.is_action_pressed(b[0]))
+	return i
