@@ -39,7 +39,7 @@ func refresh() -> void:
 		rank += 1
 		var color := Ui.ACCENT if r.id == me_id else Ui.TEXT
 		_grid.add_child(Ui.label("%d" % rank, Ui.FONT_SMALL, Ui.TEXT_DIM))
-		var who := Ui.label(("%s  " % Ui.TEAM_SHAPES[(r.team - 1) % Ui.TEAM_SHAPES.size()] if r.team > 0 else "") + r.name, Ui.FONT_SMALL, color, HORIZONTAL_ALIGNMENT_LEFT)
+		var who := Ui.label(("%s  " % Ui.team_glyph(r.team) if r.team > 0 else "") + r.name, Ui.FONT_SMALL, color, HORIZONTAL_ALIGNMENT_LEFT)
 		if r.team > 0:
 			who.add_theme_color_override("font_color", Ui.team_color(r.team).lerp(Ui.TEXT, 0.25) if r.id != me_id else Ui.ACCENT)
 		_grid.add_child(who)

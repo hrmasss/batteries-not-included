@@ -11,10 +11,9 @@ const ACCENT_DARK := Color("#a85f17")
 const TEXT := Color("#f4f1ea")
 const TEXT_DIM := Color("#a9b0cf")
 const GOOD := Color("#7fd18b")
-## Team colours (art-lab, accepted 2026-10-15) and a shape each, so a team never rests on colour.
-const TEAM_COLORS: Array[Color] = [Color("#1f63d6"), Color("#ff8c1a"), Color("#ff8fcb"), Color("#f2d02b")]
-const TEAM_NAMES: PackedStringArray = ["Blue", "Orange", "Pink", "Yellow"]
-const TEAM_SHAPES: PackedStringArray = ["●", "▲", "■", "◆"]
+## A glyph for each team shape (TeamPalette.SHAPES), so a team never rests on colour.
+const SHAPE_GLYPHS := {TeamPalette.Shape.CIRCLE: "●", TeamPalette.Shape.TRIANGLE: "▲", TeamPalette.Shape.SQUARE: "■", TeamPalette.Shape.DIAMOND: "◆"}
+const FONT_PATH := "res://assets/fonts/LilitaOne-Regular.ttf"
 
 const BUTTON_HEIGHT := 34.0
 const FONT_SMALL := 11
@@ -23,17 +22,25 @@ const FONT_BIG := 20
 const FONT_TITLE := 30
 
 
+## Match teams count from 1; the palette from 0.
 static func team_color(team: int) -> Color:
-	return TEAM_COLORS[(team - 1) % TEAM_COLORS.size()] if team > 0 else TEXT
+	return TeamPalette.color(team - 1) if team > 0 else TEXT
 
 
+static func team_glyph(team: int) -> String:
+	return SHAPE_GLYPHS.get(TeamPalette.shape(team - 1), "") if team > 0 else ""
+
+
+## "▲ Orange"
 static func team_name(team: int) -> String:
-	return "%s %s" % [TEAM_SHAPES[(team - 1) % TEAM_SHAPES.size()], TEAM_NAMES[(team - 1) % TEAM_NAMES.size()]] if team > 0 else ""
+	return "%s %s" % [team_glyph(team), TeamPalette.team_name(team - 1)] if team > 0 else ""
 
 
 static func theme() -> Theme:
 	var t := Theme.new()
 	t.default_font_size = FONT
+	if ResourceLoader.exists(FONT_PATH):
+		t.default_font = load(FONT_PATH)
 	t.set_color("font_color", "Label", TEXT)
 	t.set_color("font_color", "Button", TEXT)
 	t.set_color("font_hover_color", "Button", TEXT)

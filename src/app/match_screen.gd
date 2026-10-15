@@ -12,8 +12,8 @@ var names: PackedStringArray = []
 
 var _layer: CanvasLayer
 var _ui: Control
-var _clock: Label
 var _scores_panel: ScoreTable
+var _scores_box: VBoxContainer
 var _pause: Control
 var _results: Control
 var _hold_scores: bool = false
@@ -48,6 +48,12 @@ func _ready() -> void:
 		autoplay.bot = Bot.new(view.me, skill, view.sim, runner.nav, cfg.seed_value)
 	view.stepper = runner.step
 	runner.ended.connect(_on_ended)
+	# The HUD reads names and the clock from whoever runs the match.
+	var hud_source := view.player_hud.source
+	for id: int in runner.scores.rows:
+		hud_source.names[id] = runner.scores.row(id).name
+	hud_source.clock_running = false
+	hud_source.clock = runner.time_left()
 	_build_ui()
 
 
@@ -60,27 +66,26 @@ func _build_ui() -> void:
 	_ui.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_ui.theme = Ui.theme()
 	_layer.add_child(_ui)
-	_clock = Ui.label("", Ui.FONT_BIG)
-	_clock.name = "Clock"
-	_clock.set_anchors_preset(Control.PRESET_CENTER_TOP)
-	_clock.position = Vector2(-40, 2)
-	_clock.custom_minimum_size = Vector2(80, 0)
-	_clock.add_theme_color_override("font_outline_color", Color.BLACK)
-	_clock.add_theme_constant_override("outline_size", 4)
-	_ui.add_child(_clock)
-	var top := HBoxContainer.new()
-	top.set_anchors_preset(Control.PRESET_TOP_RIGHT)
-	top.position = Vector2(-150, 4)
-	top.add_theme_constant_override("separation", 4)
-	var scores_button := _small("Scores", _toggle_scores)
-	scores_button.name = "ScoresButton"
-	top.add_child(scores_button)
-	top.add_child(_small("Menu", _toggle_pause))
-	_ui.add_child(top)
+	# Tap the HUD's clock and scores for the full scoreboard (US-20.2).
+	var clock_tap := Button.new()
+	clock_tap.name = "ScoresButton"
+	clock_tap.flat = true
+	clock_tap.focus_mode = Control.FOCUS_NONE
+	clock_tap.set_anchors_preset(Control.PRESET_CENTER_TOP)
+	clock_tap.position = Vector2(-46, 4)
+	clock_tap.size = Vector2(92, 46)
+	clock_tap.add_theme_stylebox_override("normal", StyleBoxEmpty.new())
+	clock_tap.add_theme_stylebox_override("hover", StyleBoxEmpty.new())
+	clock_tap.add_theme_stylebox_override("pressed", StyleBoxEmpty.new())
+	clock_tap.pressed.connect(_toggle_scores)
+	_ui.add_child(clock_tap)
 	_scores_panel = ScoreTable.new(runner.scores, view.me.id())
-	_scores_panel.visible = false
-	_scores_panel.set_anchors_preset(Control.PRESET_CENTER)
-	_ui.add_child(_scores_panel)
+	_scores_box = VBoxContainer.new()
+	_scores_box.name = "Scores"
+	_scores_box.visible = false
+	_scores_box.add_child(_scores_panel)
+	_scores_box.add_child(Ui.row([_small("Close", _toggle_scores), _small("Menu", _toggle_pause)]))
+	_ui.add_child(_scores_box)
 
 
 func _small(text: String, on_press: Callable) -> Button:
@@ -97,13 +102,13 @@ func _small(text: String, on_press: Callable) -> Button:
 func _process(_delta: float) -> void:
 	if runner == null:
 		return
-	_clock.text = Ui.clock(runner.time_left())
-	var want := _hold_scores or Input.is_key_pressed(KEY_TAB)
-	if _scores_panel.visible != want and _results == null:
-		_scores_panel.visible = want
-	if _scores_panel.visible:
+	view.player_hud.source.clock = runner.time_left()
+	var want := (_hold_scores or Input.is_key_pressed(KEY_TAB)) and _results == null and _pause == null
+	if _scores_box.visible != want:
+		_scores_box.visible = want
+	if _scores_box.visible:
 		_scores_panel.refresh()
-		_center(_scores_panel)
+		_center(_scores_box)
 
 
 func _center(c: Control) -> void:
@@ -121,6 +126,12 @@ func _unhandled_input(event: InputEvent) -> void:
 		get_viewport().set_input_as_handled()
 
 
+func _notification(what: int) -> void:
+	# Android's back gesture pauses, as Escape does.
+	if what == NOTIFICATION_WM_GO_BACK_REQUEST and _results == null and _pause == null:
+		_toggle_pause()
+
+
 func _toggle_pause() -> void:
 	if _results != null:
 		return
@@ -129,6 +140,7 @@ func _toggle_pause() -> void:
 		_pause = null
 		view.process_mode = Node.PROCESS_MODE_INHERIT
 		return
+	_hold_scores = false
 	view.process_mode = Node.PROCESS_MODE_DISABLED
 	_pause = _panel([
 		Ui.label("Paused", Ui.FONT_BIG, Ui.ACCENT),
@@ -159,8 +171,8 @@ func _panel(children: Array) -> Control:
 
 ## US-20.3: the winner, the full scoreboard and the best player; rematch in one tap (US-20.5).
 func _on_ended(result: MatchRules.Result) -> void:
-	_scores_panel.visible = false
-	_clock.text = Ui.clock(0.0)
+	_hold_scores = false
+	view.player_hud.source.clock = 0.0
 	var table := ScoreTable.new(runner.scores, view.me.id())
 	var children: Array = [
 		Ui.label("FINAL RESULTS", Ui.FONT_SMALL, Ui.TEXT_DIM),

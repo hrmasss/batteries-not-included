@@ -3,10 +3,10 @@ extends Node
 ## One lesson on the bedroom map: what to do, an arrow at the control to use, and Skip
 ## (US-35.2, US-35.3). Done moves on to the next lesson.
 
-## Where the touch controls sit when the touch layout cannot say, as shares of the screen.
-const SPOTS := {
-	&"move_stick": Vector2(0.14, 0.78), &"aim_stick": Vector2(0.86, 0.78),
-	&"pick_up": Vector2(0.70, 0.62), &"switch": Vector2(0.80, 0.08), &"grenade": Vector2(0.92, 0.50),
+## The touch control each lesson step points at.
+const CONTROLS := {
+	&"move_stick": TouchLayout.Id.MOVE, &"aim_stick": TouchLayout.Id.AIM, &"pick_up": TouchLayout.Id.PICK_UP,
+	&"switch": TouchLayout.Id.SWITCH, &"grenade": TouchLayout.Id.GRENADE,
 }
 
 var app: App
@@ -44,8 +44,9 @@ func _ready() -> void:
 	_ui.theme = Ui.theme()
 	layer.add_child(_ui)
 	var top := VBoxContainer.new()
-	top.set_anchors_preset(Control.PRESET_TOP_WIDE)
-	top.position = Vector2(0, 6)
+	top.set_anchors_and_offsets_preset(Control.PRESET_TOP_WIDE)
+	# Under the HUD's meters and clock.
+	top.position = Vector2(0, 56)
 	top.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_ui.add_child(top)
 	top.add_child(Ui.label(LessonRunner.TITLES[lesson_id].to_upper(), Ui.FONT_SMALL, Ui.ACCENT))
@@ -58,17 +59,18 @@ func _ready() -> void:
 	_keys.visible = not OS.has_feature("mobile")
 	top.add_child(_keys)
 	var buttons := HBoxContainer.new()
-	buttons.set_anchors_preset(Control.PRESET_TOP_LEFT)
-	buttons.position = Vector2(6, 6)
+	buttons.alignment = BoxContainer.ALIGNMENT_CENTER
 	buttons.add_child(_small("Back", app.show_lessons))
 	buttons.add_child(_small("Skip", _next))
-	_ui.add_child(buttons)
+	top.add_child(buttons)
 	_arrow = LessonArrow.new()
 	_ui.add_child(_arrow)
 	lesson.advanced.connect(func(_i: int) -> void: _show_step())
 	lesson.finished.connect(_on_done)
 	lesson.start(lesson_id)
-	_show_step()
+	# Show the touch controls the lesson points at, even before a thumb is down.
+	view.player_hud.touch.always_show = true
+	_show_step.call_deferred()
 
 
 func _small(text: String, on_press: Callable) -> Button:
@@ -96,15 +98,12 @@ func _show_step() -> void:
 	_arrow.target = _control_spot(s.control)
 
 
-## Where control `name` is on screen: the touch layout's own place when it has one.
+## Where control `name` sits on screen, from the touch layout (US-35.2).
 func _control_spot(control: StringName) -> Vector2:
-	var hud: Variant = view.get("player_hud")
-	if hud != null and hud is Object and (hud as Object).has_method("control_center"):
-		var at: Variant = (hud as Object).call("control_center", control)
-		if at is Vector2:
-			return at
-	var share: Vector2 = SPOTS.get(control, Vector2(0.5, 0.5))
-	return share * _ui.get_viewport_rect().size
+	var touch := view.player_hud.touch
+	if touch.layout == null:
+		touch.apply_settings()
+	return touch.layout.center(CONTROLS.get(control, TouchLayout.Id.MOVE))
 
 
 func _on_done(id: StringName) -> void:
