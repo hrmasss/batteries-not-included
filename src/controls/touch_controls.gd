@@ -214,7 +214,11 @@ func _draw() -> void:
 		HudStyle.disc(self, c + (Vector2(0, 2) if down else Vector2.ZERO), r, Color(fill, 0.92), a * dim)
 		HudIcons.draw(self, _ICONS[id], c + (Vector2(0, 2) if down else Vector2.ZERO), r * 0.62, Color(HudStyle.INK, a * dim))
 		if id == Id.ZOOM:
-			HudStyle.text(self, c + Vector2(-r, r + 13.0), zoom_label, 13, Color(HudStyle.TEXT, a), HORIZONTAL_ALIGNMENT_CENTER, r * 2.0)
+			# The level as a badge on the button's edge, toward the screen centre.
+			var side := 1.0 if c.x < size.x * 0.5 else -1.0
+			var badge := c + Vector2(side * r * 0.85, r * 0.55)
+			HudStyle.slab(self, Rect2(badge - Vector2(14, 9), Vector2(28, 18)), Color(HudStyle.INK, 0.85 * a), 6.0, 0.0)
+			HudStyle.text(self, badge + Vector2(-14, 5), zoom_label, 13, Color(HudStyle.AMMO, a), HORIZONTAL_ALIGNMENT_CENTER, 28.0)
 
 
 func _draw_stick(s: TouchStick, a: float, fire_ring: bool) -> void:

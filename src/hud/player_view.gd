@@ -48,11 +48,11 @@ func setup(match_sim: MatchSim, player_toy: int, world: Node, control_settings: 
 	source = SimHudSource.new(sim, toy_id, stub)
 	hud.setup(source, view_rules)
 	layer.add_child(hud)
-	hud.set_anchors_preset(Control.PRESET_FULL_RECT)
+	hud.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	touch = TouchControls.new()
 	touch.name = "TouchControls"
 	layer.add_child(touch)
-	touch.set_anchors_preset(Control.PRESET_FULL_RECT)
+	touch.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	touch.setup(view_rules, settings)
 	touch.always_show = DisplayServer.is_touchscreen_available()
 	_sync_weapon()

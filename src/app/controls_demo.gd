@@ -9,7 +9,7 @@ extends Node2D
 ##   --script=popped   the respawn panel
 ##   --left-handed     mirror the layout
 ##   --bi              Batteries Included on
-## Use Godot's own `--write-movie` and `--fixed-fps` to record frames.
+##   --frames=DIR      save every drawn frame as DIR/fNNNNN.png (use with --fixed-fps)
 
 const ROOM_W := 3200.0
 const FLOOR_Y := 900.0
@@ -25,6 +25,9 @@ var script_name: String = ""
 var _t: float = 0.0
 var _toy_nodes: Dictionary = {}
 var _fingers: Dictionary = {}
+var _frames_dir: String = ""
+var _frame: int = 0
+var _prev_t: float = 0.0
 
 
 func _ready() -> void:
@@ -32,6 +35,11 @@ func _ready() -> void:
 	for a in args:
 		if a.begins_with("--script="):
 			script_name = a.get_slice("=", 1)
+		elif a.begins_with("--frames="):
+			_frames_dir = a.get_slice("=", 1)
+	if _frames_dir != "":
+		DirAccess.make_dir_recursive_absolute(_frames_dir)
+		RenderingServer.frame_post_draw.connect(_save_frame)
 	var res := RulesetLoader.load_standard()
 	if not res.ok():
 		push_error("ruleset: %s" % ", ".join(res.errors))
@@ -104,7 +112,7 @@ func _room() -> GameMap:
 	m.add_child(terrain)
 	var spawns := Node2D.new()
 	spawns.name = "Spawns"
-	for x: float in [640.0, 760.0, 2500.0, 2950.0]:
+	for x: float in [640.0, 760.0, 1250.0, 1550.0]:
 		var sp := SpawnPoint.new()
 		sp.position = Vector2(x, FLOOR_Y)
 		spawns.add_child(sp)
@@ -143,6 +151,7 @@ func _scores(a: int, b: int) -> Array[HudState.Score]:
 func _process(dt: float) -> void:
 	if sim == null:
 		return
+	_prev_t = _t
 	_t += dt
 	_run_script()
 	var n := clock.advance(dt)
@@ -163,7 +172,7 @@ func _others_intents(time: float) -> Dictionary:
 	var out := {}
 	var mate := InputIntent.make(Vector2(sin(time * 0.7) * 0.5, 0.0), true, Vector2(1, 0.2))
 	out[others[0].toy_id] = mate
-	var zip := InputIntent.make(Vector2(1.0 if fmod(time, 6.0) < 3.0 else -1.0, 0.8), true, Vector2(-1, 0))
+	var zip := InputIntent.make(Vector2(1.0 if fmod(time, 6.0) < 3.0 else -1.0, 0.0), true, Vector2(-1, 0))
 	out[others[1].toy_id] = zip
 	var flyer := InputIntent.make(Vector2(0.3 * sin(time), 0.9 if fmod(time, 4.0) < 2.5 else 0.0), true, Vector2(-1, -0.3))
 	out[others[2].toy_id] = flyer
@@ -245,7 +254,7 @@ func _script_flight() -> void:
 	elif t >= 2.4 and t < 5.0:
 		var ang3 := -0.6 + sin(t * 1.5) * 0.5
 		_finger(1, a + Vector2(cos(ang3), sin(ang3)) * r * 1.45)
-		if fmod(t, 0.25) < 0.02:
+		if _every(0.25):
 			stub.magazine = maxi(stub.magazine - 1, 0)
 	elif t >= 5.0 and t < 5.1:
 		_lift(1)
@@ -271,10 +280,21 @@ func _script_hud() -> void:
 		stub.pop_line("Tin Tom", 1, "Tin Tom", 1, "frag")
 		stub.weapon_name = "Assault rifle"
 		stub.weapon_key = &"assault_rifle"
-	if fmod(_t, 0.6) < 0.02:
+	if _every(0.6):
 		stub.hit_from(others[1].position)
 	# Thumbs resting on the sticks for the shot.
 	var r := view.touch.move_stick.radius
 	if _t > 0.3:
 		_finger(0, _ui(TouchLayout.Id.MOVE) + Vector2(r * 0.6, -r * 0.2))
 		_finger(1, _ui(TouchLayout.Id.AIM) + Vector2(-r * 1.3, -r * 0.5))
+
+
+func _save_frame() -> void:
+	var img := get_viewport().get_texture().get_image()
+	img.save_png(_frames_dir.path_join("f%05d.png" % _frame))
+	_frame += 1
+
+
+## True on the frame a multiple of `period` seconds passes.
+func _every(period: float) -> bool:
+	return floori(_t / period) != floori(_prev_t / period)
