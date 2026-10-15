@@ -90,6 +90,15 @@ if [ ! -s "$OUT_ABS" ]; then
   exit 1
 fi
 
+# Godot packs only files it knows as resources; the ruleset is plain .cfg and comes in through the
+# preset's include filter. Refuse an APK without it: the game cannot start a match.
+for f in $(cd data && find . -name '*.cfg' | sed 's|^\./||'); do
+  if ! unzip -l "$OUT_ABS" "assets/data/$f" >/dev/null 2>&1; then
+    echo "APK is missing data/$f: check include_filter in export_presets.cfg" >&2
+    exit 1
+  fi
+done
+
 # Report size and check 16 KB alignment (Play's page-size rule for Android 15+).
 bt="$(ls -d "$ANDROID_HOME"/build-tools/* | sort -V | tail -n1)"
 echo "APK: $OUT ($(du -h "$OUT_ABS" | cut -f1), $(stat -c %s "$OUT_ABS") bytes)"
