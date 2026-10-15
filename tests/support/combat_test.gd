@@ -20,6 +20,9 @@ var intents: Dictionary = {}
 
 ## A match on a 4000 u floor with `rects` as extra terrain. `tune` may change the rules first.
 func make(rects: Array = [], tune: Callable = Callable(), m: GameMap = null) -> void:
+	# Two matches in one test would share one physics world; take the last one out.
+	if sim != null and is_instance_valid(sim) and sim.get_parent() != null:
+		sim.get_parent().remove_child(sim)
 	rules = TestWorld.rules()
 	if tune.is_valid():
 		tune.call(rules)
