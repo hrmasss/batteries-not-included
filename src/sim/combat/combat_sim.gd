@@ -141,6 +141,11 @@ func spawn(team: int = Fighter.NO_TEAM, toy_type: StringName = &"plastic_soldier
 	return f
 
 
+## US-10.4: the player's zoom mode, from their settings. Takes effect at the next weapon change.
+func set_zoom_mode(f: Fighter, mode: Fighter.ZoomMode) -> void:
+	f.zoom_mode = mode
+
+
 func fighter(toy_id: int) -> Fighter:
 	for f in fighters:
 		if f.id() == toy_id:
@@ -366,17 +371,30 @@ func _zoom_step(f: Fighter) -> void:
 	f.zoom_memory[w.id()] = f.zoom_level
 
 
-## US-10.3: back to the level last used with this weapon, or the nearest allowed one.
+## US-10.3, US-10.4: the level for the weapon now held, by the player's zoom mode. Last used:
+## back to the level last used with this weapon, or the nearest allowed one.
 func _apply_zoom_memory(f: Fighter) -> void:
 	var w := f.main_weapon()
 	if w == null:
 		f.zoom_level = 1
 		return
+	var levels := w.def.zoom
+	match f.zoom_mode:
+		Fighter.ZoomMode.WIDEST:
+			f.zoom_level = levels[levels.size() - 1]
+			return
+		Fighter.ZoomMode.KEEP:
+			var below: int = levels[0]
+			for level in levels:
+				if level <= f.zoom_level:
+					below = level
+			f.zoom_level = below
+			return
 	if f.zoom_memory.has(w.id()):
 		f.zoom_level = f.zoom_memory[w.id()]
 		return
-	var best: int = w.def.zoom[0]
-	for level in w.def.zoom:
+	var best: int = levels[0]
+	for level in levels:
 		if absi(level - f.zoom_level) < absi(best - f.zoom_level):
 			best = level
 	f.zoom_level = best

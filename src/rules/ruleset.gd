@@ -147,6 +147,28 @@ var teams_max: float
 # camera
 var anchor_below_middle: float
 var view_height: float
+var zoom_scale_1: float
+var zoom_scale_2: float
+var zoom_scale_3: float
+var zoom_scale_4: float
+var zoom_scale_5: float
+var zoom_scale_6: float
+var zoom_scale_7: float
+var look_ahead: float
+var look_ahead_floor: float
+var look_ahead_bare: float
+var panning_speed: float
+var zoom_speed: float
+var stick_radius: float
+var stick_capture: float
+var knob_return: float
+var radar_range: float
+var radar_speed: float
+var radar_ring: float
+var radar_margin: float
+var shake_peak_reach: float
+var shake_scale: float
+var shake_min: float
 
 # weapon table (T-50) and spawn kit, from weapons.cfg
 var weapons: WeaponTable
