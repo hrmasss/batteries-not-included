@@ -843,6 +843,8 @@ func _step_points() -> void:
 			push_warning("pickup point %s lists unknown item %s" % [s.point.name, pick])
 			continue
 		var it := place_item(pick, s.point.global_position, interval - rules.floor_lifetime_lead)
+		# A map item sits where the map puts it; only dropped items fall.
+		it.resting = true
 		it.point = i
 		s.item_uid = it.uid
 		_emit({"type": &"item_spawn", "item": pick, "uid": it.uid, "pos": it.pos})

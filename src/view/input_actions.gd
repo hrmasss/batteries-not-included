@@ -15,6 +15,8 @@ const FIRE := &"fire"
 const DEBUG_OVERLAY := &"debug_overlay"
 const DEBUG_HITBOXES := &"debug_hitboxes"
 const DEBUG_RESPAWN := &"debug_respawn"
+const DEBUG_DUMMY_ENEMY := &"debug_dummy_enemy"
+const DEBUG_DUMMY_MATE := &"debug_dummy_mate"
 
 ## Action, the intent button it sets, keys, gamepad buttons.
 const BUTTONS := [
@@ -54,6 +56,8 @@ static func ensure() -> void:
 	_buttons(DEBUG_OVERLAY, [KEY_F1], [])
 	_buttons(DEBUG_HITBOXES, [KEY_F2], [])
 	_buttons(DEBUG_RESPAWN, [KEY_F5], [JOY_BUTTON_BACK])
+	_buttons(DEBUG_DUMMY_ENEMY, [KEY_F6], [])
+	_buttons(DEBUG_DUMMY_MATE, [KEY_F7], [])
 
 
 static func _axis(action: StringName, keys: Array, axis: JoyAxis, dir: float) -> void:

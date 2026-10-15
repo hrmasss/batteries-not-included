@@ -231,3 +231,29 @@ func test_nf12_same_inputs_same_fight() -> void:
 				log.append([e.type, e.get("toy", 0), snappedf(float(e.get("amount", 0.0)), 0.0001)])
 		runs.append(log)
 	assert_eq(runs[0], runs[1])
+
+
+func test_us16_1_map_item_stays_on_its_ledge() -> void:
+	make(Array(), Callable(), _map_with_points([[Vector2(1000, FLOOR - 300), ["smg"], -1.0]]))
+	var ledge := Terrain.new()
+	var cs := CollisionShape2D.new()
+	var shape := RectangleShape2D.new()
+	shape.size = Vector2(200, 20)
+	cs.shape = shape
+	cs.position = Vector2(1000, FLOOR - 290)
+	ledge.add_child(cs)
+	sim.map.add_child(ledge)
+	run(1.0)
+	assert_almost_eq(combat.items[0].pos.y, FLOOR - 300, 0.01, "stays on the ledge")
+
+
+func test_us07_6_dropped_gun_falls_to_the_floor() -> void:
+	make()
+	var me := add(400)
+	var you := add(600)
+	you.toy.position.y -= 200
+	combat.hurt(you, rules.max_health, me.id(), &"pistol", CombatSim.Hurt.BULLET)
+	run(2.0)
+	var it: CombatSim.FloorItem = combat.items[0]
+	assert_true(it.resting)
+	assert_almost_eq(it.pos.y, FLOOR, 1.0, "on the floor")

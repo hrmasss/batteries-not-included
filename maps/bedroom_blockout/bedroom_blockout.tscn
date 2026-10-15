@@ -64,150 +64,172 @@ size = Vector2(288, 24)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_jm2j8"]
 size = Vector2(24, 64)
 
-[node name="BedroomBlockout" type="Node2D" unique_id=1949441745]
+[node name="BedroomBlockout" type="Node2D" unique_id=1531588065]
 script = ExtResource("1_1tcm0")
 display_name = "Bedroom (blockout)"
 bounds = Rect2(-64, -264, 2688, 1576)
 
-[node name="Backdrop" type="Node2D" parent="." unique_id=1990904830]
+[node name="Backdrop" type="Node2D" parent="." unique_id=103115887]
 script = ExtResource("2_y462e")
 
-[node name="Terrain" type="StaticBody2D" parent="." unique_id=1536167716]
+[node name="Terrain" type="StaticBody2D" parent="." unique_id=1005032746]
 script = ExtResource("3_437oc")
 
-[node name="Floor" type="CollisionShape2D" parent="Terrain" unique_id=1756890790]
+[node name="Floor" type="CollisionShape2D" parent="Terrain" unique_id=1440135933]
 position = Vector2(1280, 1264)
 shape = SubResource("RectangleShape2D_dahry")
 
-[node name="WallLeft" type="CollisionShape2D" parent="Terrain" unique_id=1981066274]
+[node name="WallLeft" type="CollisionShape2D" parent="Terrain" unique_id=1795533491]
 position = Vector2(-32, 524)
 shape = SubResource("RectangleShape2D_6w7p6")
 
-[node name="WallRight" type="CollisionShape2D" parent="Terrain" unique_id=1057977153]
+[node name="WallRight" type="CollisionShape2D" parent="Terrain" unique_id=1104731331]
 position = Vector2(2592, 524)
 shape = SubResource("RectangleShape2D_iibdr")
 
-[node name="Ceiling" type="CollisionShape2D" parent="Terrain" unique_id=609595029]
+[node name="Ceiling" type="CollisionShape2D" parent="Terrain" unique_id=304157038]
 position = Vector2(1280, -232)
 shape = SubResource("RectangleShape2D_sl4pm")
 
-[node name="BedHeadboard" type="CollisionShape2D" parent="Terrain" unique_id=735193674]
+[node name="BedHeadboard" type="CollisionShape2D" parent="Terrain" unique_id=193659425]
 position = Vector2(308, 1000)
 shape = SubResource("RectangleShape2D_3sorr")
 
-[node name="Bed" type="CollisionShape2D" parent="Terrain" unique_id=247646771]
+[node name="Bed" type="CollisionShape2D" parent="Terrain" unique_id=67799832]
 position = Vector2(624, 988)
 shape = SubResource("RectangleShape2D_20c7s")
 
-[node name="BedFoot" type="CollisionShape2D" parent="Terrain" unique_id=995986593]
+[node name="BedFoot" type="CollisionShape2D" parent="Terrain" unique_id=1588890479]
 position = Vector2(940, 1116)
 shape = SubResource("RectangleShape2D_rea86")
 
-[node name="ToyBox" type="CollisionShape2D" parent="Terrain" unique_id=1053819049]
+[node name="ToyBox" type="CollisionShape2D" parent="Terrain" unique_id=546236138]
 position = Vector2(680, 1168)
 shape = SubResource("RectangleShape2D_5phce")
 
-[node name="Nightstand" type="CollisionShape2D" parent="Terrain" unique_id=908138419]
+[node name="Nightstand" type="CollisionShape2D" parent="Terrain" unique_id=1853668792]
 position = Vector2(1120, 1144)
 shape = SubResource("RectangleShape2D_op5tf")
 
-[node name="DeskTop" type="CollisionShape2D" parent="Terrain" unique_id=1700049636]
+[node name="DeskTop" type="CollisionShape2D" parent="Terrain" unique_id=2146902621]
 position = Vector2(1760, 912)
 shape = SubResource("RectangleShape2D_unddu")
 
-[node name="DeskLegLeft" type="CollisionShape2D" parent="Terrain" unique_id=1839750752]
+[node name="DeskLegLeft" type="CollisionShape2D" parent="Terrain" unique_id=1063909808]
 position = Vector2(1548, 1072)
 shape = SubResource("RectangleShape2D_cs1x5")
 
-[node name="DeskLegRight" type="CollisionShape2D" parent="Terrain" unique_id=1165520156]
+[node name="DeskLegRight" type="CollisionShape2D" parent="Terrain" unique_id=837412500]
 position = Vector2(1972, 1072)
 shape = SubResource("RectangleShape2D_1v6in")
 
-[node name="Chair" type="CollisionShape2D" parent="Terrain" unique_id=1244062232]
+[node name="Chair" type="CollisionShape2D" parent="Terrain" unique_id=1281193874]
 position = Vector2(1744, 1068)
 shape = SubResource("RectangleShape2D_y0gk3")
 
-[node name="ChairBack" type="CollisionShape2D" parent="Terrain" unique_id=491588359]
+[node name="ChairBack" type="CollisionShape2D" parent="Terrain" unique_id=355429046]
 position = Vector2(1796, 992)
 shape = SubResource("RectangleShape2D_hcmtp")
 
-[node name="Wardrobe" type="CollisionShape2D" parent="Terrain" unique_id=487530451]
+[node name="Wardrobe" type="CollisionShape2D" parent="Terrain" unique_id=169529971]
 position = Vector2(2432, 928)
 shape = SubResource("RectangleShape2D_xle7s")
 
-[node name="ShelfLeft" type="CollisionShape2D" parent="Terrain" unique_id=1439927382]
+[node name="ShelfLeft" type="CollisionShape2D" parent="Terrain" unique_id=169290986]
 position = Vector2(128, 572)
 shape = SubResource("RectangleShape2D_23plf")
 
-[node name="ShelfHigh" type="CollisionShape2D" parent="Terrain" unique_id=1184908312]
+[node name="ShelfHigh" type="CollisionShape2D" parent="Terrain" unique_id=380827219]
 position = Vector2(1248, 412)
 shape = SubResource("RectangleShape2D_rkffk")
 
-[node name="ShelfRight" type="CollisionShape2D" parent="Terrain" unique_id=2120949230]
+[node name="ShelfRight" type="CollisionShape2D" parent="Terrain" unique_id=883676689]
 position = Vector2(1936, 524)
 shape = SubResource("RectangleShape2D_lvjud")
 
-[node name="Bookend" type="CollisionShape2D" parent="Terrain" unique_id=47216598]
+[node name="Bookend" type="CollisionShape2D" parent="Terrain" unique_id=1656831391]
 position = Vector2(1804, 480)
 shape = SubResource("RectangleShape2D_jm2j8")
 
-[node name="Spawns" type="Node2D" parent="." unique_id=1828764561]
+[node name="Spawns" type="Node2D" parent="." unique_id=961816683]
 
-[node name="Spawn1" type="Marker2D" parent="Spawns" unique_id=1038567552]
+[node name="Spawn1" type="Marker2D" parent="Spawns" unique_id=50007795]
 position = Vector2(160, 1216)
 script = ExtResource("4_ol3g1")
 
-[node name="Spawn2" type="Marker2D" parent="Spawns" unique_id=1518915742]
+[node name="Spawn2" type="Marker2D" parent="Spawns" unique_id=1295853942]
 position = Vector2(1300, 1216)
 script = ExtResource("4_ol3g1")
 
-[node name="Spawn3" type="Marker2D" parent="Spawns" unique_id=321422492]
+[node name="Spawn3" type="Marker2D" parent="Spawns" unique_id=1821914707]
 position = Vector2(620, 960)
 script = ExtResource("4_ol3g1")
 
-[node name="Spawn4" type="Marker2D" parent="Spawns" unique_id=406827409]
+[node name="Spawn4" type="Marker2D" parent="Spawns" unique_id=731613332]
 position = Vector2(1760, 896)
 script = ExtResource("4_ol3g1")
 
-[node name="Spawn5" type="Marker2D" parent="Spawns" unique_id=1313522637]
+[node name="Spawn5" type="Marker2D" parent="Spawns" unique_id=830347427]
 position = Vector2(2430, 640)
 script = ExtResource("4_ol3g1")
 
-[node name="Spawn6" type="Marker2D" parent="Spawns" unique_id=391641522]
+[node name="Spawn6" type="Marker2D" parent="Spawns" unique_id=1914382972]
 position = Vector2(128, 560)
 script = ExtResource("4_ol3g1")
 
-[node name="Pickups" type="Node2D" parent="." unique_id=1567631541]
+[node name="Pickups" type="Node2D" parent="." unique_id=1353130549]
 
-[node name="PickupBed" type="Marker2D" parent="Pickups" unique_id=1483951899]
+[node name="PickupBed" type="Marker2D" parent="Pickups" unique_id=758531736]
 position = Vector2(800, 960)
 script = ExtResource("5_2sv8l")
 items = PackedStringArray("uzi", "smg")
 
-[node name="PickupShelf" type="Marker2D" parent="Pickups" unique_id=1591372822]
+[node name="PickupShelf" type="Marker2D" parent="Pickups" unique_id=945171557]
 position = Vector2(1248, 400)
 script = ExtResource("5_2sv8l")
 items = PackedStringArray("sniper_rifle")
 interval = 90.0
 
-[node name="PickupDesk" type="Marker2D" parent="Pickups" unique_id=190752543]
+[node name="PickupDesk" type="Marker2D" parent="Pickups" unique_id=1826167647]
 position = Vector2(1640, 896)
 script = ExtResource("5_2sv8l")
 items = PackedStringArray("frag")
 interval = 30.0
 
-[node name="PickupFloor" type="Marker2D" parent="Pickups" unique_id=1172691788]
+[node name="PickupFloor" type="Marker2D" parent="Pickups" unique_id=1373240702]
 position = Vector2(1400, 1216)
 script = ExtResource("5_2sv8l")
 items = PackedStringArray("health_pack", "battery_pack")
 
-[node name="Bases" type="Node2D" parent="." unique_id=1140829185]
+[node name="PickupShelfLeft" type="Marker2D" parent="Pickups" unique_id=1821183389]
+position = Vector2(200, 560)
+script = ExtResource("5_2sv8l")
+items = PackedStringArray("assault_rifle", "pump_shotgun")
 
-[node name="BaseTeam0" type="Marker2D" parent="Bases" unique_id=932539184]
+[node name="PickupShelfRight" type="Marker2D" parent="Pickups" unique_id=992659605]
+position = Vector2(1950, 512)
+script = ExtResource("5_2sv8l")
+items = PackedStringArray("pump_shotgun", "uzi")
+
+[node name="PickupToyBox" type="Marker2D" parent="Pickups" unique_id=1272821474]
+position = Vector2(680, 1120)
+script = ExtResource("5_2sv8l")
+items = PackedStringArray("frag", "health_pack")
+interval = 30.0
+
+[node name="PickupWardrobe" type="Marker2D" parent="Pickups" unique_id=556864541]
+position = Vector2(2350, 640)
+script = ExtResource("5_2sv8l")
+items = PackedStringArray("rocket_launcher", "assault_rifle", "pump_shotgun", "smg")
+interval = 120.0
+
+[node name="Bases" type="Node2D" parent="." unique_id=1448508581]
+
+[node name="BaseTeam0" type="Marker2D" parent="Bases" unique_id=379800542]
 position = Vector2(96, 1216)
 script = ExtResource("6_c2cxa")
 
-[node name="BaseTeam1" type="Marker2D" parent="Bases" unique_id=1675610397]
+[node name="BaseTeam1" type="Marker2D" parent="Bases" unique_id=399472536]
 position = Vector2(2432, 640)
 script = ExtResource("6_c2cxa")
 team = 1
