@@ -7,10 +7,11 @@ The specs live in the workspace (`docs/specs/`); this page maps their parts onto
 | `src/rules/` | Ruleset and content | `RulesetSchema` (names, T-IDs, ranges), `Ruleset` (the values), `RulesetLoader` (reads, checks, refuses, saves) |
 | `data/rulesets/<id>/` | Ruleset and content | The values: `ruleset.cfg` plus one file per tuning group, T-IDs in comments |
 | `src/sim/` | Match server | `MatchSim`, `SimToy`, `ToyMotor` (movement rules), `SimClock` (60 Hz), `InputIntent`, `ScriptedInput`, `Drills` |
+| `src/sim/combat/` | Match server | `CombatSim` (fighting rules, one step per tick after movement), `Fighter`, `WeaponItem`, `WeaponTable` and `WeaponDef` (the T-50 rows). See [combat.md](combat.md) |
 | `src/maps/` | Ruleset and content | Map node types: `GameMap`, `Terrain`, `SpawnPoint`, `PickupPoint`, `TeamBase` |
 | `maps/` | Ruleset and content | The maps themselves, one folder each |
-| `src/view/` | Game app | `GameView` (runs the clock, feeds intents, draws), `ToyView`, `GameCamera`, `DebugOverlay`, input sources |
-| `tests/` | | GUT tests: `unit/`, `sim/` (criteria with check "Sim"), `view/` |
+| `src/view/` | Game app | `GameView` (runs the clock, feeds intents, draws), `ToyView`, `CombatView`, `GameCamera`, `DebugOverlay`, input sources |
+| `tests/` | | GUT tests: `unit/`, `sim/` (criteria with check "Sim"), `combat/` (the same, for fighting), `view/` |
 | `tools/` | | `test.sh`, `shot.sh`, `make_blockout.gd` |
 
 ## The split (rules A1 to A3)

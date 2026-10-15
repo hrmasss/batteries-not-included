@@ -10,7 +10,7 @@ extends RefCounted
 ## `tid` is the tuning name (T-N). An empty `tid` marks a value the classic has but 04_tuning
 ## does not name yet; each one has a row in the workspace's `recon/questions.md`.
 
-const GROUPS: PackedStringArray = ["movement", "hitbox", "surfaces", "battery", "health", "camera", "modifiers"]
+const GROUPS: PackedStringArray = ["movement", "hitbox", "surfaces", "battery", "health", "guns", "throwables", "match", "camera", "modifiers"]
 
 const FLOAT := TYPE_FLOAT
 const BOOL := TYPE_BOOL
@@ -68,8 +68,69 @@ const FIELDS: Array[Dictionary] = [
 	{"group": "battery", "key": "drain_floor_share", "tid": "T-21", "type": FLOAT, "min": 0.0, "max": 1.0, "unit": "share", "what": "Drain share with the stick level; straight up drains the full rate"},
 	{"group": "battery", "key": "refill_pause", "tid": "T-22", "type": FLOAT, "min": 0.0, "max": 60.0, "unit": "s", "what": "Pause after thrust stops before refilling"},
 	{"group": "battery", "key": "refill_rate", "tid": "T-23", "type": FLOAT, "min": 0.0, "max": 10000.0, "unit": "charge/s", "what": "Refill rate"},
-	# Health (T-30 to T-39), only what R0 uses
+	{"group": "battery", "key": "battery_pack_time", "tid": "T-24", "type": FLOAT, "min": 0.0, "max": 600.0, "unit": "s", "what": "A battery pack holds the battery full this long"},
+	# Health (T-30 to T-39)
 	{"group": "health", "key": "max_health", "tid": "T-30", "type": FLOAT, "min": 1.0, "max": 10000.0, "unit": "HP", "what": "Max health and health on spawn"},
+	{"group": "health", "key": "regen_rate", "tid": "T-31", "type": FLOAT, "min": 0.0, "max": 1000.0, "unit": "HP/s", "what": "Health regen while alive and below full, no delay after damage"},
+	{"group": "health", "key": "pack_instant", "tid": "T-32", "type": FLOAT, "min": 0.0, "max": 10000.0, "unit": "HP", "what": "Health pack: healed at once"},
+	{"group": "health", "key": "pack_flow", "tid": "T-32", "type": FLOAT, "min": 0.0, "max": 10000.0, "unit": "HP", "what": "Health pack: healed after the instant part, at the flow rate"},
+	{"group": "health", "key": "pack_flow_rate", "tid": "T-32", "type": FLOAT, "min": 0.0, "max": 10000.0, "unit": "HP/s", "what": "Health pack: flow rate of the second part"},
+	{"group": "health", "key": "knockback_per_hp", "tid": "T-33", "type": FLOAT, "min": 0.0, "max": 100.0, "unit": "u/s per HP", "what": "Hit knockback speed per HP of damage, along the hit"},
+	{"group": "health", "key": "knockback_cap", "tid": "T-33", "type": FLOAT, "min": 0.0, "max": 10000.0, "unit": "u/s", "what": "Hit knockback cap per axis"},
+	{"group": "health", "key": "out_of_bounds_damage", "tid": "T-34", "type": FLOAT, "min": 0.0, "max": 10000.0, "unit": "HP", "what": "Damage per out-of-bounds interval outside the map's bounds"},
+	{"group": "health", "key": "out_of_bounds_interval", "tid": "T-34", "type": FLOAT, "min": 0.01, "max": 60.0, "unit": "s", "what": "Out-of-bounds damage interval"},
+	# Guns, general (T-40 to T-49). The weapon rows (T-50) are a table of their own: WeaponTable
+	{"group": "guns", "key": "headshot_factor", "tid": "T-40", "type": FLOAT, "min": 1.0, "max": 10.0, "unit": "multiplier", "what": "Headshot damage multiplier; never on a crouched target or for melee"},
+	{"group": "guns", "key": "falloff_start_share", "tid": "T-41", "type": FLOAT, "min": 0.0, "max": 1.0, "unit": "share", "what": "Full damage up to this share of the range, then falls to 0.5 at max range"},
+	{"group": "guns", "key": "inherit_velocity", "tid": "T-42", "type": FLOAT, "min": 0.0, "max": 1.0, "unit": "share", "what": "Share of the shooter's velocity a bullet inherits"},
+	{"group": "guns", "key": "bullet_fade", "tid": "T-43", "type": FLOAT, "min": 0.0, "max": 10000.0, "unit": "u", "what": "Bullets fade over this last stretch of their range (drawn only)"},
+	{"group": "guns", "key": "pickup_reach", "tid": "T-45", "type": FLOAT, "min": 0.0, "max": 1000.0, "unit": "u", "what": "Pickup reach around the toy"},
+	{"group": "guns", "key": "pickup_reach_up", "tid": "T-45", "type": FLOAT, "min": -1000.0, "max": 1000.0, "unit": "u", "what": "The pickup reach is measured from this far above the toy's centre"},
+	{"group": "guns", "key": "melee_swing", "tid": "T-46", "type": FLOAT, "min": 0.01, "max": 10.0, "unit": "s", "what": "Melee swing time; the hit lands at its end"},
+	{"group": "guns", "key": "lunge_meter_max", "tid": "T-46", "type": FLOAT, "min": 0.0, "max": 10000.0, "unit": "u/s", "what": "Lunge meter full"},
+	{"group": "guns", "key": "lunge_cost", "tid": "T-46", "type": FLOAT, "min": 0.0, "max": 10000.0, "unit": "u/s", "what": "Lunge meter spent per swing"},
+	{"group": "guns", "key": "lunge_refill", "tid": "T-46", "type": FLOAT, "min": 0.0, "max": 10000.0, "unit": "per s", "what": "Lunge meter refill"},
+	{"group": "guns", "key": "lunge_speed_cap", "tid": "T-46", "type": FLOAT, "min": 0.0, "max": 10000.0, "unit": "u/s", "what": "No lunge while faster than this × weight factor, unless moving away from the aim"},
+	{"group": "guns", "key": "bare_hand_damage", "tid": "T-47", "type": FLOAT, "min": 0.0, "max": 10000.0, "unit": "HP", "what": "Melee damage with no weapon"},
+	{"group": "guns", "key": "bare_hand_reach", "tid": "", "type": FLOAT, "min": 0.0, "max": 1000.0, "unit": "u", "what": "Melee reach with no weapon"},
+	# Throwables and blasts (T-60 to T-69)
+	{"group": "throwables", "key": "grenade_cap", "tid": "T-60", "type": FLOAT, "min": 0.0, "max": 100.0, "unit": "count", "what": "Most grenades a toy carries, all types together"},
+	{"group": "throwables", "key": "throw_speed", "tid": "T-61", "type": FLOAT, "min": 0.0, "max": 10000.0, "unit": "u/s", "what": "Throw speed along the aim, plus the thrower's velocity"},
+	{"group": "throwables", "key": "throw_offset", "tid": "T-61", "type": FLOAT, "min": 0.0, "max": 1000.0, "unit": "u", "what": "A thrown grenade starts this far out from the hand"},
+	{"group": "throwables", "key": "frag_fuse", "tid": "T-62", "type": FLOAT, "min": 0.0, "max": 60.0, "unit": "s", "what": "Frag fuse from the throw"},
+	{"group": "throwables", "key": "frag_gravity", "tid": "T-62", "type": FLOAT, "min": 0.0, "max": 10000.0, "unit": "u/s²", "what": "Frag gravity, times the map's item gravity"},
+	{"group": "throwables", "key": "frag_speed_kept", "tid": "T-62", "type": FLOAT, "min": 0.0, "max": 1.0, "unit": "share", "what": "Frag speed kept per second"},
+	{"group": "throwables", "key": "frag_bounce", "tid": "T-62", "type": FLOAT, "min": 0.0, "max": 1.0, "unit": "ratio", "what": "Frag bounce"},
+	{"group": "throwables", "key": "frag_friction", "tid": "", "type": FLOAT, "min": 0.0, "max": 2.0, "unit": "ratio", "what": "Frag friction on a bounce"},
+	{"group": "throwables", "key": "frag_power", "tid": "T-63", "type": FLOAT, "min": 0.0, "max": 10.0, "unit": "power", "what": "Frag blast power"},
+	{"group": "throwables", "key": "blast_radius", "tid": "T-63", "type": FLOAT, "min": 0.0, "max": 10000.0, "unit": "u", "what": "Blast radius at power 1"},
+	{"group": "throwables", "key": "blast_damage", "tid": "T-63", "type": FLOAT, "min": 0.0, "max": 10000.0, "unit": "HP", "what": "Blast damage at the centre at power 1"},
+	{"group": "throwables", "key": "blast_falloff", "tid": "T-63", "type": FLOAT, "min": 0.0, "max": 1000.0, "unit": "HP/u", "what": "Blast damage lost per u from the centre"},
+	{"group": "throwables", "key": "blast_min_damage", "tid": "T-63", "type": FLOAT, "min": 0.0, "max": 10000.0, "unit": "HP", "what": "Least blast damage inside the radius, and all a toy behind a wall takes"},
+	{"group": "throwables", "key": "blast_knockback_per_hp", "tid": "T-63", "type": FLOAT, "min": 0.0, "max": 1000.0, "unit": "u/s per HP", "what": "Blast knockback speed per HP of damage"},
+	{"group": "throwables", "key": "blast_knockback_cap", "tid": "T-63", "type": FLOAT, "min": 0.0, "max": 10000.0, "unit": "HP", "what": "Blast knockback counts at most this much damage"},
+	{"group": "throwables", "key": "blast_shake_reach", "tid": "T-63", "type": FLOAT, "min": 0.0, "max": 10000.0, "unit": "u", "what": "Screen shake reach at power 1"},
+	{"group": "throwables", "key": "rocket_direct_damage", "tid": "T-67", "type": FLOAT, "min": 0.0, "max": 10000.0, "unit": "HP", "what": "Rocket direct hit"},
+	{"group": "throwables", "key": "rocket_arm_time", "tid": "T-67", "type": FLOAT, "min": 0.0, "max": 60.0, "unit": "s", "what": "A rocket blasts on walls only after this much flight"},
+	{"group": "throwables", "key": "rocket_life", "tid": "T-67", "type": FLOAT, "min": 0.0, "max": 600.0, "unit": "s", "what": "A rocket self-destructs after this long"},
+	{"group": "throwables", "key": "rocket_speed_cap", "tid": "T-67", "type": FLOAT, "min": 0.0, "max": 100000.0, "unit": "u/s", "what": "Rocket speed cap"},
+	{"group": "throwables", "key": "rocket_power", "tid": "T-67", "type": FLOAT, "min": 0.0, "max": 10.0, "unit": "power", "what": "Rocket blast power"},
+	{"group": "throwables", "key": "rocket_bounce", "tid": "", "type": FLOAT, "min": 0.0, "max": 1.0, "unit": "ratio", "what": "An unarmed rocket bounces off walls by this much"},
+	# Match (T-68, T-70 to T-79)
+	{"group": "match", "key": "respawn_wait", "tid": "T-70", "type": FLOAT, "min": 0.0, "max": 600.0, "unit": "s", "what": "Respawn wait after a pop"},
+	{"group": "match", "key": "spawn_protection", "tid": "T-68", "type": FLOAT, "min": 0.0, "max": 60.0, "unit": "s", "what": "Spawn protection against everything; ends when the toy attacks"},
+	{"group": "match", "key": "spawn_enemy_weight", "tid": "T-71", "type": FLOAT, "min": 0.0, "max": 100.0, "unit": "weight", "what": "Spawn score weight on distance to each living enemy"},
+	{"group": "match", "key": "spawn_explosive_weight", "tid": "T-71", "type": FLOAT, "min": 0.0, "max": 100.0, "unit": "weight", "what": "Spawn score weight on distance to each live explosive"},
+	{"group": "match", "key": "spawn_pick_share", "tid": "T-71", "type": FLOAT, "min": 0.01, "max": 1.0, "unit": "share", "what": "Spawns pick at random from this best share of points"},
+	{"group": "match", "key": "spawn_reuse_block", "tid": "T-71", "type": FLOAT, "min": 0.0, "max": 600.0, "unit": "s", "what": "Skip spawn points used this recently"},
+	{"group": "match", "key": "pickup_interval", "tid": "T-76", "type": FLOAT, "min": 0.0, "max": 3600.0, "unit": "s", "what": "Pickup point respawn interval; 0 turns map pickups off"},
+	{"group": "match", "key": "floor_lifetime_lead", "tid": "T-77", "type": FLOAT, "min": 0.0, "max": 3600.0, "unit": "s", "what": "A map item lasts its interval less this"},
+	{"group": "match", "key": "floor_fade", "tid": "T-77", "type": FLOAT, "min": 0.0, "max": 3600.0, "unit": "s", "what": "Items fade over the last this many s of their lifetime"},
+	{"group": "match", "key": "empty_gun_lifetime", "tid": "T-77", "type": FLOAT, "min": 0.0, "max": 3600.0, "unit": "s", "what": "An empty dropped gun lasts this long"},
+	{"group": "match", "key": "dropped_gun_lifetime", "tid": "", "type": FLOAT, "min": 0.0, "max": 3600.0, "unit": "s", "what": "A dropped gun with ammo left lasts this long"},
+	{"group": "match", "key": "crowd_start", "tid": "T-77", "type": FLOAT, "min": 0.0, "max": 10000.0, "unit": "items", "what": "Floor lifetimes start to shrink above this many items"},
+	{"group": "match", "key": "crowd_full", "tid": "T-77", "type": FLOAT, "min": 0.0, "max": 10000.0, "unit": "items", "what": "Floor lifetimes are shortest from this many items"},
+	{"group": "match", "key": "crowd_min_share", "tid": "T-77", "type": FLOAT, "min": 0.0, "max": 1.0, "unit": "share", "what": "Shortest floor lifetime, as a share of full"},
 	# Controls and camera (T-80 to T-89), only what R0 uses
 	{"group": "camera", "key": "anchor_below_middle", "tid": "T-84", "type": FLOAT, "min": -1000.0, "max": 1000.0, "unit": "points", "what": "The toy body sits this far below the middle of the screen"},
 	{"group": "camera", "key": "view_height", "tid": "T-88", "type": FLOAT, "min": 50.0, "max": 5000.0, "unit": "u", "what": "World height a 16:9 screen shows at 1X; other shapes see the same area"},

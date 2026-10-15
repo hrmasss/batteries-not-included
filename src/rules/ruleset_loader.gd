@@ -27,7 +27,7 @@ static func load_standard() -> Result:
 static func load_dir(dir: String) -> Result:
 	var sources := {}
 	var errors: PackedStringArray = []
-	for group: String in ["ruleset"] + Array(RulesetSchema.GROUPS):
+	for group: String in ["ruleset"] + Array(RulesetSchema.GROUPS) + ["weapons"]:
 		var path := dir.path_join("%s.cfg" % group)
 		var cfg := ConfigFile.new()
 		if not FileAccess.file_exists(path):
@@ -82,6 +82,14 @@ static func from_configs(sources: Dictionary) -> Result:
 			else:
 				r.set(f.key, _coerce(cfg.get_value(group, f.key), f.type))
 
+	# The weapon table (T-50) has rows, not one section, so it has its own reader.
+	# `load_dir` always passes it; configs built in memory may leave it out.
+	var weapons: ConfigFile = sources.get("weapons")
+	if weapons != null:
+		var wt := WeaponTable.from_config(weapons)
+		result.errors.append_array(wt.errors)
+		r.weapons = wt.table
+
 	_check_relations(r, result.errors)
 	if result.errors.is_empty():
 		result.ruleset = r
@@ -129,6 +137,8 @@ static func _check_relations(r: Ruleset, errors: PackedStringArray) -> void:
 		errors.append("hitbox.body_top (T-18): must be above body_bottom")
 	if have.call(["crouch_bottom", "crouch_top"]) and r.crouch_top <= r.crouch_bottom:
 		errors.append("hitbox.crouch_top (T-18): must be above crouch_bottom")
+	if have.call(["crowd_start", "crowd_full"]) and r.crowd_full <= r.crowd_start:
+		errors.append("match.crowd_full (T-77): must be above crowd_start")
 
 
 ## Writes `r` as a ruleset directory, with each value's tuning name in a comment (US-37.3).
@@ -140,6 +150,10 @@ static func save_dir(r: Ruleset, dir: String) -> Error:
 	err = _write(dir.path_join(MANIFEST), manifest)
 	if err != OK:
 		return err
+	if r.weapons != null:
+		err = _write(dir.path_join(WeaponTable.FILE), r.weapons.to_cfg_text())
+		if err != OK:
+			return err
 	for group: String in RulesetSchema.GROUPS:
 		var lines: PackedStringArray = ["[%s]" % group, ""]
 		for f: Dictionary in RulesetSchema.fields_in(group):

@@ -1,0 +1,14 @@
+{
+  "duration": 18.0,
+  "overlay": false,
+  "spawn": 1,
+  "steps": [
+    {"t": 0.0, "move": [0, 0], "held": false, "aim": [1, 0]}
+  ],
+  "dummies": [{"at": [1470, 1216], "team": 1, "aim": [-1, 0], "fire": true}],
+  "shots": [
+    {"t": 1.0, "name": "09-spawn-protection-blocks-bullets"},
+    {"when": "pop", "who": "me", "delay": 3.0, "name": "10-popped-respawn-countdown"},
+    {"when": "spawn", "who": "me", "delay": 0.25, "name": "11-respawned-away-with-protection"}
+  ]
+}
