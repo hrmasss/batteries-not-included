@@ -15,7 +15,8 @@ func _ready() -> void:
 	style.bg_color = Color(0.0, 0.0, 0.0, 0.62)
 	style.set_content_margin_all(4.0)
 	_panel.add_theme_stylebox_override("panel", style)
-	_panel.position = Vector2(6, 6)
+	# Below the HUD meters along the top.
+	_panel.position = Vector2(6, 60)
 	_label = Label.new()
 	var mono := SystemFont.new()
 	mono.font_names = PackedStringArray(["DejaVu Sans Mono", "Consolas", "Menlo", "monospace"])
