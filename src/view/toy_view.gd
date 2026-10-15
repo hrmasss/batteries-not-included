@@ -36,7 +36,7 @@ var animator: ToyAnimator
 var frame: ToyAnimator.Frame
 
 var _atlas: ArtAtlas
-var _group: CanvasGroup
+var _group: TeamOutline
 var _body: Node2D
 var _glow: Node2D
 var _front: Node2D
@@ -59,13 +59,9 @@ func _init(sim_toy: SimToy = null, ruleset: Ruleset = null, combat_sim: CombatSi
 	_atlas = ArtLibrary.actors()
 	animator = ToyAnimator.new(ToyRig.soldier(), ruleset)
 	texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS
-	_group = CanvasGroup.new()
+	_group = TeamOutline.new()
 	_group.name = "Outline"
-	_group.fit_margin = 6.0
 	_group.clear_margin = 6.0
-	var mat := ShaderMaterial.new()
-	mat.shader = TeamLook.outline_shader()
-	_group.material = mat
 	add_child(_group)
 	_body = Node2D.new()
 	_body.name = "Body"
@@ -114,15 +110,16 @@ func sync(alpha: float, delta: float) -> void:
 
 
 func _set_team(team: int) -> void:
-	if team == _team:
+	# The outline takes its team once it is in the tree (TeamOutline builds its material then).
+	if team == _team or not _group.is_node_ready():
 		return
 	_team = team
 	_team_color = TeamLook.battery_color(team)
 	_pattern = TeamLook.pattern_piece(team)
-	var mat := _group.material as ShaderMaterial
-	mat.set_shader_parameter("outline_color", TeamLook.outline_color(team))
 	# The outline is a world width; the shader takes screen pixels.
-	mat.set_shader_parameter("width", OUTLINE_WIDTH_U * ArtAtlas.texels_per_u)
+	_group.width = OUTLINE_WIDTH_U * ArtAtlas.texels_per_u
+	_group.fit_margin = _group.width + 2.0
+	_group.set_team(TeamLook.index(team))
 
 
 func _on_event(e: Dictionary) -> void:
@@ -215,7 +212,7 @@ func _draw_body() -> void:
 		_body.draw_set_transform_matrix(xf)
 		if it[3] == &"jetpack_team":
 			if _pattern == &"baked":
-				_atlas.draw(_body, TeamLook.baked_piece(_team))
+				_atlas.draw(_body, TeamLook.baked_piece())
 			else:
 				_atlas.draw(_body, piece, Vector2.ZERO, _team_color)
 				if _pattern != &"":
@@ -273,8 +270,10 @@ func _pop() -> void:
 		var name: StringName = it[3]
 		var mod: Color = it[2]
 		if name == &"jetpack_team":
-			piece = TeamLook.baked_piece(_team)
-			mod = Color.WHITE
+			if _pattern == &"baked":
+				piece = TeamLook.baked_piece()
+			else:
+				mod = _team_color
 		var xf: Transform2D = g * (it[1] as Transform2D)
 		var c := xf * (_atlas.size_of(piece) * 0.5)
 		var away := (c - centre).normalized() if (c - centre).length() > 0.5 else Vector2.UP
