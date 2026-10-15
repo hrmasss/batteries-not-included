@@ -335,7 +335,13 @@
       "neutral": "jetpack_team_neutral.svg"
     },
     "outline": "a thin team-colour outline around the whole toy is a shader on the composed toy",
-    "patterns": "each baked team wrap also carries a pattern (plain, stripes, dots, chevrons) for colour-blind players"
+    "patterns": "each baked team wrap also carries a pattern (plain, stripes, dots, chevrons) for colour-blind players",
+    "pattern_files": {
+      "stripes": "jetpack_pattern_stripes.svg",
+      "dots": "jetpack_pattern_dots.svg",
+      "chevrons": "jetpack_pattern_chevrons.svg"
+    },
+    "pattern_note": "pattern overlays for the tinted greyscale layer, drawn over jetpack_team; team order: plain, stripes, dots, chevrons"
   },
   "sockets": {
     "weapon_grip": {

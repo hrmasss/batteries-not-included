@@ -1,4 +1,5 @@
 {
+  "map": "res://maps/bedroom_blockout/bedroom_blockout.tscn",
   "duration": 24.0,
   "overlay": true,
   "hitboxes": false,

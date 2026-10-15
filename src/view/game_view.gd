@@ -4,7 +4,7 @@ extends Node2D
 ## feeds it the local player's intent each tick, and draws it (rules A1 to A3). With LAN play
 ## the sim moves to the host and this view sends intents instead; nothing here decides a rule.
 
-## The map to play. Default: the bedroom blockout.
+## The map to play. Default: the bedroom (maps/bedroom); the blockout stays for tests.
 @export var map_scene: PackedScene
 ## The ruleset directory to run.
 @export var ruleset_dir: String = RulesetLoader.STANDARD_DIR
@@ -42,7 +42,7 @@ func _ready() -> void:
 		_refuse(loaded.errors)
 		return
 	if map_scene == null:
-		map_scene = load("res://maps/bedroom_blockout/bedroom_blockout.tscn")
+		map_scene = load("res://maps/bedroom/bedroom.tscn")
 	sim = MatchSim.new()
 	sim.name = "MatchSim"
 	sim.setup(loaded.ruleset, map_scene.instantiate())
@@ -135,7 +135,7 @@ func add_dummy(team: int, at: Variant = null, protect: bool = true) -> Fighter:
 
 
 func _add_toy_view(t: SimToy) -> void:
-	var v := ToyView.new(t, sim.rules)
+	var v := ToyView.new(t, sim.rules, combat)
 	v.show_hitboxes = show_hitboxes
 	toy_views.append(v)
 	add_child(v)

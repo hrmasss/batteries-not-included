@@ -1,0 +1,141 @@
+{
+  "map": "res://maps/bedroom/bedroom.tscn",
+  "duration": 7.0,
+  "overlay": false,
+  "spawn": 7,
+  "team": 1,
+  "seed": 3,
+  "arm": [
+    "assault_rifle"
+  ],
+  "aim_at_enemy": true,
+  "steps": [
+    {
+      "t": 0.0,
+      "move": [
+        -1,
+        0
+      ],
+      "held": true,
+      "aim": [
+        -1,
+        0
+      ]
+    },
+    {
+      "t": 0.6,
+      "move": [
+        0.0,
+        1
+      ],
+      "held": true
+    },
+    {
+      "t": 1.1,
+      "move": [
+        -0.1,
+        0.55
+      ],
+      "fire": true
+    },
+    {
+      "t": 2.6,
+      "move": [
+        -0.2,
+        0.4
+      ]
+    },
+    {
+      "t": 4.0,
+      "move": [
+        0.5,
+        -0.3
+      ]
+    }
+  ],
+  "dummies": [
+    {
+      "at": [
+        1013,
+        -52.5
+      ],
+      "team": 2,
+      "protect": false,
+      "arm": [
+        "pistol"
+      ],
+      "aim_at_player": true,
+      "steps": [
+        {
+          "t": 0.0,
+          "move": [
+            0,
+            0
+          ],
+          "held": false,
+          "aim": [
+            1,
+            0
+          ]
+        },
+        {
+          "t": 0.5,
+          "move": [
+            0.2,
+            1
+          ],
+          "held": true
+        },
+        {
+          "t": 1.5,
+          "move": [
+            0.1,
+            0.8
+          ],
+          "fire": true
+        },
+        {
+          "t": 2.5,
+          "move": [
+            0.1,
+            0.6
+          ]
+        }
+      ]
+    }
+  ],
+  "shots": [
+    {
+      "t": 0.4,
+      "name": "01-run"
+    },
+    {
+      "t": 1.1,
+      "name": "02-take-off"
+    },
+    {
+      "t": 1.7,
+      "name": "03-fight"
+    },
+    {
+      "t": 2.0,
+      "name": "04-fight"
+    },
+    {
+      "t": 2.3,
+      "name": "04b-fight"
+    },
+    {
+      "when": "pop",
+      "who": "other",
+      "delay": 0.08,
+      "name": "05-pop"
+    },
+    {
+      "when": "pop",
+      "who": "other",
+      "delay": 0.4,
+      "name": "06-pop-after"
+    }
+  ]
+}

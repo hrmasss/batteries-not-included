@@ -1,0 +1,671 @@
+{
+  "map": "res://maps/bedroom/bedroom.tscn",
+  "duration": 8.0,
+  "overlay": false,
+  "spawn": 7,
+  "team": 1,
+  "seed": 5,
+  "arm": [
+    "assault_rifle"
+  ],
+  "aim_at_enemy": true,
+  "perf": true,
+  "steps": [
+    {
+      "t": 0,
+      "move": [
+        0,
+        0
+      ],
+      "held": false,
+      "aim": [
+        -1,
+        0
+      ]
+    },
+    {
+      "t": 0.5,
+      "move": [
+        0,
+        1
+      ],
+      "held": true,
+      "fire": true
+    },
+    {
+      "t": 1.5,
+      "move": [
+        0.1,
+        0.6
+      ]
+    }
+  ],
+  "dummies": [
+    {
+      "at": [
+        700,
+        -153.75
+      ],
+      "team": 2,
+      "protect": false,
+      "arm": [
+        "assault_rifle"
+      ],
+      "aim_at_player": true,
+      "steps": [
+        {
+          "t": 0,
+          "move": [
+            0,
+            0
+          ],
+          "held": false,
+          "aim": [
+            1,
+            0
+          ]
+        },
+        {
+          "t": 0.3,
+          "move": [
+            0.3,
+            1
+          ],
+          "held": true
+        },
+        {
+          "t": 1.2,
+          "move": [
+            0.2,
+            0.6
+          ],
+          "fire": true
+        },
+        {
+          "t": 3.0,
+          "move": [
+            -0.3,
+            0.7
+          ]
+        },
+        {
+          "t": 5.0,
+          "move": [
+            0,
+            0.5
+          ]
+        }
+      ]
+    },
+    {
+      "at": [
+        900,
+        0
+      ],
+      "team": 1,
+      "protect": false,
+      "arm": [
+        "smg"
+      ],
+      "aim_at_player": true,
+      "steps": [
+        {
+          "t": 0,
+          "move": [
+            0,
+            0
+          ],
+          "held": false,
+          "aim": [
+            1,
+            0
+          ]
+        },
+        {
+          "t": 0.4,
+          "move": [
+            -0.3,
+            1
+          ],
+          "held": true
+        },
+        {
+          "t": 1.2,
+          "move": [
+            -0.2,
+            0.6
+          ],
+          "fire": true
+        },
+        {
+          "t": 3.0,
+          "move": [
+            0.3,
+            0.7
+          ]
+        },
+        {
+          "t": 5.0,
+          "move": [
+            0,
+            0.5
+          ]
+        }
+      ]
+    },
+    {
+      "at": [
+        1050,
+        0
+      ],
+      "team": 2,
+      "protect": false,
+      "arm": [
+        "smg"
+      ],
+      "aim_at_player": true,
+      "steps": [
+        {
+          "t": 0,
+          "move": [
+            0,
+            0
+          ],
+          "held": false,
+          "aim": [
+            1,
+            0
+          ]
+        },
+        {
+          "t": 0.5,
+          "move": [
+            0.3,
+            1
+          ],
+          "held": true
+        },
+        {
+          "t": 1.2,
+          "move": [
+            0.2,
+            0.6
+          ],
+          "fire": true
+        },
+        {
+          "t": 3.0,
+          "move": [
+            -0.3,
+            0.7
+          ]
+        },
+        {
+          "t": 5.0,
+          "move": [
+            0,
+            0.5
+          ]
+        }
+      ]
+    },
+    {
+      "at": [
+        1300,
+        -153.75
+      ],
+      "team": 1,
+      "protect": false,
+      "arm": [
+        "assault_rifle"
+      ],
+      "aim_at_player": true,
+      "steps": [
+        {
+          "t": 0,
+          "move": [
+            0,
+            0
+          ],
+          "held": false,
+          "aim": [
+            1,
+            0
+          ]
+        },
+        {
+          "t": 0.6000000000000001,
+          "move": [
+            -0.3,
+            1
+          ],
+          "held": true
+        },
+        {
+          "t": 1.2,
+          "move": [
+            -0.2,
+            0.6
+          ],
+          "fire": true
+        },
+        {
+          "t": 3.0,
+          "move": [
+            0.3,
+            0.7
+          ]
+        },
+        {
+          "t": 5.0,
+          "move": [
+            0,
+            0.5
+          ]
+        }
+      ]
+    },
+    {
+      "at": [
+        1450,
+        0
+      ],
+      "team": 2,
+      "protect": false,
+      "arm": [
+        "smg"
+      ],
+      "aim_at_player": true,
+      "steps": [
+        {
+          "t": 0,
+          "move": [
+            0,
+            0
+          ],
+          "held": false,
+          "aim": [
+            1,
+            0
+          ]
+        },
+        {
+          "t": 0.7,
+          "move": [
+            0.3,
+            1
+          ],
+          "held": true
+        },
+        {
+          "t": 1.2,
+          "move": [
+            0.2,
+            0.6
+          ],
+          "fire": true
+        },
+        {
+          "t": 3.0,
+          "move": [
+            -0.3,
+            0.7
+          ]
+        },
+        {
+          "t": 5.0,
+          "move": [
+            0,
+            0.5
+          ]
+        }
+      ]
+    },
+    {
+      "at": [
+        1700,
+        0
+      ],
+      "team": 1,
+      "protect": false,
+      "arm": [
+        "smg"
+      ],
+      "aim_at_player": true,
+      "steps": [
+        {
+          "t": 0,
+          "move": [
+            0,
+            0
+          ],
+          "held": false,
+          "aim": [
+            1,
+            0
+          ]
+        },
+        {
+          "t": 0.8,
+          "move": [
+            -0.3,
+            1
+          ],
+          "held": true
+        },
+        {
+          "t": 1.2,
+          "move": [
+            -0.2,
+            0.6
+          ],
+          "fire": true
+        },
+        {
+          "t": 3.0,
+          "move": [
+            0.3,
+            0.7
+          ]
+        },
+        {
+          "t": 5.0,
+          "move": [
+            0,
+            0.5
+          ]
+        }
+      ]
+    },
+    {
+      "at": [
+        1900,
+        0
+      ],
+      "team": 2,
+      "protect": false,
+      "arm": [
+        "assault_rifle"
+      ],
+      "aim_at_player": true,
+      "steps": [
+        {
+          "t": 0,
+          "move": [
+            0,
+            0
+          ],
+          "held": false,
+          "aim": [
+            1,
+            0
+          ]
+        },
+        {
+          "t": 0.9000000000000001,
+          "move": [
+            0.3,
+            1
+          ],
+          "held": true
+        },
+        {
+          "t": 1.2,
+          "move": [
+            0.2,
+            0.6
+          ],
+          "fire": true
+        },
+        {
+          "t": 3.0,
+          "move": [
+            -0.3,
+            0.7
+          ]
+        },
+        {
+          "t": 5.0,
+          "move": [
+            0,
+            0.5
+          ]
+        }
+      ]
+    },
+    {
+      "at": [
+        2100,
+        0
+      ],
+      "team": 1,
+      "protect": false,
+      "arm": [
+        "smg"
+      ],
+      "aim_at_player": true,
+      "steps": [
+        {
+          "t": 0,
+          "move": [
+            0,
+            0
+          ],
+          "held": false,
+          "aim": [
+            1,
+            0
+          ]
+        },
+        {
+          "t": 1.0,
+          "move": [
+            -0.3,
+            1
+          ],
+          "held": true
+        },
+        {
+          "t": 1.2,
+          "move": [
+            -0.2,
+            0.6
+          ],
+          "fire": true
+        },
+        {
+          "t": 3.0,
+          "move": [
+            0.3,
+            0.7
+          ]
+        },
+        {
+          "t": 5.0,
+          "move": [
+            0,
+            0.5
+          ]
+        }
+      ]
+    },
+    {
+      "at": [
+        500,
+        -153.75
+      ],
+      "team": 2,
+      "protect": false,
+      "arm": [
+        "smg"
+      ],
+      "aim_at_player": true,
+      "steps": [
+        {
+          "t": 0,
+          "move": [
+            0,
+            0
+          ],
+          "held": false,
+          "aim": [
+            1,
+            0
+          ]
+        },
+        {
+          "t": 1.1,
+          "move": [
+            0.3,
+            1
+          ],
+          "held": true
+        },
+        {
+          "t": 1.2,
+          "move": [
+            0.2,
+            0.6
+          ],
+          "fire": true
+        },
+        {
+          "t": 3.0,
+          "move": [
+            -0.3,
+            0.7
+          ]
+        },
+        {
+          "t": 5.0,
+          "move": [
+            0,
+            0.5
+          ]
+        }
+      ]
+    },
+    {
+      "at": [
+        800,
+        -153.75
+      ],
+      "team": 1,
+      "protect": false,
+      "arm": [
+        "assault_rifle"
+      ],
+      "aim_at_player": true,
+      "steps": [
+        {
+          "t": 0,
+          "move": [
+            0,
+            0
+          ],
+          "held": false,
+          "aim": [
+            1,
+            0
+          ]
+        },
+        {
+          "t": 1.2,
+          "move": [
+            -0.3,
+            1
+          ],
+          "held": true
+        },
+        {
+          "t": 1.2,
+          "move": [
+            -0.2,
+            0.6
+          ],
+          "fire": true
+        },
+        {
+          "t": 3.0,
+          "move": [
+            0.3,
+            0.7
+          ]
+        },
+        {
+          "t": 5.0,
+          "move": [
+            0,
+            0.5
+          ]
+        }
+      ]
+    },
+    {
+      "at": [
+        1600,
+        0
+      ],
+      "team": 2,
+      "protect": false,
+      "arm": [
+        "smg"
+      ],
+      "aim_at_player": true,
+      "steps": [
+        {
+          "t": 0,
+          "move": [
+            0,
+            0
+          ],
+          "held": false,
+          "aim": [
+            1,
+            0
+          ]
+        },
+        {
+          "t": 1.3,
+          "move": [
+            0.3,
+            1
+          ],
+          "held": true
+        },
+        {
+          "t": 1.2,
+          "move": [
+            0.2,
+            0.6
+          ],
+          "fire": true
+        },
+        {
+          "t": 3.0,
+          "move": [
+            -0.3,
+            0.7
+          ]
+        },
+        {
+          "t": 5.0,
+          "move": [
+            0,
+            0.5
+          ]
+        }
+      ]
+    }
+  ],
+  "shots": [
+    {
+      "t": 2.0,
+      "name": "6v6-a"
+    },
+    {
+      "t": 3.0,
+      "name": "6v6-b"
+    }
+  ]
+}

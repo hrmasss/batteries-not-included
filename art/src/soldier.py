@@ -426,6 +426,16 @@ def jetpack_layers():
         name = "jetpack_team" if team == "grey" else f"jetpack_team_{team}"
         doc.save(os.path.join(OUT, f"{name}.svg"))
 
+    # pattern overlays: the same patterns alone, in a dark veil, laid over a tinted greyscale
+    # layer so any team colour (and the colour-vision palette) keeps its pattern (US-26.2)
+    for kind in ("stripes", "dots", "chevrons"):
+        doc = Doc(*box, prefix="jp")
+        for cx, cy in reversed(BATT):
+            s = _batt_shapes(cx, cy)
+            _team_pattern(doc, {"stripes": "orange", "dots": "pink", "chevrons": "yellow"}[kind], s, cx,
+                          "#ffffff", "#000000", op=0.42)
+        doc.save(os.path.join(OUT, f"jetpack_pattern_{kind}.svg"))
+
     # front: duct tape bands, gloss on the batteries
     doc = Doc(*box, prefix="jf")
     (nx, ny), (fx, fy) = BATT
@@ -449,7 +459,7 @@ PATTERNS = {"blue": "plain", "orange": "stripes", "pink": "dots", "yellow": "che
             "neutral": "plain"}
 
 
-def _team_pattern(doc, team, s, cx, light, dark):
+def _team_pattern(doc, team, s, cx, light, dark, op=0.85):
     kind = PATTERNS.get(team, "plain")
     if kind == "plain":
         return
@@ -459,18 +469,18 @@ def _team_pattern(doc, team, s, cx, light, dark):
     if kind == "stripes":
         y = top + 26
         while y < bot + 40:
-            doc.path(f"M{f(cx - BATT_R - 4)} {f(y)}L{f(cx + BATT_R + 4)} {f(y - 22)}", stroke=dark, sw=7, op=0.85)
+            doc.path(f"M{f(cx - BATT_R - 4)} {f(y)}L{f(cx + BATT_R + 4)} {f(y - 22)}", stroke=dark, sw=7, op=op)
             y += 30
     elif kind == "dots":
         for row, y in enumerate(range(int(top + 20), int(bot), 22)):
             for x in range(-2, 3):
                 xx = cx + x * 14 + (7 if row % 2 else 0)
-                doc.path(ellipse_d(xx, y, 4.5, 4.5), fill=dark, op=0.85)
+                doc.path(ellipse_d(xx, y, 4.5, 4.5), fill=dark, op=op)
     elif kind == "chevrons":
         y = top + 24
         while y < bot + 10:
             doc.path(f"M{f(cx - BATT_R - 2)} {f(y)}L{f(cx)} {f(y - 14)}L{f(cx + BATT_R + 2)} {f(y)}", stroke=dark,
-                     sw=6, op=0.85)
+                     sw=6, op=op)
             y += 26
     doc.close_group()
 
@@ -533,6 +543,9 @@ def rig():
             "outline": "a thin team-colour outline around the whole toy is a shader on the composed toy",
             "patterns": "each baked team wrap also carries a pattern (plain, stripes, dots, chevrons) for "
                         "colour-blind players",
+            "pattern_files": {k: f"jetpack_pattern_{k}.svg" for k in ("stripes", "dots", "chevrons")},
+            "pattern_note": "pattern overlays for the tinted greyscale layer, drawn over jetpack_team; "
+                            "team order: plain, stripes, dots, chevrons",
         },
         "sockets": {
             "weapon_grip": {"parent": "near_forearm", "pos": list(GRIP),

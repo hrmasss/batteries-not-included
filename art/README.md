@@ -6,7 +6,7 @@ Godot checks need Godot 4.7 and `xvfb-run`.
 
 ```sh
 # regenerate every asset
-python3 art/src/soldier.py && python3 art/src/weapons.py && python3 art/src/fx.py && python3 art/src/bedroom.py
+python3 art/src/soldier.py && python3 art/src/weapons.py && python3 art/src/fx.py && python3 art/src/bedroom.py && python3 art/src/pickups.py
 
 # checks: Godot-safe SVG features, json cross-references, Godot raster vs librsvg per file
 python3 art/tools/check.py
@@ -43,3 +43,11 @@ private workspace (`docs/art/`), 1 to 5.
 Verdict: vector carries the toys, weapons, props and effects at game size. The gap is light
 and atmosphere, which lives mostly in the backdrop. A painted raster backdrop plate behind the
 vector props is the cheapest way to close it, and keeps the playable pieces crisp.
+
+## In the game (2026-10-15)
+
+The same assets drawn by the game (`docs/art-in-game.md`), scored against reference 05 from an
+in-game 1280x720 frame of two teams fighting on the bedroom map: **2 of 5**. The grammar holds
+(toys read as toys, team marks read, props crisp on a muted wall, light added on top); the
+painted light, depth and staging of the reference do not. Toys are smaller than in the
+reference because the game uses the spec camera.
