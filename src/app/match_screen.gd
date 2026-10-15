@@ -55,6 +55,7 @@ func _ready() -> void:
 	hud_source.clock_running = false
 	hud_source.clock = runner.time_left()
 	_build_ui()
+	print("bni: match started, %d bots, %s" % [cfg.bots, "team deathmatch" if cfg.is_teams() else "free-for-all"])
 
 
 func _build_ui() -> void:
@@ -171,6 +172,7 @@ func _panel(children: Array) -> Control:
 
 ## US-20.3: the winner, the full scoreboard and the best player; rematch in one tap (US-20.5).
 func _on_ended(result: MatchRules.Result) -> void:
+	print("bni: match over: %s" % winner_line(result, view.me.id(), cfg))
 	_hold_scores = false
 	view.player_hud.source.clock = 0.0
 	var table := ScoreTable.new(runner.scores, view.me.id())
