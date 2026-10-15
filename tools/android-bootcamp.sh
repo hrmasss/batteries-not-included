@@ -46,11 +46,25 @@ until [ "$("${ADB[@]}" shell getprop sys.boot_completed 2>/dev/null | tr -d '\r'
   if [ $(( $(date +%s) - start )) -gt 420 ]; then log "boot timed out"; exit 1; fi
 done
 log "booted in $(( $(date +%s) - start )) s"
+"${ADB[@]}" shell settings put system accelerometer_rotation 0 >/dev/null 2>&1 || true
 "${ADB[@]}" shell settings put system user_rotation 1 >/dev/null 2>&1 || true
+# Let the screen turn before the game starts: a turn during start relaunches the activity,
+# and the engine does not survive a relaunch.
+for _ in $(seq 1 15); do
+  "${ADB[@]}" shell dumpsys window displays 2>/dev/null | grep -q "mCurrentRotation=ROTATION_90\|cur=2400x1080" && break
+  sleep 1
+done
+sleep 2
 "${ADB[@]}" shell input keyevent KEYCODE_WAKEUP >/dev/null 2>&1 || true
 "${ADB[@]}" shell wm dismiss-keyguard >/dev/null 2>&1 || true
 "${ADB[@]}" shell settings put secure immersive_mode_confirmations confirmed >/dev/null 2>&1 || true
-"${ADB[@]}" install -r -g "$APK" >"$OUT/install.log" 2>&1
+# Right after boot the package manager can refuse an install with no reason given; try again.
+for try in 1 2 3; do
+  "${ADB[@]}" install -r -g "$APK" >"$OUT/install.log" 2>&1 && break
+  log "install try $try failed: $(tail -n1 "$OUT/install.log")"
+  [ "$try" = 3 ] && exit 1
+  sleep 15
+done
 # The app's own settings: lessons already offered, a short bootcamp setup, autoplay on.
 printf '[app]\n\nlessons_offered=true\nlast_bootcamp={"bots": 5, "length": %s.0, "mode": 0, "seed": 7, "skill": "normal"}\n\n[debug]\n\nautoplay=true\n' "$MATCH" \
   | "${ADB[@]}" shell "run-as $PKG sh -c 'mkdir -p files && cat > files/app.cfg'"
