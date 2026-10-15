@@ -75,4 +75,4 @@ for machines that share it.
 
 Godot 4.7.2's own engine library is about 71 MB on arm64, so a stock build cannot meet NF-4's
 67 MB install. A trimmed engine (a custom export template without the 3D and other unused
-modules) is the usual fix; it is not done yet.
+modules) is the usual fix. Planned for R1; not done yet.
