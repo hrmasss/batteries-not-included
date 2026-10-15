@@ -52,20 +52,24 @@ func test_us01_2_stick_below_threshold_does_not_jump() -> void:
 
 func test_us01_2_jump_cooldown() -> void:
 	make()
+	var rest := toy.position
 	step_with(UP)
-	var jumped_at := sim.tick
-	# Land, keep holding up: the next jump waits for the cooldown.
-	var jumps: Array[int] = [jumped_at]
-	var was_rising := true
-	for i in ticks(2.0):
-		var before := vel().y
+	assert_gt(vel().y, rules.jump_speed * 0.8, "first jump")
+	# Put the toy straight back on the ground: the cooldown still blocks a second jump.
+	toy.position = rest
+	toy.velocity = Vector2.ZERO
+	sim.step()
+	var blocked := 0
+	while toy.since_jump <= rules.jump_cooldown - TICK:
 		step_with(UP)
-		if toy.jetpack_on:
-			break
-		if vel().y - before > rules.jump_speed * 0.5:
-			jumps.append(sim.tick)
-	for i in range(1, jumps.size()):
-		assert_gte((jumps[i] - jumps[i - 1]) * TICK, rules.jump_cooldown - TICK * 0.5, "jumps at least a cooldown apart")
+		assert_lt(vel().y, rules.jump_speed * 0.5, "no jump %.2f s after the last" % toy.since_jump)
+		toy.position = rest
+		toy.velocity = Vector2.ZERO
+		blocked += 1
+	assert_gt(blocked, 0)
+	idle(TICK * 2)
+	step_with(UP)
+	assert_gt(vel().y, rules.jump_speed * 0.8, "jumps again once the cooldown has passed")
 
 
 func test_us01_2_ground_grace_after_walking_off_a_ledge() -> void:
@@ -80,7 +84,6 @@ func test_us01_2_ground_grace_after_walking_off_a_ledge() -> void:
 			break
 	assert_gt(left_ground, 0, "walked off")
 	# Within the grace: jump works.
-	var r_ok := toy.velocity.y
 	step_with(UP)
 	assert_gt(vel().y, rules.jump_speed * 0.8, "jump inside the grace")
 
