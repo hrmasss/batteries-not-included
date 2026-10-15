@@ -33,9 +33,9 @@ TAPE = Plastic(base="#a7a9a6", light="#cfd1cc", shadow="#7c7f7a", deep="#5c5f5a"
 # team colours: (main, light, dark). Greyscale is the tint source for any colour at runtime.
 TEAMS = {
     "grey": ("#d9d9d9", "#ffffff", "#8c8c8c"),
-    "blue": ("#2f7de1", "#7fb6ff", "#174b97"),
+    "blue": ("#1f63d6", "#78acff", "#0f3a8a"),
     "orange": ("#ff8c1a", "#ffc46e", "#b85300"),
-    "pink": ("#e0509e", "#ff9ccf", "#97245f"),
+    "pink": ("#ff8fcb", "#ffd0ea", "#c2407f"),
     "yellow": ("#f2d02b", "#fff089", "#a88a00"),
     "neutral": ("#c46a2b", "#f0a35e", "#7a3a10"),  # free-for-all: a copper-top battery
 }
@@ -413,6 +413,7 @@ def jetpack_layers():
             px, py = cx - 2, cy + 6
             doc.path(f"M{f(px - 8)} {f(py)}H{f(px + 8)}M{f(px)} {f(py - 8)}V{f(py + 8)}",
                      stroke=mix(main, light, 0.75) if team != "neutral" else "#f0d7b8", sw=5)
+            _team_pattern(doc, team, s, cx, light, dark)
             doc.path(s["wrap"], fill="none", stroke=dark, sw=2)
             if i == 0:
                 doc.path(s["wrap"], fill="#000000", op=0.18)
@@ -441,6 +442,37 @@ def jetpack_layers():
         doc.path(rrect_d(cx - BATT_R + 6, cy - BATT_H / 2 + 20, 7, BATT_H - 40, 3.5), fill="#ffffff", op=0.38)
         doc.path(ellipse_d(cx - BATT_R + 10, cy - BATT_H / 2 + 34, 3, 9), fill="#ffffff", op=0.7)
     doc.save(os.path.join(OUT, "jetpack_front.svg"))
+
+
+# a pattern per team on the wrap, so teams differ by shape as well as colour (US-26.2)
+PATTERNS = {"blue": "plain", "orange": "stripes", "pink": "dots", "yellow": "chevrons", "grey": "plain",
+            "neutral": "plain"}
+
+
+def _team_pattern(doc, team, s, cx, light, dark):
+    kind = PATTERNS.get(team, "plain")
+    if kind == "plain":
+        return
+    clip = doc.clip(s["wrap"])
+    doc.open_group(f'clip-path="{clip}"')
+    top, bot = s["top"] + 34, s["bot"] - 12
+    if kind == "stripes":
+        y = top + 26
+        while y < bot + 40:
+            doc.path(f"M{f(cx - BATT_R - 4)} {f(y)}L{f(cx + BATT_R + 4)} {f(y - 22)}", stroke=dark, sw=7, op=0.85)
+            y += 30
+    elif kind == "dots":
+        for row, y in enumerate(range(int(top + 20), int(bot), 22)):
+            for x in range(-2, 3):
+                xx = cx + x * 14 + (7 if row % 2 else 0)
+                doc.path(ellipse_d(xx, y, 4.5, 4.5), fill=dark, op=0.85)
+    elif kind == "chevrons":
+        y = top + 24
+        while y < bot + 10:
+            doc.path(f"M{f(cx - BATT_R - 2)} {f(y)}L{f(cx)} {f(y - 14)}L{f(cx + BATT_R + 2)} {f(y)}", stroke=dark,
+                     sw=6, op=0.85)
+            y += 26
+    doc.close_group()
 
 
 def nozzles():
@@ -499,6 +531,8 @@ def rig():
             "tint_source": "jetpack_team.svg is greyscale; modulate it with the team colour",
             "baked": {t: f"jetpack_team_{t}.svg" for t in TEAMS if t != "grey"},
             "outline": "a thin team-colour outline around the whole toy is a shader on the composed toy",
+            "patterns": "each baked team wrap also carries a pattern (plain, stripes, dots, chevrons) for "
+                        "colour-blind players",
         },
         "sockets": {
             "weapon_grip": {"parent": "near_forearm", "pos": list(GRIP),

@@ -4,6 +4,7 @@
   "grip": "where the trigger hand's fist centre sits",
   "support": "where the other hand holds it; absent for one-handed weapons",
   "muzzle": "where bullets and the muzzle flash leave",
+  "projectiles": "rocket is the launcher's projectile (origin at its tail, exhaust for the thrust flame); the frag in flight uses frag_grenade",
   "weapons": {
     "pistol": {
       "file": "pistol.svg",
@@ -168,6 +169,27 @@
       ],
       "hands": 1,
       "label": "frag grenade"
+    },
+    "rocket": {
+      "file": "rocket.svg",
+      "size": [
+        112,
+        60
+      ],
+      "grip": [
+        16,
+        30
+      ],
+      "muzzle": [
+        108,
+        30
+      ],
+      "hands": 0,
+      "label": "rocket (projectile)",
+      "exhaust": [
+        8,
+        30
+      ]
     }
   }
 }

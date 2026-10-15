@@ -12,7 +12,6 @@ import json
 import math
 import os
 import random
-import subprocess
 import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -23,7 +22,7 @@ KIT = os.path.join(c.ASSETS, "maps", "bedroom")
 FX = os.path.join(c.ASSETS, "fx")
 W, H = 5120, 2880
 FLOOR_Y = 2700
-TEAM = {"blue": "#2f7de1", "orange": "#ff8c1a"}
+TEAM = {"blue": "#1f63d6", "orange": "#ff8c1a"}
 
 
 def kit(name):
@@ -80,9 +79,9 @@ def backdrop():
     return c.join(out)
 
 
-def pop_scene(cx, cy, team, rng):
+def pop_scene(cx, cy, team, rng, spread=1.0, word=True, face="face_shocked.svg"):
     """The soldier's pop: parts snapped off at the joints and flying, helmet spinning off,
-    a battery flung clear, snap marks, a burst and the POP! word."""
+    a battery flung clear, snap marks, a burst and the POP! word. spread 0..1 animates it."""
     r = c.rig()
     parts = {p["name"]: p for p in r["parts"]}
     path = lambda f_: os.path.join(c.SOLDIER, f_)  # noqa: E731
@@ -93,25 +92,53 @@ def pop_scene(cx, cy, team, rng):
         ("torso", 0, 30, -18), ("near_upper_arm", -170, -50, 80), ("near_forearm", -250, 10, 140),
     ]
     out = []
+    rest = c.pose_mats(r, c.poses()["stand"], (cx, cy + 230))
+
+    def lerp_m(m_rest, x, y, rot, scale=1.0):
+        if spread >= 1:
+            return c.mul(c.T(x, y), c.mul(c.R(rot), c.S(scale)))
+        rx, ry = c.apply(m_rest, (0, 0))
+        rrot = math.degrees(math.atan2(m_rest[1], m_rest[0]))
+        k = spread
+        return c.mul(c.T(rx + (x - rx) * k, ry + (y - ry) * k), c.mul(c.R(rrot + (rot - rrot) * k),
+                                                                     c.S(1 + (scale - 1) * k)))
+    # a battery flung clear: the jetpack's three layers, drawn first so it starts behind the body
+    jm = lerp_m(rest["jetpack_back"], cx - 260, cy - 220, -58, 0.9)
+    for f_ in ("jetpack_back.svg", r["team"]["baked"][team], "jetpack_front.svg"):
+        out.append(c.place_m(path(f_), jm))
     for name, dx, dy, rot in layout:
         p = parts[name]
-        m = c.mul(c.T(cx + dx, cy + dy), c.R(rot))
+        if spread < 1:
+            # blend from the standing pose toward the scattered layout
+            rx, ry = c.apply(rest[name], (0, 0))
+            rrot = math.degrees(math.atan2(rest[name][1], rest[name][0]))
+            m = c.mul(c.T(rx + (cx + dx - rx) * spread, ry + (cy + dy - ry) * spread), c.R(rrot + (rot - rrot) * spread))
+        else:
+            m = c.mul(c.T(cx + dx, cy + dy), c.R(rot))
         out.append(c.place_m(path(p["file"]), m))
         if parts[name].get("modulate"):
             out.append(c.place_flat_m(path(p["file"]), m, "#0d1a08", 0.35))
     # head with its hurt face, popped up and back
-    hm = c.mul(c.T(cx - 20, cy - 190), c.R(-24))
+    hm = lerp_m(rest["head"], cx - 20, cy - 190, -24)
     out.append(c.place_m(path("head.svg"), hm))
-    out.append(c.place_m(path("face_shocked.svg"), hm))
+    out.append(c.place_m(path(face), hm))
     # helmet flying off, spinning
-    out.append(c.place_m(path("helmet.svg"), c.mul(c.T(cx + 120, cy - 380), c.R(38))))
-    # a battery flung clear: the jetpack's three layers
-    jm = c.mul(c.T(cx - 260, cy - 220), c.mul(c.R(-58), c.S(0.9)))
-    for f_ in ("jetpack_back.svg", r["team"]["baked"][team], "jetpack_front.svg"):
-        out.append(c.place_m(path(f_), jm))
-    snaps = [(cx + 60, cy + 100), (cx - 90, cy + 110), (cx - 20, cy - 110)]
-    for x, y in snaps:
-        out.append(fxp("pop_snap", x, y, scale=0.9 + rng.random() * 0.4, rot=rng.random() * 90))
+    out.append(c.place_m(path("helmet.svg"), lerp_m(rest["helmet"], cx + 120, cy - 380, 38)))
+    # snap marks at the joints that let go: neck, a shoulder, both hips
+    snaps = []
+    pos = {n: (dx, dy) for n, dx, dy, _ in layout}
+    pos["head"] = (-20, -190)
+    for joint in ("head", "far_upper_arm", "near_thigh", "far_thigh"):
+        rx, ry = c.apply(rest[joint], (0, 0))
+        tx, ty = cx + pos[joint][0], cy + pos[joint][1]
+        k = min(1.0, spread) * 0.85
+        snaps.append((rx + (tx - rx) * k, ry + (ty - ry) * k))
+    if spread > 0:
+        for x, y in snaps:
+            out.append(fxp("pop_snap", x, y, scale=(0.9 + rng.random() * 0.4) * min(1, spread * 2),
+                           rot=rng.random() * 90))
+    if not word:
+        return c.join(out), c.join([])
     burst = c.join([fxp("pop_burst", cx + 300, cy - 360, scale=1.15, rot=-8),
                     fxp("pop_text", cx + 300, cy - 360, scale=1.15, rot=-8)])
     return c.join(out), burst
@@ -178,6 +205,11 @@ def scene():
     pop_parts, pop_burst = pop_scene(gx - 40, gy - 420, "orange", rng)
     top.append(pop_parts)
     top.append(pop_burst)
+    # screen vignette: a camera overlay, not a map asset
+    top.append(c.raw('<defs><radialGradient id="vig" cx="0.5" cy="0.45" r="0.75"><stop offset="0.6" '
+                     'stop-color="#1c1a2a" stop-opacity="0"/><stop offset="1" stop-color="#1c1a2a" '
+                     'stop-opacity="0.32"/></radialGradient></defs>'
+                     f'<rect width="{W}" height="{H}" fill="url(#vig)"/>'))
     return base + top, glow
 
 

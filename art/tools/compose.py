@@ -317,6 +317,28 @@ def label(x, y, text, size=28, colour="#e8e6dc", anchor="middle", weight=700):
             f'font-size="{f(size)}" font-weight="{weight}" fill="{colour}" text-anchor="{anchor}">{text}</text>')
 
 
+def render_add(parts, glow_parts, w, h, png, bg=None, width=None, height=None):
+    """Render parts, then add glow parts on top the way the engine's additive blend does."""
+    from PIL import Image, ImageChops
+    tmp = png[:-4]
+    render(doc(w, h, "".join(parts), bg=bg), tmp + "__base.png", width, height)
+    render(doc(w, h, "".join(glow_parts)), tmp + "__glow.png", width, height)
+    base = Image.open(tmp + "__base.png").convert("RGBA")
+    g = Image.open(tmp + "__glow.png").convert("RGBA")
+    r, gg, b, a = g.split()
+    prem = Image.merge("RGB", [ImageChops.multiply(ch, a) for ch in (r, gg, b)])
+    rgb = ImageChops.add(base.convert("RGB"), prem)
+    alpha = ImageChops.lighter(base.split()[3], a)
+    out = Image.merge("RGBA", (*rgb.split(), alpha))
+    out.save(png)
+    for sfx in ("__base.png", "__glow.png", "__base.svg", "__glow.svg"):
+        try:
+            os.remove(tmp + sfx)
+        except OSError:
+            pass
+    return png
+
+
 def render(svg_text, png, width=None, height=None):
     os.makedirs(os.path.dirname(png), exist_ok=True)
     src = png[:-4] + ".svg"

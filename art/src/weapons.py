@@ -266,9 +266,23 @@ def frag():
     register("frag_grenade", doc, grip=(0, 10), muzzle=(0, 10), label="frag grenade", hands=1)
 
 
+def rocket():
+    """The rocket in flight, separate from the launcher. Faces right; origin at its tail."""
+    doc = Doc(-16, -30, 112, 60, prefix="rk")
+    for s_ in (-1, 1):
+        fin = smooth([(4, 0, "c"), (22, s_ * 10, "c"), (6, s_ * 24, "c"), (-4, s_ * 22, "c")])
+        part(doc, fin, RED, band=3, rim=2, sw=4)
+    part(doc, rrect_d(0, -13, 58, 26, 7), CREAM, band=4, rim=2, gloss=[(rrect_d(8, -10, 36, 4, 2), 0.6)])
+    nose = smooth([(54, -15, "c"), (76, -10), (92, 0, "c"), (76, 10), (54, 15, "c")])
+    part(doc, nose, RED, band=4, rim=2, gloss=[(ellipse_d(68, -7, 6, 2.5), 0.6)])
+    part(doc, rrect_d(-8, -9, 10, 18, 3), SLATE, band=2, rim=1.5, sw=4)
+    register("rocket", doc, grip=(0, 0), muzzle=(92, 0), label="rocket (projectile)", hands=0,
+             extra={"exhaust": (-8, 0)})
+
+
 def main():
     os.makedirs(OUT, exist_ok=True)
-    for fn in (pistol, uzi, smg, assault_rifle, shotgun, sniper, rocket_launcher, frag):
+    for fn in (pistol, uzi, smg, assault_rifle, shotgun, sniper, rocket_launcher, frag, rocket):
         fn()
     data = {
         "units": "author px, 4 per game px at 720p; points are px from the file's top-left",
@@ -276,6 +290,8 @@ def main():
         "grip": "where the trigger hand's fist centre sits",
         "support": "where the other hand holds it; absent for one-handed weapons",
         "muzzle": "where bullets and the muzzle flash leave",
+        "projectiles": "rocket is the launcher's projectile (origin at its tail, exhaust for the thrust flame); "
+                       "the frag in flight uses frag_grenade",
         "weapons": REGISTRY,
     }
     with open(os.path.join(OUT, "weapons.json"), "w") as fh:

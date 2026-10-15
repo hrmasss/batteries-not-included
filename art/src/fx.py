@@ -123,7 +123,7 @@ def thrust_flame(name, seed, length=170, width=38):
 
 def thrust_glow():
     doc = Doc(-100, -50, 200, 280, prefix="tg")
-    g = doc.rad(0, 70, 120, [(0, ("#e8fdff", 0.9)), (0.2, ("#8cefff", 0.6)), (0.5, ("#ff9a2a", 0.3)),
+    g = doc.rad(0, 70, 120, [(0, ("#e8fdff", 0.55)), (0.2, ("#8cefff", 0.4)), (0.5, ("#ff9a2a", 0.25)),
                             (1, ("#ff6a00", 0))], transform="translate(0 70) scale(0.75 1.1) translate(0 -70)")
     doc.path(ellipse_d(0, 70, 100, 135), fill=g)
     save(doc, "thrust_glow", origin=(0, 0), blend="add")
