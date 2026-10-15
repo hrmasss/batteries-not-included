@@ -23,6 +23,8 @@ var player: SimToy
 var source: InputSource
 var camera: GameCamera
 var overlay: DebugOverlay
+## HUD and touch controls (US-23, US-25).
+var player_hud: PlayerHud
 var toy_views: Array[ToyView] = []
 var combat: CombatSim
 var me: Fighter
@@ -60,11 +62,17 @@ func _ready() -> void:
 	camera.limit_top = int(b.position.y)
 	camera.limit_right = int(b.end.x)
 	camera.limit_bottom = int(b.end.y)
+	player_hud = PlayerHud.new()
+	player_hud.name = "PlayerHud"
+	add_child(player_hud)
+	player_hud.setup(sim, player.toy_id, camera)
 	overlay = DebugOverlay.new()
 	overlay.visible = show_overlay
 	add_child(overlay)
 	if source == null:
-		source = DesktopInput.new()
+		source = TouchInput.new()
+	if source is TouchInput:
+		(source as TouchInput).controls = player_hud.touch
 	if source.get_parent() == null:
 		add_child(source)
 	_sync_views(0.0)
@@ -75,8 +83,10 @@ func _process(delta: float) -> void:
 		return
 	_last_frame = delta
 	for i in clock.advance(delta):
+		var intent := source.intent_for(self, sim.tick)
+		player_hud.on_intent(intent)
 		var intents := extra_intents.duplicate()
-		intents[player.toy_id] = source.intent_for(self, sim.tick)
+		intents[player.toy_id] = intent
 		sim.step(intents)
 	_sync_views(delta)
 
@@ -88,7 +98,8 @@ func _sync_views(delta: float) -> void:
 		v.visible = v.toy.active
 		v.sync(alpha, delta)
 	combat_view.sync(delta)
-	camera.follow(player_view_position())
+	camera.follow(player_view_position(), delta)
+	player_hud.frame()
 	overlay.show_toy(player, sim.tick, _last_frame, show_hitboxes)
 
 
