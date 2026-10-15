@@ -273,17 +273,19 @@ func _script_flight() -> void:
 
 func _script_hud() -> void:
 	if _t < 0.05 and _prev_t == 0.0:
-		view.source.clock = 27.0
-		# A rifle at my feet, picked up with the button.
-		combat.place_item(&"assault_rifle", me.position + Vector2(0, -20))
+		view.source.clock = 28.0
+		# A rifle at my feet, picked up with the button once it lands.
+		combat.place_item(&"assault_rifle", me.position)
+	if _t > 0.5 and _prev_t <= 0.5:
 		_buttons = int(InputIntent.Act.PICK_UP)
-	if _t > 0.15 and _prev_t <= 0.15:
+	if _t > 0.6 and _prev_t <= 0.6:
 		_buttons = 0
-		combat.hurt(_f(others[2]), 1000.0, me.toy_id, &"assault_rifle", CombatSim.Hurt.BULLET)
-	if _t > 0.25 and _prev_t <= 0.25:
-		combat.hurt(_f(others[0]), 1000.0, others[1].toy_id, &"uzi", CombatSim.Hurt.BULLET)
+	if _t > 0.7 and _prev_t <= 0.7:
+		combat.hurt(_f(others[1]), 1000.0, me.toy_id, &"assault_rifle", CombatSim.Hurt.BULLET)
+	if _t > 0.8 and _prev_t <= 0.8:
+		combat.hurt(_f(others[0]), 1000.0, others[2].toy_id, &"frag", CombatSim.Hurt.BLAST)
 	if _every(0.6) and _t > 0.3:
-		combat.hurt(_f(me), 6.0, others[1].toy_id, &"uzi", CombatSim.Hurt.BULLET)
+		combat.hurt(_f(me), 6.0, others[2].toy_id, &"pistol", CombatSim.Hurt.BULLET)
 	# Thumbs resting on the sticks for the shot.
 	var r := view.touch.move_stick.radius
 	if _t > 0.3:

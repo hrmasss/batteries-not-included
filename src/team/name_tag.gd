@@ -19,7 +19,8 @@ var viewer: Node2D
 
 
 func _process(_dt: float) -> void:
-	if target == null or not is_instance_valid(target):
+	# No tag over a toy that is not drawn (popped and waiting to respawn).
+	if target == null or not is_instance_valid(target) or not target.is_visible_in_tree():
 		visible = false
 		return
 	global_position = target.global_position + Vector2(0, -height)
