@@ -1,0 +1,19 @@
+{
+  "fresh": true,
+  "steps": [
+    {"t": 0.8, "shot": "menu"},
+    {"t": 1.0, "press": "Bootcamp"},
+    {"t": 1.5, "step_choice": "Mode"},
+    {"t": 1.8, "shot": "setup-tdm"},
+    {"t": 2.0, "press": "Back"},
+    {"t": 2.3, "press": "Lessons"},
+    {"t": 2.8, "shot": "lessons"},
+    {"t": 3.0, "press": "aim_fire"},
+    {"t": 4.5, "shot": "lesson-aim"},
+    {"t": 4.6, "press": "Back"},
+    {"t": 5.0, "press": "Back"},
+    {"t": 5.3, "press": "Settings"},
+    {"t": 5.8, "shot": "settings"},
+    {"t": 6.0, "quit": true}
+  ]
+}

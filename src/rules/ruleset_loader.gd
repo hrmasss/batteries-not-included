@@ -27,7 +27,7 @@ static func load_standard() -> Result:
 static func load_dir(dir: String) -> Result:
 	var sources := {}
 	var errors: PackedStringArray = []
-	for group: String in ["ruleset"] + Array(RulesetSchema.GROUPS) + ["weapons"]:
+	for group: String in ["ruleset"] + Array(RulesetSchema.GROUPS) + ["weapons", "bots"]:
 		var path := dir.path_join("%s.cfg" % group)
 		var cfg := ConfigFile.new()
 		if not FileAccess.file_exists(path):
@@ -89,6 +89,12 @@ static func from_configs(sources: Dictionary) -> Result:
 		var wt := WeaponTable.from_config(weapons)
 		result.errors.append_array(wt.errors)
 		r.weapons = wt.table
+	# Bot skill levels (T-95 to T-97) are rows too.
+	var bots: ConfigFile = sources.get("bots")
+	if bots != null:
+		var bs := BotSkills.from_config(bots)
+		result.errors.append_array(bs.errors)
+		r.bots = bs.table
 
 	_check_relations(r, result.errors)
 	if result.errors.is_empty():
@@ -137,6 +143,12 @@ static func _check_relations(r: Ruleset, errors: PackedStringArray) -> void:
 		errors.append("hitbox.body_top (T-18): must be above body_bottom")
 	if have.call(["crouch_bottom", "crouch_top"]) and r.crouch_top <= r.crouch_bottom:
 		errors.append("hitbox.crouch_top (T-18): must be above crouch_bottom")
+	if have.call(["match_length_min", "match_length_max"]) and r.match_length_max < r.match_length_min:
+		errors.append("match.match_length_max (T-72): must not be below match_length_min")
+	if have.call(["players_min", "players_max"]) and r.players_max < r.players_min:
+		errors.append("match.players_max (T-75): must not be below players_min")
+	if have.call(["teams_min", "teams_max"]) and r.teams_max < r.teams_min:
+		errors.append("match.teams_max (T-78): must not be below teams_min")
 	if have.call(["crowd_start", "crowd_full"]) and r.crowd_full <= r.crowd_start:
 		errors.append("match.crowd_full (T-77): must be above crowd_start")
 
@@ -152,6 +164,10 @@ static func save_dir(r: Ruleset, dir: String) -> Error:
 		return err
 	if r.weapons != null:
 		err = _write(dir.path_join(WeaponTable.FILE), r.weapons.to_cfg_text())
+		if err != OK:
+			return err
+	if r.bots != null:
+		err = _write(dir.path_join(BotSkills.FILE), r.bots.to_cfg_text())
 		if err != OK:
 			return err
 	for group: String in RulesetSchema.GROUPS:

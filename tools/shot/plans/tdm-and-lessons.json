@@ -1,0 +1,22 @@
+{
+  "autoplay": true,
+  "fresh": true,
+  "config": {"mode": 1, "teams": 3, "bots": 8, "length": 60, "skill": "hard", "seed": 11},
+  "steps": [
+    {"t": 0.8, "press": "NotNow"},
+    {"t": 1.2, "press": "Bootcamp"},
+    {"t": 2.0, "shot": "07-bootcamp-setup-tdm"},
+    {"t": 2.4, "press": "Start"},
+    {"when": "match", "delay": 20.0, "shot": "08-tdm-match"},
+    {"when": "results", "delay": 1.0, "shot": "09-tdm-results"},
+    {"t": 0, "press": "MainMenu"},
+    {"t": 0, "press": "Lessons"},
+    {"t": 0, "shot": "10-lessons"},
+    {"t": 0, "press": "fly"},
+    {"when": "lesson", "delay": 2.0, "shot": "11-lesson-fly"},
+    {"t": 0, "press": "Back"},
+    {"t": 0, "press": "pick_up"},
+    {"when": "lesson", "delay": 2.0, "shot": "12-lesson-pick-up"},
+    {"t": 0, "quit": true}
+  ]
+}

@@ -8,6 +8,10 @@ The specs live in the workspace (`docs/specs/`); this page maps their parts onto
 | `data/rulesets/<id>/` | Ruleset and content | The values: `ruleset.cfg` plus one file per tuning group, T-IDs in comments |
 | `src/sim/` | Match server | `MatchSim`, `SimToy`, `ToyMotor` (movement rules), `SimClock` (60 Hz), `InputIntent`, `ScriptedInput`, `Drills` |
 | `src/sim/combat/` | Match server | `CombatSim` (fighting rules, one step per tick after movement), `Fighter`, `WeaponItem`, `WeaponTable` and `WeaponDef` (the T-50 rows). See [combat.md](combat.md) |
+| `src/sim/match/` | Match server | `MatchConfig`, `Scoreboard`, `MatchRules`, `MatchRunner`: a match from start to results. See [match-and-bots.md](match-and-bots.md) |
+| `src/sim/bots/` | Match server | `Bot`, `BotSkills`, `NavGrid`: bots that drive the same intent as players |
+| `src/lessons/` | Game app | `LessonRunner`: the lessons' steps and checks |
+| `src/app/` | Game app | `App` and its screens: menu, bootcamp, match, results, lessons, settings |
 | `src/maps/` | Ruleset and content | Map node types: `GameMap`, `Terrain`, `SpawnPoint`, `PickupPoint`, `TeamBase` |
 | `maps/` | Ruleset and content | The maps themselves, one folder each |
 | `src/view/` | Game app | `GameView` (runs the clock, feeds intents, draws), `ToyView`, `CombatView`, `GameCamera`, `DebugOverlay`, input sources |
